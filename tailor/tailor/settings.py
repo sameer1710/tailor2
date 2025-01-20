@@ -149,7 +149,7 @@ EMAIL_HOST_PASSWORD = 'qokr xzcz bimi fyqa'  # Replace with your email password
 # AUTH_USER_MODEL = 'api.CustomUser'  # Default user model
 # AUTH_USER_MODEL = 'api.EmployeeMaster'  # Default user model
 # AUTHENTICATION_BACKENDS = ['api.backends.CustomBackend']
-AUTH_USER_MODEL = 'api.User'
+# AUTH_USER_MODEL = 'api.User'
 
 
 AUTHENTICATION_BACKENDS = [
