@@ -566,6 +566,7 @@ def logout_user(request):
 def home(request):
     company_id = request.user.company.id
     company = Company.objects.get(id=company_id)
+    # return redirect('login')
     print('sameer', company.logo.url)
 
     return render(request, 'index.html')

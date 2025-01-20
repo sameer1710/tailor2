@@ -60,21 +60,21 @@
                             {% if request.user.is_company_owner == True %}
                             <li class="nav-item">
                                 <!-- <a class="nav-link active" aria-current="page" href="{% url 'client_creation' %}">Client Master</a> -->
-                                <a class="nav-link {% if request.path == '/api/client-master/' or '/api/client/' in request.path or '/api/maap-creation/' in request.path or '/api/create-bill/' in request.path %}active{% endif %}" href="{% url 'client_creation' %}">Client Master</a>
+                                <a class="nav-link {% if request.path == '/client-master/' or '/client/' in request.path or '/maap-creation/' in request.path or '/create-bill/' in request.path %}active{% endif %}" href="{% url 'client_creation' %}">Client Master</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link {% if request.path == '/api/bill-master/' or '/api/bill-detail/' in request.path or '/api/update-advance/' in request.path or '/api/maap-detail/' in request.path %}active{% endif %}" href="{% url 'bill_list' %}">Bill Master</a>
+                                <a class="nav-link {% if request.path == '/bill-master/' or '/bill-detail/' in request.path or '/update-advance/' in request.path or '/maap-detail/' in request.path %}active{% endif %}" href="{% url 'bill_list' %}">Bill Master</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link {% if request.path == '/api/employee-master/' %}active{% endif %}" href="{% url 'employee_creation' %}">Employee Master</a>
+                                <a class="nav-link {% if request.path == '/employee-master/' %}active{% endif %}" href="{% url 'employee_creation' %}">Employee Master</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link {% if request.path == '/api/advance-report/' %}active{% endif %}" href="{% url 'advance_list_view' %}">Receipt Report</a>
+                                <a class="nav-link {% if request.path == '/advance-report/' %}active{% endif %}" href="{% url 'advance_list_view' %}">Receipt Report</a>
                             </li>
                             {% endif %}
                             <li class="nav-item">
-                                <a class="nav-link {% if request.path == '/api/employee-report/' %}active{% endif %}" href="{% url 'product_list_view' %}">Employee Report</a>
+                                <a class="nav-link {% if request.path == '/employee-report/' %}active{% endif %}" href="{% url 'product_list_view' %}">Employee Report</a>
                             </li>
                             <!-- <li class="nav-item">
                                 <a class="nav-link disabled" aria-disabled="true">Disabled</a>

@@ -2,7 +2,8 @@
 from django.urls import path
 from api import views
 urlpatterns = [
-    path('', views.home, name='Home'),
+    # path('', views.home, name='lo'),
+    path('home', views.home, name='Home'),
     path('client-master/', views.client_creation, name='client_creation'),
     path('maap-creation/<int:client_id>/', views.maap_view, name='maap_creation'),
     path('client/<int:client_id>/edit/', views.maap_edit_view, name='maap_edit_view'),
@@ -22,7 +23,7 @@ urlpatterns = [
     path('register/company/', views.company_register, name='register_company'),
     # path('register/user/', views.register_user, name='register_user'),
     # path('accounts/login/', views.company_login, name='company_login'),
-    path('login/', views.custom_login_view, name='login'),
+    path('', views.custom_login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     
     # path('logout/company/', views.company_logout, name='company_logout'),
