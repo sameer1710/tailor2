@@ -1175,6 +1175,15 @@ def bill_list(request,pk=None):
     return render(request, "bill-master.html", context)
 
 
+# Advances detail view code
+def get_advances(request, bill_id):
+    advances = advance_list.objects.filter(invoice_id=bill_id).values(
+        'receipt_ref_no', 'receipt_type', 'receipt_date', 'amount_received'
+    )
+    return JsonResponse({'advances': list(advances)})
+
+
+
 #This is the code for bill's detail page
 def bill_detail_view(request, bill_id):
 

@@ -158,6 +158,13 @@ select:valid~label,
     /* font-size: 12px; */
 }
 
+.adv-table thead th {
+    white-space: nowrap;
+    background-color: #133E87;
+    color: #fff;
+    /* font-size: 12px; */
+}
+
 /* .bill-maap-table tbody td {
     font-size: 12px;
 } */
@@ -883,7 +890,7 @@ select:valid~label,
     transition: all 0.3s ease;
 }
 
-.input-field input {
+.input-field input, textarea {
     padding: 10px 15px;
     font-size: 1rem;
     border-radius: 8px;
@@ -892,14 +899,16 @@ select:valid~label,
     width: 100%;
 }
 
-.input-field input:focus,
-.input-field input:valid {
+
+
+.input-field input:focus, textarea:focus
+.input-field input:valid, textarea:valid {
     outline: none;
     border: solid 1px #0034de;
 }
 
-.input-field input:focus ~ label,
-.input-field input:valid ~ label {
+.input-field input:focus ~ label, textarea:focus ~ label
+.input-field input:valid ~ label, textarea:valid ~ label{
     transform: translateY(-51%) translateX(-10px) scale(0.8);
     background-color: #fff;
     padding: 0px 5px;

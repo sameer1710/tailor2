@@ -502,8 +502,8 @@ class create_bill(models.Model):
     client = models.ForeignKey(ClientMaster, on_delete=models.CASCADE, related_name='bills')
 
     bill_number = models.CharField(max_length=20, unique=True, blank=True)
-    bill_date = models.DateField(null=True, blank=True)
-    delivery_date = models.DateField(null=True, blank=True)
+    bill_date = models.DateField()
+    delivery_date = models.DateField()
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     discount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     gst_rate = models.CharField(max_length=100, null=True, blank=True)

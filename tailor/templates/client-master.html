@@ -62,12 +62,12 @@
                 {% for client in clients %}
                 <tr>
                     <td class="d-flex pt-2" style="justify-content: space-evenly; align-items: center !important;">
-                        <i class="fa-solid fa-eye" data-bs-toggle="modal" data-bs-target="#viewModal{{ client.id }}"
+                        <i class="fa-solid fa-eye button1 cooltool" data-tooltip-dir="right" data-content-before="View Detail" data-content-after="View Detail" data-tooltip-border="true" data-bs-toggle="modal" data-bs-target="#viewModal{{ client.id }}"
                             style="color: rgba(var(--bs-link-color-rgb),var(--bs-link-opacity,1)); cursor: pointer;"></i>
                         <!-- <button type="button" class="btn">View</button> -->
-                        <a href="{% url 'maap_edit_view' client.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <a href="{% url 'maap_creation' client.id %}"><i class="fa-solid fa-circle-plus"></i></a>
-                        <a href="{% url 'create_bill_view' client.id %}"><i class="fas fa-receipt"></i></a>
+                        <a href="{% url 'maap_edit_view' client.id %}"><i class="fa-solid fa-pen-to-square button1 cooltool" data-tooltip-dir="right" data-content-before="Edit Details" data-content-after="Edit Details" data-tooltip-border="true"></i></a>
+                        <a href="{% url 'maap_creation' client.id %}"><i class="fa-solid fa-circle-plus button1 cooltool" data-tooltip-dir="right" data-content-before="Add Maap" data-content-after="Add Maap" data-tooltip-border="true"></i></a>
+                        <a href="{% url 'create_bill_view' client.id %}"><i class="fas fa-receipt button1 cooltool" data-tooltip-dir="right" data-content-before="Create Bill" data-content-after="Create Bill" data-tooltip-border="true"></i></a>
                     </td>
                     <td>{{ client.id }}</td>
                     <td>{{ client.client_name }}</td>
@@ -702,7 +702,63 @@
 
 
 <script>
+    function setCoolTool() {
+    var cooltool = $('.cooltool');
 
+    cooltool.each(function() {
+        var el = $(this);
+        if(!el.find('.tooltip').length > 0) {
+            el.append('<span class="tooltip" data-tooltip="'+el.attr('data-tooltip-dir')+'"><span class="before-content">'+el.attr('data-content-before').replace(/\/n/g, "<br>")+'</span><span class="after-content">'+el.attr('data-content-after')+'</span></span>');
+        }
+    });
+
+    $(document).on('click', '.cooltool', function() {
+        var el = $(this);
+        var tool = $(this).find('.tooltip');
+        var b = el.find('.before-content');
+        var a = el.find('.after-content');
+        if (el.attr('data-content-after') != undefined) {
+            if (el.attr('data-keep-after') == 'true' || el.attr('data-keep-after') == '') {
+                a.addClass('showTip');
+                b.addClass('hideTip');
+            } else {
+                function changeContent() {
+                    b.addClass('hideTip').delay(1200).queue(function(next){
+                        b.removeClass('hideTip');
+                        next();
+                    });
+                    a.addClass('showTip').delay(1200).queue(function(next){
+                        a.removeClass('showTip');
+                        next();
+                    });
+                } changeContent();
+            }
+        }
+    });
+
+    $(document).on('mouseleave', '.cooltool', function() {
+        console.log('touchend');
+        var el = $(this);
+        var b = el.find('.before-content');
+        var a = el.find('.after-content');
+        function revertChange() {
+            a.delay(300).queue(function(next){
+                a.addClass('hideTip').removeClass('showTip');
+                a.removeClass('hideTip');
+                next();
+            });
+            b.delay(300).queue(function(next){
+                b.addClass('showTip').removeClass('hideTip');
+                b.removeClass('showTip');
+                next();
+            });
+        } revertChange();
+    });
+    
+} setCoolTool();
+</script>
+
+<script>
 
     // Initialization of Datatable
     $(document).ready(function () {

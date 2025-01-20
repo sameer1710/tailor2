@@ -19,92 +19,125 @@
         {% endif %}
     </div>
 
-    <div class="row mt-5 pe-3">
+    <div class="row mt-5 pe-3 pb-3">
         <div class="col-4 mb-3">
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-6">
                     <p class="company-label">Company Name</p>
                 </div>
                 <div class="col-6">
                     <p class="company-inps">{{ company_data.company_name }}</p>
                 </div>
+            </div> -->
+            <div class="input-field">
+                <input type="text" id="companyName" value="{{ company_data.company_name }}" readonly>
+                <label for="companyName">Company Name</label>
             </div>
         </div>
 
         <div class="col-4 mb-3">
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-6">
                     <p class="company-label">Owner Name</p>
                 </div>
                 <div class="col-6">
                     <p class="company-inps">{{ company_data.name }}</p>
                 </div>
+            </div> -->
+            <div class="input-field">
+                <input type="text" id="ownerName" value="{{ company_data.name }}" readonly>
+                <label for="ownerName">Owner Name</label>
             </div>
         </div>
 
         <div class="col-4 mb-3">
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-6">
                     <p class="company-label">Company Email</p>
                 </div>
                 <div class="col-6">
                     <p class="company-inps">{{ company_data.email }}</p>
                 </div>
+            </div> -->
+            <div class="input-field">
+                <input type="text" id="companyEmail" value="{{ company_data.email }}" readonly>
+                <label for="companyEmail">Owner Name</label>
             </div>
         </div>
 
         <div class="col-4 mb-3">
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-6">
                     <p class="company-label">Company Number</p>
                 </div>
                 <div class="col-6">
                     <p class="company-inps">{{ company_data.phone }}</p>
                 </div>
+            </div> -->
+            <div class="input-field">
+                <input type="text" id="companyPhone" value="{{ company_data.phone }}" readonly>
+                <label for="companyPhone">Company Number</label>
             </div>
         </div>
 
         <div class="col-4 mb-3">
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-6">
                     <p class="company-label">Company Created At</p>
                 </div>
                 <div class="col-6">
                     <p class="company-inps">{{ company_data.created_at }}</p>
                 </div>
+            </div> -->
+            <div class="input-field">
+                <input type="text" id="companyCreated" value="{{ company_data.created_at }}" readonly>
+                <label for="companyCreated">Company Created At</label>
             </div>
         </div>
 
         <div class="col-4 mb-3">
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-6">
                     <p class="company-label">Company Updated At</p>
                 </div>
                 <div class="col-6">
                     <p class="company-inps">{{ company_data.updated_at }}</p>
                 </div>
+            </div> -->
+            <div class="input-field">
+                <input type="text" id="companyUpdated" value="{{ company_data.updated_at }}" readonly>
+                <label for="companyUpdated">Company Updated At</label>
             </div>
         </div>
 
         <div class="col-8 mb-3">
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-3">
                     <p class="company-label">Company Address</p>
                 </div>
                 <div class="col-9">
                     <p class="company-inps">{{ company_data.address }}</p>
+                </div> -->
+                <div class="input-field">
+                    
+                    <textarea name="" id="companyAddress" rows="2" readonly autofocus>{{ company_data.address }}</textarea>
+                    <label for="companyAddress">Company Address</label>
                 </div>
-            </div>
+            <!-- </div> -->
         </div>
 
         <div class="col-4 mb-3">
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-6">
                     <p class="company-label">Company Prefix</p>
                 </div>
                 <div class="col-6">
                     <p class="company-inps">{{ company_data.prefix }}</p>
                 </div>
+            </div> -->
+            <div class="input-field">
+                <input type="text" id="companyPrefix" value="{{ company_data.prefix }}" readonly>
+                <label for="companyPrefix">Company Prefix</label>
             </div>
         </div>
     </div>

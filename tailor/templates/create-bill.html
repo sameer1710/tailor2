@@ -50,12 +50,22 @@
                 <div class="input-field">
                     <input type="date" name="bill_date" id="billdate">
                     <label for="billdate">Bill Date</label>
+                    {% if bill_form.bill_date.errors %}
+                    <div class="error-message text-danger">
+                        <small class="text-danger">{{ bill_form.bill_date.errors.0 }}</small>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-lg-4 mb-3">
                 <div class="input-field">
                     <input type="date" name="delivery_date" id="deliverydate">
                     <label for="deliverydate">Delivery Date</label>
+                    {% if bill_form.delivery_date.errors %}
+                    <div class="error-message text-danger">
+                        <small class="text-danger">{{ bill_form.delivery_date.errors.0 }}</small>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -96,33 +106,37 @@
                         </td>
                     </tr>
                     {% endfor %}
-                    
+
                 </tbody>
                 <tfoot>
                     <tr>
-                        
+
                         <td colspan="4" class="text-end align-bottom">Total</td>
-                        <td colspan=""><input type="number" name="total_amount" class="form-control text-end" id="total_amount" readonly></td>
+                        <td colspan=""><input type="number" name="total_amount" class="form-control text-end"
+                                id="total_amount" readonly></td>
                     </tr>
                     <tr>
-                        
-                        
+
+
                         <td colspan="4" class="text-end align-bottom">Discount</td>
-                        <td colspan=""><input type="number" name="discount" class="form-control text-end two-decimal" step="0.01" id="discount"></td>
+                        <td colspan=""><input type="number" name="discount" class="form-control text-end two-decimal"
+                                step="0.01" id="discount"></td>
                     </tr>
                     <tr>
-                        
-                        
+
+
                     </tr>
                     <tr>
                         <td colspan="2" class="text-end align-bottom">GST Rate</td>
                         <td colspan=""><input type="text" name="gst_rate" class="form-control" id="gst_rate"></td>
                         <td colspan="" class="text-end align-bottom">GST Amount</td>
-                        <td colspan=""><input type="number" name="gst_amount" class="form-control text-end" id="gst_amount" readonly></td>
+                        <td colspan=""><input type="number" name="gst_amount" class="form-control text-end"
+                                id="gst_amount" readonly></td>
                     </tr>
                     <tr>
                         <td colspan="4" class="text-end align-bottom fw-bold">Total Bill</td>
-                        <td colspan=""><input type="number" name="total_bill" class="form-control text-end" id="total_bill" readonly></td>
+                        <td colspan=""><input type="number" name="total_bill" class="form-control text-end"
+                                id="total_bill" readonly></td>
                     </tr>
                     <!-- <tr>
                         <td colspan="4" class="text-end align-bottom fw-bold">Amount Receivable</td>
@@ -136,7 +150,7 @@
         <!-- Advance Table -->
         <div class="table-responsive" id="advance-formset-management">
             {{ advance_formset.management_form }}
-            
+
             <table class="table table-borderless table-sm advance-table">
                 <thead>
                     <tr>
@@ -150,7 +164,7 @@
                 <tbody id="advanceBody">
                     {% for form in advance_formset %}
                     <tr>
-                        
+
                         <td>
                             {{ form.receipt_ref_no }}
                         </td>
@@ -179,11 +193,13 @@
                 <tfoot>
                     <tr>
                         <td colspan="3" class="text-end align-bottom">Total Amount Received</td>
-                        <td colspan=""><input class="form-control text-end" type="number" name="total_amount_received" id="" readonly></td>
+                        <td colspan=""><input class="form-control text-end" type="number" name="total_amount_received"
+                                id="" readonly></td>
                     </tr>
                     <tr>
                         <td colspan="3" class="text-end align-bottom fw-bold">Balance Receivable</td>
-                        <td colspan=""><input class="form-control text-end" type="number" name="amount_receivable" id="" readonly></td>
+                        <td colspan=""><input class="form-control text-end" type="number" name="amount_receivable" id=""
+                                readonly></td>
                     </tr>
                 </tfoot>
             </table>
@@ -214,309 +230,309 @@
         }, true); // Use the "true" option for capturing phase to detect blur events properly
     });
 
-   
-   document.addEventListener('input', function (event) {
-    // Detect changes in quantity or rate fields in the product table
-    if (event.target.matches('[name^="product_form-"][name$="-quantity"], [name^="product_form-"][name$="-rate"]')) {
-        const row = event.target.closest('tr');
 
-        const quantityInput = row.querySelector('[name$="-quantity"]');
-        const rateInput = row.querySelector('[name$="-rate"]');
-        const amountInput = row.querySelector('[name$="-amount"]');
+    document.addEventListener('input', function (event) {
+        // Detect changes in quantity or rate fields in the product table
+        if (event.target.matches('[name^="product_form-"][name$="-quantity"], [name^="product_form-"][name$="-rate"]')) {
+            const row = event.target.closest('tr');
 
-        const quantity = parseFloat(quantityInput.value) || 0;
-        const rate = parseFloat(rateInput.value) || 0;
+            const quantityInput = row.querySelector('[name$="-quantity"]');
+            const rateInput = row.querySelector('[name$="-rate"]');
+            const amountInput = row.querySelector('[name$="-amount"]');
 
-        // Update the amount field
-        amountInput.value = (quantity * rate).toFixed(2);
+            const quantity = parseFloat(quantityInput.value) || 0;
+            const rate = parseFloat(rateInput.value) || 0;
 
-        updateTotal();
-    }
+            // Update the amount field
+            amountInput.value = (quantity * rate).toFixed(2);
 
-    // Detect changes in amount_received in the advance table
-    if (event.target.matches('[name$="-amount_received"]')) {
-        updateAdvanceTotal();
-    }
+            updateTotal();
+        }
 
-    // Detect changes in discount, GST rate, or other inputs
-    if (
-        event.target.id === 'discount' || event.target.id === 'gst_rate'
-    ) {
-        updateTotal();
-    }
-});
+        // Detect changes in amount_received in the advance table
+        if (event.target.matches('[name$="-amount_received"]')) {
+            updateAdvanceTotal();
+        }
 
-// Function to update totals in the product table
-function updateTotal() {
-    const amountFields = document.querySelectorAll('[name^="product_form-"][name$="-amount"]');
-    const totalInput = document.getElementById('total_amount');
-    const discountInput = document.getElementById('discount');
-    const gstRateInput = document.getElementById('gst_rate');
-    const gstAmountInput = document.getElementById('gst_amount');
-    const totalBillInput = document.querySelector('[name="total_bill"]');
-    const amountReceivableInput = document.querySelector('[name="amount_receivable"]');
-
-    // Advance table total amount received field
-    const totalAmountReceivedInput = document.querySelector('[name="total_amount_received"]');
-
-    let total = 0;
-
-    // Sum up all amounts in the product table
-    amountFields.forEach(field => {
-        total += parseFloat(field.value) || 0;
+        // Detect changes in discount, GST rate, or other inputs
+        if (
+            event.target.id === 'discount' || event.target.id === 'gst_rate'
+        ) {
+            updateTotal();
+        }
     });
-    totalInput.value = total.toFixed(2);
 
-    // Apply discount
-    const discount = parseFloat(discountInput.value) || 0;
-    const totalAfterDiscount = total - discount;
+    // Function to update totals in the product table
+    function updateTotal() {
+        const amountFields = document.querySelectorAll('[name^="product_form-"][name$="-amount"]');
+        const totalInput = document.getElementById('total_amount');
+        const discountInput = document.getElementById('discount');
+        const gstRateInput = document.getElementById('gst_rate');
+        const gstAmountInput = document.getElementById('gst_amount');
+        const totalBillInput = document.querySelector('[name="total_bill"]');
+        const amountReceivableInput = document.querySelector('[name="amount_receivable"]');
 
-    // Apply GST
-    let gstRate = gstRateInput.value.replace('%', ''); // Remove % if present
-    gstRate = parseFloat(gstRate) || 0;
-    const gstAmount = (totalAfterDiscount * gstRate) / 100;
-    gstAmountInput.value = gstAmount.toFixed(2);
+        // Advance table total amount received field
+        const totalAmountReceivedInput = document.querySelector('[name="total_amount_received"]');
 
-    // Update total bill
-    const totalBill = totalAfterDiscount + gstAmount;
-    totalBillInput.value = totalBill.toFixed(2);
+        let total = 0;
 
-    // Calculate receivable amount after advances
-    const totalAmountReceived = parseFloat(totalAmountReceivedInput.value) || 0;
-    const amountReceivable = totalBill - totalAmountReceived;
+        // Sum up all amounts in the product table
+        amountFields.forEach(field => {
+            total += parseFloat(field.value) || 0;
+        });
+        totalInput.value = total.toFixed(2);
 
-    // Update the amount receivable field
-    amountReceivableInput.value = amountReceivable.toFixed(2);
+        // Apply discount
+        const discount = parseFloat(discountInput.value) || 0;
+        const totalAfterDiscount = total - discount;
 
-    // Display percentage sign for GST rate input
-    gstRateInput.dataset.rawValue = gstRate; // Keep the raw numeric value in a data attribute
-    gstRateInput.value = gstRate ? `${gstRate}%` : '';
-}
-
-// Function to update totals in the advance table
-function updateAdvanceTotal() {
-    const amountReceivedFields = document.querySelectorAll('[name$="-amount_received"]');
-    const totalAmountReceivedInput = document.querySelector('[name="total_amount_received"]');
-    const totalBillInput = document.querySelector('[name="total_bill"]');
-    const amountReceivableInput = document.querySelector('[name="amount_receivable"]');
-
-    let totalAmountReceived = 0;
-
-    // Sum up all amounts in the advance table
-    amountReceivedFields.forEach(field => {
-        totalAmountReceived += parseFloat(field.value) || 0;
-    });
-    totalAmountReceivedInput.value = totalAmountReceived.toFixed(2);
-
-    // Calculate receivable amount
-    const totalBill = parseFloat(totalBillInput.value) || 0;
-    const amountReceivable = totalBill - totalAmountReceived;
-
-    // Update the amount receivable field
-    amountReceivableInput.value = amountReceivable.toFixed(2);
-}
-
-// Handle focus events for GST rate field
-document.addEventListener('focusout', function (event) {
-    if (event.target.id === 'gst_rate') {
-        // Ensure only valid percentage values are displayed after focus out
-        const gstRateInput = event.target;
-        let gstRate = gstRateInput.value.replace('%', ''); // Strip % sign
+        // Apply GST
+        let gstRate = gstRateInput.value.replace('%', ''); // Remove % if present
         gstRate = parseFloat(gstRate) || 0;
+        const gstAmount = (totalAfterDiscount * gstRate) / 100;
+        gstAmountInput.value = gstAmount.toFixed(2);
+
+        // Update total bill
+        const totalBill = totalAfterDiscount + gstAmount;
+        totalBillInput.value = totalBill.toFixed(2);
+
+        // Calculate receivable amount after advances
+        const totalAmountReceived = parseFloat(totalAmountReceivedInput.value) || 0;
+        const amountReceivable = totalBill - totalAmountReceived;
+
+        // Update the amount receivable field
+        amountReceivableInput.value = amountReceivable.toFixed(2);
+
+        // Display percentage sign for GST rate input
+        gstRateInput.dataset.rawValue = gstRate; // Keep the raw numeric value in a data attribute
         gstRateInput.value = gstRate ? `${gstRate}%` : '';
     }
-});
 
-document.addEventListener('focusin', function (event) {
-    if (event.target.id === 'gst_rate') {
-        // Show the raw value (without %) during editing
-        const gstRateInput = event.target;
-        gstRateInput.value = gstRateInput.dataset.rawValue || '';
-    }
-});
+    // Function to update totals in the advance table
+    function updateAdvanceTotal() {
+        const amountReceivedFields = document.querySelectorAll('[name$="-amount_received"]');
+        const totalAmountReceivedInput = document.querySelector('[name="total_amount_received"]');
+        const totalBillInput = document.querySelector('[name="total_bill"]');
+        const amountReceivableInput = document.querySelector('[name="amount_receivable"]');
 
+        let totalAmountReceived = 0;
 
+        // Sum up all amounts in the advance table
+        amountReceivedFields.forEach(field => {
+            totalAmountReceived += parseFloat(field.value) || 0;
+        });
+        totalAmountReceivedInput.value = totalAmountReceived.toFixed(2);
 
-// ----------------------------------------------------------------------------------------
-document.getElementById('addRow').addEventListener('click', function () {
-    addRow('billBody', 'id_product_form-TOTAL_FORMS');
-});
+        // Calculate receivable amount
+        const totalBill = parseFloat(totalBillInput.value) || 0;
+        const amountReceivable = totalBill - totalAmountReceived;
 
-function addRow(tbodyId, totalFormsId) {
-    const tbody = document.getElementById(tbodyId);
-    const totalForms = document.getElementById(totalFormsId);
-
-    if (!totalForms) {
-        console.error(`Element with ID '${totalFormsId}' not found.`);
-        return; // Stop execution if TOTAL_FORMS element is missing
+        // Update the amount receivable field
+        amountReceivableInput.value = amountReceivable.toFixed(2);
     }
 
-    const formCount = parseInt(totalForms.value, 10);
-
-    let rowToClone = tbody.firstElementChild;
-
-    if (!rowToClone) {
-        console.error('No rows found in the tbody to clone.');
-        return;
-    }
-
-    // Clone the row to create a new row
-    const newRow = rowToClone.cloneNode(true);
-
-    // Reset the inputs and adjust their names and IDs for the new row
-    newRow.querySelectorAll('input, select, textarea').forEach(input => {
-        // Replace the index (e.g., -0-, -1-) with the new form count
-        input.name = input.name.replace(/-\d+-/, `-${formCount}-`);
-        input.id = input.id.replace(/-\d+-/, `-${formCount}-`);
-        input.value = ''; // Clear input values
+    // Handle focus events for GST rate field
+    document.addEventListener('focusout', function (event) {
+        if (event.target.id === 'gst_rate') {
+            // Ensure only valid percentage values are displayed after focus out
+            const gstRateInput = event.target;
+            let gstRate = gstRateInput.value.replace('%', ''); // Strip % sign
+            gstRate = parseFloat(gstRate) || 0;
+            gstRateInput.value = gstRate ? `${gstRate}%` : '';
+        }
     });
 
-    // Append the cloned row below the last row in the tbody
-    tbody.appendChild(newRow);
-
-    // Increment the TOTAL_FORMS count
-    totalForms.value = formCount + 1;
-}
-
-
-
-
-document.addEventListener('click', function (event) {
-    if (event.target.closest('.removeRow')) {
-        const row = event.target.closest('tr');
-        const tbody = document.getElementById('billBody');
-        const totalForms = document.querySelector('#id_product_form-TOTAL_FORMS');
-
-        // Prevent deletion of the first row
-        if (tbody.children.length > 1 && row !== tbody.firstElementChild) {
-            row.remove();
-            totalForms.value = tbody.children.length - 1; // Update the total forms count
-            updateTotal()
-        } else if (row === tbody.firstElementChild) {
-            alert("The first row cannot be deleted.");
-        } else {
-            alert("At least one row must remain.");
+    document.addEventListener('focusin', function (event) {
+        if (event.target.id === 'gst_rate') {
+            // Show the raw value (without %) during editing
+            const gstRateInput = event.target;
+            gstRateInput.value = gstRateInput.dataset.rawValue || '';
         }
-    }
-});
-
-
-//===============================================================
-// Advance Table Add row Logic
-
-document.getElementById('addAdvance').addEventListener('click', function () {
-    addRow('advanceBody', 'id_advance_form-TOTAL_FORMS');
-});
-
-
-function addRow(tbodyId, totalFormsId) {
-    const tbody = document.getElementById(tbodyId);
-    const totalForms = document.getElementById(totalFormsId);
-
-    if (!tbody) {
-        console.error(`Element with ID '${tbodyId}' not found.`);
-        return;
-    }
-
-    if (!totalForms) {
-        console.error(`Element with ID '${totalFormsId}-formset' not found.`);
-        return;
-    }
-
-    const formCount = parseInt(totalForms.value, 10);
-
-    let rowToClone = tbody.firstElementChild;
-
-    if (!rowToClone) {
-        console.error('No rows found in the tbody to clone.');
-        return;
-    }
-
-    // Clone the first row to create a new row
-    const newRow = rowToClone.cloneNode(true);
-
-    // Update the inputs' names and IDs for the new row
-    newRow.querySelectorAll('input, select, textarea').forEach(input => {
-        input.name = input.name.replace(/-\d+-/, `-${formCount}-`);
-        input.id = input.id.replace(/-\d+-/, `-${formCount}-`);
-        input.value = ''; // Clear input value for new row
     });
 
-    // Append the cloned row below the last row in the tbody
-    tbody.appendChild(newRow);
-
-    // Increment the form count for the specific formset and update the TOTAL_FORMS value
-    totalForms.value = formCount + 1;
-}
-
-document.addEventListener('click', function (event) {
-    if (event.target.closest('.removeAdvanceRow')) {
-        const row = event.target.closest('tr');
-        const tbody = document.getElementById('advanceBody');
-        const totalForms = document.querySelector('#id_advance_form-TOTAL_FORMS');
-
-        // Prevent deletion of the first row
-        if (tbody.children.length > 1 && row !== tbody.firstElementChild) {
-            row.remove();
-            totalForms.value = tbody.children.length - 1; // Update the total forms count
-            updateAdvanceTotal()
-        } else if (row === tbody.firstElementChild) {
-            alert("The first row cannot be deleted.");
-        } else {
-            alert("At least one row must remain.");
-        }
-    }
-});
 
 
+    // ----------------------------------------------------------------------------------------
+    document.getElementById('addRow').addEventListener('click', function () {
+        addRow('billBody', 'id_product_form-TOTAL_FORMS');
+    });
 
-//=================================Changing the id of dynamically generated inputs for formsets==================
+    function addRow(tbodyId, totalFormsId) {
+        const tbody = document.getElementById(tbodyId);
+        const totalForms = document.getElementById(totalFormsId);
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Modify the advance formset's management form IDs
-    const advanceManagementForm = document.getElementById('advance-formset-management');
-    if (advanceManagementForm) {
-        const advanceTotalForms = advanceManagementForm.querySelector('input[name="form-TOTAL_FORMS"]');
-        if (advanceTotalForms) {
-            advanceTotalForms.id = 'id_advance_form-TOTAL_FORMS';
-            // advanceTotalForms.name = 'advance_form-TOTAL_FORMS'; 
+        if (!totalForms) {
+            console.error(`Element with ID '${totalFormsId}' not found.`);
+            return; // Stop execution if TOTAL_FORMS element is missing
         }
 
-        const advanceInitialForms = advanceManagementForm.querySelector('input[name="form-INITIAL_FORMS"]');
-        if (advanceInitialForms) {
-            advanceInitialForms.id = 'id_advance_form-INITIAL_FORMS';
-            // advanceInitialForms.name = 'advance_form-INITIAL_FORMS';
+        const formCount = parseInt(totalForms.value, 10);
+
+        let rowToClone = tbody.firstElementChild;
+
+        if (!rowToClone) {
+            console.error('No rows found in the tbody to clone.');
+            return;
         }
 
-        const advanceMaxForms = advanceManagementForm.querySelector('input[name="form-MAX_NUM_FORMS"]');
-        if (advanceMaxForms) {
-            advanceMaxForms.id = 'id_advance_form-MAX_NUM_FORMS';
-            // advanceMaxForms.name = 'advance_form-MAX_NUM_FORMS';
-        }
+        // Clone the row to create a new row
+        const newRow = rowToClone.cloneNode(true);
+
+        // Reset the inputs and adjust their names and IDs for the new row
+        newRow.querySelectorAll('input, select, textarea').forEach(input => {
+            // Replace the index (e.g., -0-, -1-) with the new form count
+            input.name = input.name.replace(/-\d+-/, `-${formCount}-`);
+            input.id = input.id.replace(/-\d+-/, `-${formCount}-`);
+            input.value = ''; // Clear input values
+        });
+
+        // Append the cloned row below the last row in the tbody
+        tbody.appendChild(newRow);
+
+        // Increment the TOTAL_FORMS count
+        totalForms.value = formCount + 1;
     }
 
-    // Modify the product formset's management form IDs
-    const productManagementForm = document.getElementById('product-formset-management');
-    if (productManagementForm) {
-        const productTotalForms = productManagementForm.querySelector('input[name="form-TOTAL_FORMS"]');
-        if (productTotalForms) {
-            productTotalForms.id = 'id_product_form-TOTAL_FORMS';
-            // productTotalForms.name = 'product_form-TOTAL_FORMS';
+
+
+
+    document.addEventListener('click', function (event) {
+        if (event.target.closest('.removeRow')) {
+            const row = event.target.closest('tr');
+            const tbody = document.getElementById('billBody');
+            const totalForms = document.querySelector('#id_product_form-TOTAL_FORMS');
+
+            // Prevent deletion of the first row
+            if (tbody.children.length > 1 && row !== tbody.firstElementChild) {
+                row.remove();
+                totalForms.value = tbody.children.length - 1; // Update the total forms count
+                updateTotal()
+            } else if (row === tbody.firstElementChild) {
+                alert("The first row cannot be deleted.");
+            } else {
+                alert("At least one row must remain.");
+            }
+        }
+    });
+
+
+    //===============================================================
+    // Advance Table Add row Logic
+
+    document.getElementById('addAdvance').addEventListener('click', function () {
+        addRow('advanceBody', 'id_advance_form-TOTAL_FORMS');
+    });
+
+
+    function addRow(tbodyId, totalFormsId) {
+        const tbody = document.getElementById(tbodyId);
+        const totalForms = document.getElementById(totalFormsId);
+
+        if (!tbody) {
+            console.error(`Element with ID '${tbodyId}' not found.`);
+            return;
         }
 
-        const productInitialForms = productManagementForm.querySelector('input[name="form-INITIAL_FORMS"]');
-        if (productInitialForms) {
-            productInitialForms.id = 'id_product_form-INITIAL_FORMS';
-            // productInitialForms.name = 'product_form-INITIAL_FORMS';
+        if (!totalForms) {
+            console.error(`Element with ID '${totalFormsId}-formset' not found.`);
+            return;
         }
 
-        const productMaxForms = productManagementForm.querySelector('input[name="form-MAX_NUM_FORMS"]');
-        if (productMaxForms) {
-            productMaxForms.id = 'id_product_form-MAX_NUM_FORMS';
-            // productMaxForms.name = 'product_form-MAX_NUM_FORMS';
+        const formCount = parseInt(totalForms.value, 10);
+
+        let rowToClone = tbody.firstElementChild;
+
+        if (!rowToClone) {
+            console.error('No rows found in the tbody to clone.');
+            return;
         }
+
+        // Clone the first row to create a new row
+        const newRow = rowToClone.cloneNode(true);
+
+        // Update the inputs' names and IDs for the new row
+        newRow.querySelectorAll('input, select, textarea').forEach(input => {
+            input.name = input.name.replace(/-\d+-/, `-${formCount}-`);
+            input.id = input.id.replace(/-\d+-/, `-${formCount}-`);
+            input.value = ''; // Clear input value for new row
+        });
+
+        // Append the cloned row below the last row in the tbody
+        tbody.appendChild(newRow);
+
+        // Increment the form count for the specific formset and update the TOTAL_FORMS value
+        totalForms.value = formCount + 1;
     }
-});
+
+    document.addEventListener('click', function (event) {
+        if (event.target.closest('.removeAdvanceRow')) {
+            const row = event.target.closest('tr');
+            const tbody = document.getElementById('advanceBody');
+            const totalForms = document.querySelector('#id_advance_form-TOTAL_FORMS');
+
+            // Prevent deletion of the first row
+            if (tbody.children.length > 1 && row !== tbody.firstElementChild) {
+                row.remove();
+                totalForms.value = tbody.children.length - 1; // Update the total forms count
+                updateAdvanceTotal()
+            } else if (row === tbody.firstElementChild) {
+                alert("The first row cannot be deleted.");
+            } else {
+                alert("At least one row must remain.");
+            }
+        }
+    });
+
+
+
+    //=================================Changing the id of dynamically generated inputs for formsets==================
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Modify the advance formset's management form IDs
+        const advanceManagementForm = document.getElementById('advance-formset-management');
+        if (advanceManagementForm) {
+            const advanceTotalForms = advanceManagementForm.querySelector('input[name="form-TOTAL_FORMS"]');
+            if (advanceTotalForms) {
+                advanceTotalForms.id = 'id_advance_form-TOTAL_FORMS';
+                // advanceTotalForms.name = 'advance_form-TOTAL_FORMS'; 
+            }
+
+            const advanceInitialForms = advanceManagementForm.querySelector('input[name="form-INITIAL_FORMS"]');
+            if (advanceInitialForms) {
+                advanceInitialForms.id = 'id_advance_form-INITIAL_FORMS';
+                // advanceInitialForms.name = 'advance_form-INITIAL_FORMS';
+            }
+
+            const advanceMaxForms = advanceManagementForm.querySelector('input[name="form-MAX_NUM_FORMS"]');
+            if (advanceMaxForms) {
+                advanceMaxForms.id = 'id_advance_form-MAX_NUM_FORMS';
+                // advanceMaxForms.name = 'advance_form-MAX_NUM_FORMS';
+            }
+        }
+
+        // Modify the product formset's management form IDs
+        const productManagementForm = document.getElementById('product-formset-management');
+        if (productManagementForm) {
+            const productTotalForms = productManagementForm.querySelector('input[name="form-TOTAL_FORMS"]');
+            if (productTotalForms) {
+                productTotalForms.id = 'id_product_form-TOTAL_FORMS';
+                // productTotalForms.name = 'product_form-TOTAL_FORMS';
+            }
+
+            const productInitialForms = productManagementForm.querySelector('input[name="form-INITIAL_FORMS"]');
+            if (productInitialForms) {
+                productInitialForms.id = 'id_product_form-INITIAL_FORMS';
+                // productInitialForms.name = 'product_form-INITIAL_FORMS';
+            }
+
+            const productMaxForms = productManagementForm.querySelector('input[name="form-MAX_NUM_FORMS"]');
+            if (productMaxForms) {
+                productMaxForms.id = 'id_product_form-MAX_NUM_FORMS';
+                // productMaxForms.name = 'product_form-MAX_NUM_FORMS';
+            }
+        }
+    });
 
 </script>
 
