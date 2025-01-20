@@ -1,0 +1,777 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %} <title>Society Management | Member-Master-Creation</title> {% endblock title %}
+
+{% block body %}
+<!-- {% if messages %}
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    {% for message in messages %}
+    <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+        
+        <div class="toast-body"
+            style="color: green !important; font-size: 18px !important; font-weight: bold !important;">
+            {{ message }}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %} -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Select all the toasts
+        var toastElements = document.querySelectorAll('.toast');
+
+        // Iterate over all toasts
+        toastElements.forEach(function (toastElement) {
+            // Initialize Bootstrap Toast
+            var toast = new bootstrap.Toast(toastElement);
+
+            // Show the toast immediately when page loads
+            toast.show();
+
+            // Optionally, force the toast to hide after 3 seconds (additional measure)
+            setTimeout(function () {
+                toast.hide();
+            }, 2000); // 3000 milliseconds = 3 seconds
+        });
+    });
+</script>
+
+<div class="container mt-3" style="background-color: #fff; border-radius: 10px;">
+    <div class="d-flex" style="justify-content: end;">
+        <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#createClient">Create Client</button>
+    </div>
+
+    <div class="table-responsive">
+        <table id="clientTable" class="display client-table compact dt-table">
+            <thead>
+                <tr>
+                    <th class="">Actions</th>
+                    <th class="">Sr No.</th>
+                    <th class="">Client Name</th>
+                    <th class="">Client Contact No</th>
+                    <th class="">Book No</th>
+                    <th class="">Page No</th>
+                    <!-- <th>Client Address</th> -->
+                    <th class="">Client Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if clients %}
+                {% for client in clients %}
+                <tr>
+                    <td class="d-flex pt-2" style="justify-content: space-evenly; align-items: center !important;">
+                        <i class="fa-solid fa-eye" data-bs-toggle="modal" data-bs-target="#viewModal{{ client.id }}"
+                            style="color: rgba(var(--bs-link-color-rgb),var(--bs-link-opacity,1)); cursor: pointer;"></i>
+                        <!-- <button type="button" class="btn">View</button> -->
+                        <a href="{% url 'maap_edit_view' client.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a href="{% url 'maap_creation' client.id %}"><i class="fa-solid fa-circle-plus"></i></a>
+                        <a href="{% url 'create_bill_view' client.id %}"><i class="fas fa-receipt"></i></a>
+                    </td>
+                    <td>{{ client.id }}</td>
+                    <td>{{ client.client_name }}</td>
+                    <td>{{ client.client_number }}</td>
+                    <td>{{ client.book_number }}</td>
+                    <td>{{ client.page_number }}</td>
+                    <!-- <td>{{ client.client_address }}</td> -->
+                    <td>{{ client.client_status|capfirst }}</td>
+                </tr>
+                <!-- Modal for each client -->
+                <div class="modal fade" id="viewModal{{ client.id }}" tabindex="-1"
+                    aria-labelledby="viewModalLabel{{ client.id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="viewModalLabel{{ client.id }}">Detail View for {{ client.client_name }} | Mob No: {{ client.client_number }} | Book No {{ client.book_number }} | Page No {{ client.page_number }}</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Client Details -->
+                                <!-- <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p class="view-label">Client Name</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <p class="view-inps">{{ client.client_name }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p class="view-label">Book Number</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <p class="view-inps">{{ client.book_number }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p class="view-label">Client Status</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <p class="view-inps {% if client.client_status == 'active' %}text-success{% else %}text-danger{% endif %}" style="font-weight: bold;">{{ client.client_status }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p class="view-label">Client Number</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <p class="view-inps">{{ client.client_number }}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p class="view-label">Page Number</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <p class="view-inps">{{ client.page_number }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p class="view-label">Client Address</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <p class="view-inps">{{ client.client_address }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <!-- <hr> -->
+
+                                <div>
+                                    <h4 style="font-family: 'Calibri', sans-serif; font-weight: bold; color: rgba(var(--bs-link-color-rgb),var(--bs-link-opacity,1)); text-decoration: underline;">UPPER MAAP</h4>
+                                    <div class="accordion" id="accordionFlushExample" >
+                                        {% if client.upper_maaps.exists %}
+                                            {% for maap in client.upper_maaps.all %}
+                                                <div class="accordion-item">
+                                                    <h2 class="accordion-header">
+                                                        <button class="accordion-button collapsed fw-bold text-uppercase" type="button"
+                                                            data-bs-toggle="collapse" data-bs-target="#flush-collapse{{ forloop.counter }}"
+                                                            aria-expanded="false" aria-controls="flush-collapse{{ forloop.counter }}" style="background-color: rgb(243, 243, 243) !important; text-transform: uppercase;">
+                                                            {{ maap.upper_maap }}
+                                                        </button>
+                                                    </h2>
+                                                    <div id="flush-collapse{{ forloop.counter }}" class="accordion-collapse collapse"
+                                                        data-bs-parent="#accordionFlushExample">
+                                                        <div class="accordion-body">
+                                                            <div class="row">
+                                                                <div class="col-3">
+                                                                    <div class="row">
+                                                                        <div class="col-9">
+                                                                            <p class="view-label">Length</p>
+                                                                        </div>
+                                                                        <div class="col-3 ms-0 ps-0">
+                                                                            <p class="view-inps">{{ maap.upper_length }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-3">
+                                                                    <div class="row">
+                                                                        <div class="col-9">
+                                                                            <p class="view-label">Sleeve Length</p>
+                                                                        </div>
+                                                                        <div class="col-3 ms-0 ps-0">
+                                                                            <p class="view-inps">{{ maap.upper_sleeve_length }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-3">
+                                                                    <div class="row">
+                                                                        <div class="col-9">
+                                                                            <p class="view-label">Sleeve Bicep</p>
+                                                                        </div>
+                                                                        <div class="col-3 ms-0 ps-0">
+                                                                            <p class="view-inps">{{ maap.upper_sleeve_bicep }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-3">
+                                                                    <div class="row">
+                                                                        <div class="col-9">
+                                                                            <p class="view-label">Sleeve Cuff</p>
+                                                                        </div>
+                                                                        <div class="col-3 ms-0 ps-0">
+                                                                            <p class="view-inps">{{ maap.upper_sleeve_cuff }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-3">
+                                                                    <div class="row">
+                                                                        <div class="col-9">
+                                                                            <p class="view-label">Chest Body</p>
+                                                                        </div>
+                                                                        <div class="col-3 ms-0 ps-0">
+                                                                            <p class="view-inps">{{ maap.upper_chest_body }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-3">
+                                                                    <div class="row">
+                                                                        <div class="col-9">
+                                                                            <p class="view-label">Chest Ready</p>
+                                                                        </div>
+                                                                        <div class="col-3 ms-0 ps-0">
+                                                                            <p class="view-inps">{{ maap.upper_chest_ready }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-3">
+                                                                    <div class="row">
+                                                                        <div class="col-9">
+                                                                            <p class="view-label">Lower Chest Body</p>
+                                                                        </div>
+                                                                        <div class="col-3 ms-0 ps-0">
+                                                                            <p class="view-inps">{{ maap.upper_lowerchest_body }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-3">
+                                                                    <div class="row">
+                                                                        <div class="col-9">
+                                                                            <p class="view-label">Low Chest Rd</p>
+                                                                        </div>
+                                                                        <div class="col-3 ms-0 ps-0">
+                                                                            <p class="view-inps">{{ maap.upper_lowerchest_ready }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-3">
+                                                                    <div class="row">
+                                                                        <div class="col-9">
+                                                                            <p class="view-label">Stomach Body</p>
+                                                                        </div>
+                                                                        <div class="col-3 ms-0 ps-0">
+                                                                            <p class="view-inps">{{ maap.upper_stomach_body }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-3">
+                                                                    <div class="row">
+                                                                        <div class="col-9">
+                                                                            <p class="view-label">Stomach Rd</p>
+                                                                        </div>
+                                                                        <div class="col-3 ms-0 ps-0">
+                                                                            <p class="view-inps">{{ maap.upper_stomach_ready }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-3">
+                                                                    <div class="row">
+                                                                        <div class="col-9">
+                                                                            <p class="view-label">Hip Body</p>
+                                                                        </div>
+                                                                        <div class="col-3 ms-0 ps-0">
+                                                                            <p class="view-inps">{{ maap.upper_hip_body }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-3">
+                                                                    <div class="row">
+                                                                        <div class="col-9">
+                                                                            <p class="view-label">Hip Ready</p>
+                                                                        </div>
+                                                                        <div class="col-3 ms-0 ps-0">
+                                                                            <p class="view-inps">{{ maap.upper_hip_ready }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-3">
+                                                                    <div class="row">
+                                                                        <div class="col-9">
+                                                                            <p class="view-label">Shoulder</p>
+                                                                        </div>
+                                                                        <div class="col-3 ms-0 ps-0">
+                                                                            <p class="view-inps">{{ maap.upper_shoulder }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-3">
+                                                                    <div class="row">
+                                                                        <div class="col-9">
+                                                                            <p class="view-label">Neck</p>
+                                                                        </div>
+                                                                        <div class="col-3 ms-0 ps-0">
+                                                                            <p class="view-inps">{{ maap.upper_neck }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <div class="row">
+                                                                        <div class="col-4">
+                                                                            <p class="view-label">Remarks</p>
+                                                                        </div>
+                                                                        <div class="col-8">
+                                                                            <p class="view-inps">{{ maap.upper_other_remark }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            <p class="text-center">No Data Available</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <hr class="w-100" style="height: 4px; background-color: #000;">
+
+                                <div>
+                                    <h4 style="font-family: 'Calibri', sans-serif; font-weight: bold; color: rgba(var(--bs-link-color-rgb),var(--bs-link-opacity,1)); text-decoration: underline;">LOWER MAAP</h4>
+                                    <div class="accordion" id="accordionFlushExampleLower" >
+                                        {% if client.lower_maaps.exists %}
+                                            {% for maap in client.lower_maaps.all %}
+                                                <div class="accordion-item">
+                                                    <h2 class="accordion-header">
+                                                        <button class="accordion-button collapsed fw-bold text-uppercase" type="button"
+                                                            data-bs-toggle="collapse" data-bs-target="#flush-collapse-Lower{{ forloop.counter }}"
+                                                            aria-expanded="false" aria-controls="flush-collapse-Lower{{ forloop.counter }}" style="background-color: rgb(243, 243, 243) !important;">
+                                                            {{ maap.lower_maap }}
+                                                        </button>
+                                                    </h2>
+                                                    <div id="flush-collapse-Lower{{ forloop.counter }}" class="accordion-collapse collapse"
+                                                        data-bs-parent="#accordionFlushExampleLower">
+                                                        <div class="accordion-body">
+                                                            <div class="row">
+                                                                <div class="col-2">
+                                                                    <div class="row">
+                                                                        <div class="col-9">
+                                                                            <p class="view-label">Length</p>
+                                                                        </div>
+                                                                        <div class="col-3 ms-0 ps-0">
+                                                                            <p class="view-inps">{{ maap.lower_length }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-2">
+                                                                    <div class="row">
+                                                                        <div class="col-9">
+                                                                            <p class="view-label">Waist</p>
+                                                                        </div>
+                                                                        <div class="col-3 ms-0 ps-0">
+                                                                            <p class="view-inps">{{ maap.lower_waist }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-2">
+                                                                    <div class="row">
+                                                                        <div class="col-9">
+                                                                            <p class="view-label">Hip</p>
+                                                                        </div>
+                                                                        <div class="col-3 ms-0 ps-0">
+                                                                            <p class="view-inps">{{ maap.lower_hip }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-2">
+                                                                    <div class="row">
+                                                                        <div class="col-9">
+                                                                            <p class="view-label">Thai</p>
+                                                                        </div>
+                                                                        <div class="col-3 ms-0 ps-0">
+                                                                            <p class="view-inps">{{ maap.lower_thai }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-2">
+                                                                    <div class="row">
+                                                                        <div class="col-9">
+                                                                            <p class="view-label">Knee</p>
+                                                                        </div>
+                                                                        <div class="col-3 ms-0 ps-0">
+                                                                            <p class="view-inps">{{ maap.lower_knee }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-2">
+                                                                    <div class="row">
+                                                                        <div class="col-9">
+                                                                            <p class="view-label">Bottom</p>
+                                                                        </div>
+                                                                        <div class="col-3 ms-0 ps-0">
+                                                                            <p class="view-inps">{{ maap.lower_bottom }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <div class="row">
+                                                                        <div class="col-2">
+                                                                            <p class="view-label">Remarks</p>
+                                                                        </div>
+                                                                        <div class="col-10 ms-0 ps-0">
+                                                                            <p class="view-inps">{{ maap.lower_other_remark }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            <p class="text-center">No Data Available</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <hr>
+                                <!-- <div class="row">
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <p class="view-label">Length</p>
+                                            </div>
+                                            <div class="col-3 ms-0 ps-0">
+                                                <p class="view-inps">35.45</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <p class="view-label">Sleeve Length</p>
+                                            </div>
+                                            <div class="col-3 ms-0 ps-0">
+                                                <p class="view-inps">35.45</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <p class="view-label">Sleeve Bicep</p>
+                                            </div>
+                                            <div class="col-3 ms-0 ps-0">
+                                                <p class="view-inps">35.45</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <p class="view-label">Sleeve Cuff</p>
+                                            </div>
+                                            <div class="col-3 ms-0 ps-0">
+                                                <p class="view-inps">35.45</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <p class="view-label">Chest Body</p>
+                                            </div>
+                                            <div class="col-3 ms-0 ps-0">
+                                                <p class="view-inps">35.45</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <p class="view-label">Chest Ready</p>
+                                            </div>
+                                            <div class="col-3 ms-0 ps-0">
+                                                <p class="view-inps">35.45</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <p class="view-label">Lower Chest Body</p>
+                                            </div>
+                                            <div class="col-3 ms-0 ps-0">
+                                                <p class="view-inps">35.45</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <p class="view-label">Low Chest Rd</p>
+                                            </div>
+                                            <div class="col-3 ms-0 ps-0">
+                                                <p class="view-inps">35.45</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <p class="view-label">Stomach Body</p>
+                                            </div>
+                                            <div class="col-3 ms-0 ps-0">
+                                                <p class="view-inps">35.45</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <p class="view-label">Stomach Rd</p>
+                                            </div>
+                                            <div class="col-3 ms-0 ps-0">
+                                                <p class="view-inps">35.45</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <p class="view-label">Hip Body</p>
+                                            </div>
+                                            <div class="col-3 ms-0 ps-0">
+                                                <p class="view-inps">35.45</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <p class="view-label">Hip Ready</p>
+                                            </div>
+                                            <div class="col-3 ms-0 ps-0">
+                                                <p class="view-inps">35.45</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <p class="view-label">Shoulder</p>
+                                            </div>
+                                            <div class="col-3 ms-0 ps-0">
+                                                <p class="view-inps">35.45</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <p class="view-label">Neck</p>
+                                            </div>
+                                            <div class="col-3 ms-0 ps-0">
+                                                <p class="view-inps">35.45</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+
+                                
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+
+                {% endif %}
+            </tbody>
+        </table>
+
+    </div>
+
+
+
+    <!-- CLient Deletion Modal -->
+    <div class="modal fade" id="confirmationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <!-- <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Client Creation</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div> -->
+                <div class="modal-body">
+                    <h2>Are you sure you want to Delete <strong id="clientName"></strong></h2>
+                </div>
+                <div class="modal-footer">
+                    <form id="deleteClientForm" method="POST" action="">
+                        {% csrf_token %}
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CLient Creation Modal -->
+    <div class="modal fade" id="createClient" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Create New Client</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <div class="input-field">
+                                    <input required="" autocomplete="on" type="text" name="client_name" id="clientname">
+                                    <label for="clientname">Client Name</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 mb-3">
+                                <div class="input-field">
+                                    <input required="" autocomplete="on" type="number" name="client_number"
+                                        id="clientnumber">
+                                    <label for="clientnumber">Contact Number</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 mb-3">
+                                <div class="input-field">
+                                    <input required="" autocomplete="on" type="number" name="book_number"
+                                        id="booknumber">
+                                    <label for="booknumber">Book Number</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 mb-3">
+                                <div class="input-field">
+                                    <input required="" autocomplete="on" type="number" name="page_number"
+                                        id="pagenumber">
+                                    <label for="pagenumber">Page Number</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 mb-3">
+                                <div class="input-field">
+                                    <select name="client_status" id="clientstatus">
+                                        <option value="active">Active</option>
+                                        <option value="inactive">In-Active</option>
+                                    </select>
+                                    <label for="clientstatus">Client Status</label>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <div class="input-field">
+                                    <textarea class="textareaa" required="" autocomplete="on" name="client_address"
+                                        id="clientaddress" rows="1"></textarea>
+                                    <!-- <t required="" autocomplete="on" type="number" name="number" id="clientnumber" > -->
+                                    <label for="clientaddress">Client Address</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="m-0 p-0" style="background-color: #0034de; height: 2px;">
+
+                        <div class="d-flex">
+                            <button type="submit" class="btn ms-auto mt-3 btn-primary">Submit</button>
+                        </div>
+
+
+
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Client View Modal -->
+
+
+    <!-- Maap Creation Modal -->
+
+
+
+</div>
+
+
+
+<script>
+
+
+    // Initialization of Datatable
+    $(document).ready(function () {
+    var table = $('#clientTable').DataTable({
+        dom: '<"top d-flex justify-content-between"<"dt-buttons btn-group"B><"filter-container d-flex justify-content-between">><"row"<"col-md-12"<"search-container d-flex align-items-center">>>rt<"bottom"p><"clear">',
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                className: 'btn btn-success btn-sm',
+                text: '<i class="fa fa-file-excel" title="Export to Excel"></i>'
+            },
+            {
+                extend: 'pdfHtml5',
+                className: 'btn btn-danger btn-sm',
+                text: '<i class="fa fa-file-pdf" title="Export to PDF"></i>'
+            },
+        ],
+        language: {
+            emptyTable: "No Data Available", // DataTables handles the "No Data" message
+            search: '',
+            searchPlaceholder: 'Search here...',
+            paginate: {
+                previous: '<i class="fa fa-angle-left"></i>',
+                next: '<i class="fa fa-angle-right"></i>'
+            }
+        },
+        order: [],
+        pagingType: 'simple',
+        scrollX: true,
+        autoWidth: false,
+        initComplete: function () {
+            var api = this.api();
+
+            // Apply default filter for "Active" clients
+            api.column(6).search('^active$', true, false).draw(); // Regex match for "active"
+
+            // Add custom search and filter UI
+            $(".search-container").html(`
+                <div class="d-flex gap-2">
+                    <input id="globalSearch" type="text" class="form-control" style="width:250px" placeholder="Search here..." aria-label="Search">
+                    <select id="statusFilter" class="form-select" style="width:120px">
+                        <option value="">All</option>
+                        <option value="active" selected>Active</option>
+                        <option value="inactive">In-Active</option>
+                    </select>
+                </div>
+            `);
+            $(".dt-buttons").appendTo(".search-container");
+
+            // Status filter
+            $('#statusFilter').on('change', function () {
+                var status = $(this).val(); // Get selected value
+                if (status === "") {
+                    api.column(6).search('').draw(); // Reset filter (show all)
+                } else {
+                    api.column(6).search('^' + status + '$', true, false).draw(); // Filter by status
+                }
+            });
+
+            // General search
+            $('#globalSearch').on('keyup', function () {
+                api.search(this.value).draw(); // Global search on all columns
+            });
+        }
+    });
+});
+
+
+
+
+</script>
+{% endblock body %}

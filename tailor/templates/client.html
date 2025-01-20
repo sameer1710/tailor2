@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %} <title>Society Management | Member-Master-Creation</title> {% endblock title %}
+
+{% block body %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Client and Maap</title>
+</head>
+<body>
+
+<h2>Create Client</h2>
+<form method="POST" action="{% url 'client_creation' %}">
+    {% csrf_token %}
+    {{ client_form.as_p }}
+    <button type="submit">Create Client</button>
+</form>
+
+{% if client %}
+    <h2>Create Maap for Client: {{ client }}</h2>
+    <form method="POST" action="{% url 'maap_creation' client.id %}">
+        {% csrf_token %}
+        {{ maap_form.as_p }}
+        <button type="submit">Create Maap</button>
+    </form>
+{% endif %}
+
+</body>
+</html>
+{% endblock body %}
+

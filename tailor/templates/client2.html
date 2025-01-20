@@ -1,0 +1,166 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %} <title>Society Management | Member-Master-Creation</title> {% endblock title %}
+
+{% block body %}
+
+  <div class="container">
+    <!-- Client Creation Form -->
+    <div class="modal fade" id="createClient" tabindex="-1" aria-labelledby="createClientLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="createClientLabel">Client Creation</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'client_creation' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <div class="input-field">
+                                    <input required="" autocomplete="on" type="text" name="client_name" id="clientname">
+                                    <label for="clientname">Client Name</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 mb-3">
+                                <div class="input-field">
+                                    <input required="" autocomplete="on" type="number" name="client_number" id="clientnumber">
+                                    <label for="clientnumber">Client Number</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 mb-3">
+                                <div class="input-field">
+                                    <input required="" autocomplete="on" type="number" name="book_number" id="booknumber">
+                                    <label for="booknumber">Book Number</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 mb-3">
+                                <div class="input-field">
+                                    <input required="" autocomplete="on" type="number" name="page_number" id="pagenumber">
+                                    <label for="pagenumber">Page Number</label>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mb-2">
+                                <div class="input-field">
+                                    <textarea class="textareaa" required="" autocomplete="on" name="client_address"
+                                        id="clientaddress" rows="1"></textarea>
+                                    <label for="clientaddress">Client Address</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Submit Client</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Maap Creation Form (Visible after Client is created) -->
+    {% if client %}
+    <div class="modal fade" id="maapcreationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Maap Creation for {{ client.client_name }}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'maap_creation' client.id %}" method="POST">
+                        {% csrf_token %}
+                        <div class="tab-content">
+                            <!-- Upper Maap Section -->
+                            <div class="tab-pane fade show active" id="nav-home" role="tabpanel">
+                                <div class="table-responsive mt-2">
+                                    <table class="table table-sm maapTable table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Upper Maap</th>
+                                                <th>Length</th>
+                                                <th>Shoulder</th>
+                                                <th>Sleeve</th>
+                                                <th>Chest</th>
+                                                <th>Other Remark</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="maapBody">
+                                            <tr>
+                                                <td>
+                                                    <select name="upper_maap" id="uppermaap0" class="form-control">
+                                                        <option value="" selected>Select Type</option>
+                                                        <option value="zubba">Zubba</option>
+                                                        <option value="kurta">Kurta</option>
+                                                        <option value="shirt">Shirt</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control" name="upper_length" id="length0" placeholder="Length">
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control" name="upper_shoulder" id="shoulder0" placeholder="Shoulder">
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control" name="upper_sleeve_length" id="sleeveLength0" placeholder="Length">
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control" name="upper_chest_body" id="chestBody0" placeholder="Chest Body">
+                                                </td>
+                                                <td>
+                                                    <textarea name="upper_other_remark" class="form-control" id="otherRemark0" rows="1"></textarea>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="deleteBtn">Delete</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <button type="button" id="addRowBtn">Add More</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Maap</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <script>
+    document.getElementById("addRowBtn").addEventListener("click", function() {
+    var table = document.getElementById("maapBody");
+    var row = table.insertRow();
+    row.innerHTML = `
+        <td><select name="upper_maap" class="form-control"><option value="">Select Type</option><option value="zubba">Zubba</option></select></td>
+        <td><input type="number" name="upper_length" class="form-control" placeholder="Length"></td>
+        <td><input type="number" name="upper_shoulder" class="form-control" placeholder="Shoulder"></td>
+        <td><input type="number" name="upper_sleeve_length" class="form-control" placeholder="Length"></td>
+        <td><input type="number" name="upper_chest_body" class="form-control" placeholder="Chest Body"></td>
+        <td><textarea name="upper_other_remark" class="form-control"></textarea></td>
+        <td><button type="button" class="deleteBtn">Delete</button></td>
+    `;
+});
+
+// Delete Row
+document.addEventListener("click", function(e) {
+    if (e.target && e.target.className == "deleteBtn") {
+        e.target.closest("tr").remove();
+    }
+});
+
+  </script>
+{% endblock body %}

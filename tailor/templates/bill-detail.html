@@ -1,0 +1,201 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %} <title>Tailor Software</title> {% endblock title %}
+
+{% block body %}
+
+<div class="container-fluid customContainer">
+    <button class="btn btn-primary ms-auto mt-3 me-3" onclick="printContainer()">Print</button>
+    <div class="print-container mb-5" style="border: 1px solid #000;">
+        <div>
+            <div class="row w-100">
+                <div class="col-12 ms-3">
+                    <h4 class="text-center w-100" style="background-color: #588434; color: #fff; font-weight: bold;">TAX INVOICE</h4>
+                    <div class="row">
+                        <div class="col-4">
+                            <img src="{{ company.logo.url }}" alt="Company Logo" class="">
+                        </div>
+                        <div class="col-8">
+                            <h5 class="text-end fw-bold" >{{ company.company_name }}</h5>
+                            <p class="text-end mb-0 pb-0" style="font-size: 12px;">{{ company.address }}</p>
+                            <p class="text-end m-0 p-0" style="font-size: 12px;">{{ company.phone }}</p>
+                        </div>
+                    </div>
+                    <hr class="m-0 p-0 mt-2 mb-2" style="height: 2px; background-color:  #000 !important;">
+                    <div class="row mb-2">
+                        <div class="col-6" >
+                            <div class="row">
+                                <div class="col-5">
+                                    <p class="bill-label">Client Name</p>
+                                </div>
+                                <div class="col-7">
+                                    <p class="bill-inps">{{ client.client_name }}</p>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-5">
+                                    <p class="bill-label">Bill No</p>
+                                </div>
+                                <div class="col-7">
+                                    <p class="bill-inps">{{ bill.bill_number }}</p>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-5">
+                                    <p class="bill-label">Phone No</p>
+                                </div>
+                                <div class="col-7">
+                                    <p class="bill-inps">{{ client.client_number }}</p>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-5">
+                                    <p class="bill-label">Date</p>
+                                </div>
+                                <div class="col-7">
+                                    <p class="bill-inps">{{ bill.bill_date }}</p>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-5">
+                                    <p class="bill-label">Address</p>
+                                </div>
+                                <div class="col-7">
+                                    <p class="bill-inps">{{ client.client_address }}</p>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-5">
+                                    <p class="bill-label">Delivery Date</p>
+                                </div>
+                                <div class="col-7">
+                                    <p class="bill-inps">{{ bill.delivery_date }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Product Table -->
+                     <div class="table-responsive ">
+                        <table class="table compact table-sm bill-table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Remark</th>
+                                    <th>Qty</th>
+                                    <th>Rate</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for form in products %}
+                                    <tr>
+                                        <td>{{ form.product_name }}</td>
+                                        <td>{{ form.product_remark }}</td>
+                                        <td class="text-end">{{ form.quantity }}</td>
+                                        <td class="text-end">{{ form.rate }}</td>
+                                        <td class="text-end">{{ form.amount }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4" class="text-end pe-3 fw-bold">Total</td>
+                                    <td class="text-end fw-bold">{{ bill.total_amount }}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="row me-1">
+                        <div class="col-7" style="border-right: 2px solid #000;">
+                            <p class="bill-label m-0 p-0">Notice:-</p>
+                            <ol class="m-0 ms-1 p-0">
+                                <li class="bill-inps">Goods must be collected within a month; no responsibility afterward.</li>
+                                <li class="bill-inps">Delays due to unforeseen reasons won't guarantee timely delivery.</li>
+                                <li class="bill-inps">No responsibility for goods after they leave our premises.</li>
+                                <li class="bill-inps">Receipt is mandatory for collection.</li>
+                            </ol>
+                            <div class="d-flex">
+    
+                            </div>
+                        </div>
+    
+                        <div class="col-5">
+                            <div class="row">
+                                <div class="col-7 mb-1">
+                                    <p class="bill-label m-0 p-0">Discount</p>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <p class="bill-inps m-0 p-0 text-end">{{ bill.discount }}</p>
+                                </div>
+    
+                                <div class="col-7 mb-1">
+                                    <p class="bill-label m-0 p-0">GST @ {{ bill.gst_rate }}</p>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <p class="bill-inps m-0 p-0 text-end">{{ bill.gst_amount }}</p>
+                                </div>
+    
+                                <div class="col-7 mb-1 pt-1 pb-1" style="background-color: #588434; color: #fff;">
+                                    <p class="bill-label m-0 p-0">Grand Total</p>
+                                </div>
+                                <div class="col-5 mb-1 pt-1 pb-1" style="background-color: #588434; color: #fff;">
+                                    <p class="bill-inps m-0 p-0 text-decoration-underline text-end">{{ bill.total_bill }}</p>
+                                </div>
+    
+                                <div class="col-7 mb-1">
+                                    <p class="bill-label m-0 p-0">Amount Received</p>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <p class="bill-inps m-0 p-0 text-end">{{ bill.total_amount_received }}</p>
+                                </div>
+    
+                                <div class="col-7 mb-1">
+                                    <p class="bill-label m-0 p-0">Balance Receivable</p>
+                                </div>
+                                <div class="col-5 mb-1">
+                                    <p class="bill-inps m-0 p-0 text-end">{{ bill.amount_receivable }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class=" m-0 p-0">
+    
+                    <div>
+                        <p class="bill-inps m-0 p-0">Total Amount(₹ - In Words): <span class="ms-3 bill-inps">{{ amount_in_words }}</span> only /-</p>
+                    </div>
+                    <hr class=" m-0 p-0">
+                    <hr class=" m-0 mt-1 p-0">
+    
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function printContainer() {
+        window.print(); // Trigger the print dialog for the page
+    }
+</script>
+    
+
+{% endblock body %}

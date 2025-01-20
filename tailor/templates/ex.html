@@ -1,0 +1,209 @@
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
+            data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
+            aria-selected="true">Upper Maap
+        </button>
+        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab"
+            data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile"
+            aria-selected="false">Lower Maap
+        </button>
+    </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+    
+        <div class="table-responsive mt-2">
+            <table class="table table-sm maapTable table-bordered">
+                <thead>
+                    <tr>
+                        <th>Upper Maap</th>
+                        <th>Length</th>
+                        <th>Shoulder</th>
+                        <th>Sleeve</th>
+                        <th>Chest</th>
+                        <th>Lower Chest</th>
+                        <th>Stomach</th>
+                        <th>Hip</th>
+                        <th>Neck</th>
+                        <th>Other Remark</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="maapBody">
+                    <tr>
+                        <td>
+                            <!-- <input type="text" class="form-control" name="" id="uppermaap0"> -->
+                            <select name="upper_maap" id="uppermaap0" class="form-control">
+                                <option value="" selected>Select Type</option>
+                                <option value="zubba">Zubba</option>
+                                <option value="kurta">Kurta</option>
+                                <option value="shirt">Shirt</option>
+                                <option value="blazer">Blazer</option>
+                                <option value="koty">Koty</option>
+                                <option value="others">Others</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" name="upper_length" id="length0" placeholder="Length">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" name="upper_shoulder" id="shoulder0" placeholder="Shoulder">
+                        </td>
+                        <td style="display: flex; flex-direction: column; gap: 4px;">
+                            <input type="number" class="form-control" name="upper_sleeve_length" id="sleeveLength0"
+                                placeholder="Length">
+                            <input type="number" class="form-control" name="upper_sleeve_bicep" id="sleeveBicep0"
+                                placeholder="Bicep">
+                            <input type="number" class="form-control" name="upper_sleeve_cuff" id="sleeveCuff0"
+                                placeholder="Cuff">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" name="upper_chest_body" id="chestBody0"
+                                placeholder="Body">
+                            <input type="number" class="form-control" name="upper_chest_ready" id="chestReady0"
+                                placeholder="Ready">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" name="upper_lowerchest_body" id="lowerchestBody0"
+                                placeholder="Body">
+                            <input type="number" class="form-control" name="upper_lowerchest_ready" id="lowerchestReady0"
+                                placeholder="Ready">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" name="upper_stomach_body" id="stomachBody0"
+                                placeholder="Body">
+                            <input type="number" class="form-control" name="upper_stomach_ready" id="stomachReady0"
+                                placeholder="Ready">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" name="upper_hip_body" id="hipBody0"
+                                placeholder="Body">
+                            <input type="number" class="form-control" name="upper_hip_ready" id="hipReady0"
+                                placeholder="Ready">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" name="upper_neck" id="neck0" placeholder="Neck">
+                        </td>
+                        <td>
+                            <textarea name="upper_other_remark" class="form-control" id="otherRemark0" rows="4"></textarea>
+                        </td>
+                        <td class="pt-2"
+                            style="display: flex; justify-content: center !important; align-items: center !important; cursor: pointer;">
+                            <button type="button" class="deleteBtn"
+                                style="border: none; background-color: transparent;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23"
+                                    fill="#fc0303" class="bi bi-trash3" viewBox="0 0 16 16">
+                                    <path
+                                        d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="button" id="addRowBtn">Add More</button>
+        </div>
+
+    </div>
+    <!-- <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+
+        <div class="table-responsive mt-2">
+            <table class="table table-sm maapTable table-bordered">
+                <thead>
+                    <tr>
+                        <th>Lower Maap</th>
+                        <th>Length</th>
+                        <th>Waist</th>
+                        <th>Hip</th>
+                        <th>Thai</th>
+                        <th>Knee</th>
+                        <th>Bottom</th>
+                        <th>Jhola</th>
+                        <th>Other Remark</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="lowermaapBody">
+                    <tr>
+                        <td>
+                            <select name="lower_maap" id="lowermaap0" class="form-control">
+                                <option value="" selected>Select Type</option>
+                                <option value="pathani_salwar">Pathani Salwaar</option>
+                                <option value="aligari">Aligari</option>
+                                <option value="payjama">Payjama</option>
+                                <option value="chudidar">Chudidaar</option>
+                                <option value="pant">Pant</option>
+                                <option value="others">Others</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" name="lower_length" id="lowerLength0" placeholder="length">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" name="lower_waist" id="lowerWaist0" placeholder="Waist">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" name="lower_hip" id="lowerHip0" placeholder="Hip">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" name="lower_thai" id="lowerThai0" placeholder="Thai">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" name="lower_knee" id="lowerKnee0"placeholder="Knee">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" name="lower_bottom" id="lowerBottom0" placeholder="Bottom">
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" name="lower_jhola" id="lowerJhola0" placeholder="Jhola">
+                        </td>
+                        <td>
+                            <textarea name="lower_other_remark" class="form-control" id="lowerOtherRemark0" rows="1"></textarea>
+                        </td>
+                        <td class="pt-2"
+                            style="display: flex; justify-content: center !important; align-items: center !important; cursor: pointer;">
+                            <button type="button" class="lowerMaapDeleteBtn"
+                                style="border: none; background-color: transparent;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23"
+                                    fill="#fc0303" class="bi bi-trash3" viewBox="0 0 16 16">
+                                    <path
+                                        d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="button" id="addLowerMaapBtn">Add More</button>
+        </div>
+
+    </div> -->
+    
+</div>
+
+
+
+====================================================================================
+<div class="modal fade" id="maapcreationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Maap Creation</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            {% if client %}
+            <div class="modal-body">
+                
+
+
+                
+            </div>
+            {% endif %}
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

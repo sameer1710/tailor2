@@ -1,0 +1,347 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %} <title>Tailor Software</title> {% endblock title %}
+
+{% block body %}
+
+
+<div class="container mt-4 pb-4" style="background-color: #fff;">
+
+
+
+    <div class="print-maap-container pt-3">
+        <div class="print-upper-maap">
+            <div class="d-flex" style="justify-content: space-between;">
+                <h3 style="color: #4B89FB; font-weight: bold;">Upper Maap Details</h3>
+                <button type="button" onclick="printUpperMaap()" class="btn btn-primary exclude-print">Print</button>
+            </div>
+            <div class="d-flex gap-2 mb-2 exclude-print filter-checkboxes">
+                
+                <div class="customCheckBoxHolder">
+                    <input type="checkbox" id="c1" class="customCheckBoxInput filter-option" value="all" checked>
+                    <label for="c1" class="customCheckBoxWrapper">
+                        <div class="customCheckBox">
+                            <div class="inner">All</div>
+                        </div>
+                    </label>
+                </div>
+    
+                <div class="customCheckBoxHolder">
+                    <input type="checkbox" id="c2" class="customCheckBoxInput filter-option" value="zubba">
+                    <label for="c2" class="customCheckBoxWrapper">
+                        <div class="customCheckBox">
+                            <div class="inner">Zubba</div>
+                        </div>
+                    </label>
+                </div>
+    
+                <div class="customCheckBoxHolder">
+                    <input type="checkbox" id="c3" class="customCheckBoxInput filter-option" value="kurta">
+                    <label for="c3" class="customCheckBoxWrapper">
+                        <div class="customCheckBox">
+                            <div class="inner">Kurta</div>
+                        </div>
+                    </label>
+                </div>
+    
+                <div class="customCheckBoxHolder">
+                    <input type="checkbox" id="c4" class="customCheckBoxInput filter-option" value="shirt">
+                    <label for="c4" class="customCheckBoxWrapper">
+                        <div class="customCheckBox">
+                            <div class="inner">Shirt</div>
+                        </div>
+                    </label>
+                </div>
+    
+                <div class="customCheckBoxHolder">
+                    <input type="checkbox" id="c5" class="customCheckBoxInput filter-option" value="blazer">
+                    <label for="c5" class="customCheckBoxWrapper">
+                        <div class="customCheckBox">
+                            <div class="inner">Blazer</div>
+                        </div>
+                    </label>
+                </div>
+    
+                <div class="customCheckBoxHolder">
+                    <input type="checkbox" id="c6" class="customCheckBoxInput filter-option" value="koty">
+                    <label for="c6" class="customCheckBoxWrapper">
+                        <div class="customCheckBox">
+                            <div class="inner">Koty</div>
+                        </div>
+                    </label>
+                </div>
+    
+                <div class="customCheckBoxHolder">
+                    <input type="checkbox" id="c7" class="customCheckBoxInput filter-option" value="others">
+                    <label for="c7" class="customCheckBoxWrapper">
+                        <div class="customCheckBox">
+                            <div class="inner">Others</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+    
+            <div class="table-responsive m-0 p-0">
+                <table class="table table-sm bill-maap-table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Length</th>
+                            <th>Shoulder</th>
+                            <th>Sleeve</th>
+                            <th>Chest</th>
+                            <th>Lower Chest</th>
+                            <th>Stomach</th>
+                            <th>Hip</th>
+                            <th>Neck</th>
+                            <th>Other Remark</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if upper_maap_details %}
+                            {% for maap in upper_maap_details %}
+                            <tr>
+                                <td class="maap-type">{{ maap.upper_maap }}</td>
+                                <td>{{ maap.upper_length }}</td>
+                                <td>{{ maap.upper_shoulder }}</td>
+                                <td>
+                                    {{ maap.upper_sleeve_length }}<br>
+                                    {{ maap.upper_sleeve_bicep }}<br>
+                                    {{ maap.upper_sleeve_cuff }}
+                                </td>
+                                <td>
+                                    {{ maap.upper_chest_body }}<br>
+                                    {{ maap.upper_chest_ready }}
+                                </td>
+                                <td>
+                                    {{ maap.upper_lowerchest_body }}<br>
+                                    {{ maap.upper_lowerchest_ready }}
+                                </td>
+                                <td>
+                                    {{ maap.upper_stomach_body }}<br>
+                                    {{ maap.upper_stomach_ready }}
+                                </td>
+                                <td>
+                                    {{ maap.upper_hip_body }}<br>
+                                    {{ maap.upper_hip_ready }}
+                                </td>
+                                <td>{{ maap.upper_neck }}</td>
+                                <td>{{ maap.upper_other_remark }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="10" class="text-center">No Data Available</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="print-lower-maap">
+            <!-- <div class="d-flex" style="justify-content: space-between;">
+                <h3 style="color: #4B89FB; font-weight: bold;">Lower Maap Details</h3>
+                <button type="button" onclick="printLowerMaap()" class="btn btn-primary exclude-print">Print</button>
+            </div> -->
+            <h3 style="color: #4B89FB; font-weight: bold;">Lower Maap Details</h3>
+            <div class="d-flex gap-2 mb-2 exclude-print lower-filter-checkboxes">
+                <div class="customCheckBoxHolder">
+                    <input type="checkbox" id="cl1" class="customCheckBoxInput lower-filter-option" value="all" checked>
+                    <label for="cl1" class="customCheckBoxWrapper">
+                        <div class="customCheckBox">
+                            <div class="inner">All</div>
+                        </div>
+                    </label>
+                </div>
+    
+                <div class="customCheckBoxHolder">
+                    <input type="checkbox" id="cl2" class="customCheckBoxInput lower-filter-option" value="pathani_salwar">
+                    <label for="cl2" class="customCheckBoxWrapper">
+                        <div class="customCheckBox">
+                            <div class="inner">Pathani Salwaar</div>
+                        </div>
+                    </label>
+                </div>
+    
+                <div class="customCheckBoxHolder">
+                    <input type="checkbox" id="cl3" class="customCheckBoxInput lower-filter-option" value="aligari">
+                    <label for="cl3" class="customCheckBoxWrapper">
+                        <div class="customCheckBox">
+                            <div class="inner">Aligari</div>
+                        </div>
+                    </label>
+                </div>
+    
+                <div class="customCheckBoxHolder">
+                    <input type="checkbox" id="cl4" class="customCheckBoxInput lower-filter-option" value="payjama">
+                    <label for="cl4" class="customCheckBoxWrapper">
+                        <div class="customCheckBox">
+                            <div class="inner">Payjama</div>
+                        </div>
+                    </label>
+                </div>
+    
+                <div class="customCheckBoxHolder">
+                    <input type="checkbox" id="cl5" class="customCheckBoxInput lower-filter-option" value="chudidar">
+                    <label for="cl5" class="customCheckBoxWrapper">
+                        <div class="customCheckBox">
+                            <div class="inner">Chudidaar</div>
+                        </div>
+                    </label>
+                </div>
+    
+                <div class="customCheckBoxHolder">
+                    <input type="checkbox" id="cl6" class="customCheckBoxInput lower-filter-option" value="pant">
+                    <label for="cl6" class="customCheckBoxWrapper">
+                        <div class="customCheckBox">
+                            <div class="inner">Pant</div>
+                        </div>
+                    </label>
+                </div>
+    
+                <div class="customCheckBoxHolder">
+                    <input type="checkbox" id="cl7" class="customCheckBoxInput lower-filter-option" value="others">
+                    <label for="cl7" class="customCheckBoxWrapper">
+                        <div class="customCheckBox">
+                            <div class="inner">Others</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+    
+            <div class="table-responsive">
+                <table class="table table-sm lower-bill-maap-table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Length</th>
+                            <th>Waist</th>
+                            <th>Hip</th>
+                            <th>Thai</th>
+                            <th>Knee</th>
+                            <th>Bottom</th>
+                            <th>Jhola</th>
+                            <th>Other Remark</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if lower_maap_details %}
+                            {% for maap in lower_maap_details %}
+                            <tr>
+                                <td class="lower-maap-type">{{ maap.lower_maap }}</td>
+                                <td>{{ maap.lower_length }}</td>
+                                <td>{{ maap.lower_waist }}</td>
+                                <td>{{ maap.lower_hip }}</td>
+                                <td>{{ maap.lower_thai }}</td>
+                                <td>{{ maap.lower_knee }}</td>
+                                <td>{{ maap.lower_bottom }}</td>
+                                <td>{{ maap.lower_jhola }}</td>
+                                <td>{{ maap.lower_other_remark }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="10" class="text-center">No Data Available</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    function initializeFilters(tableSelector, checkboxSelector, allValue, typeClass) {
+        const checkboxes = document.querySelectorAll(checkboxSelector);
+        const tableRows = document.querySelectorAll(`${tableSelector} tbody tr`);
+
+        checkboxes.forEach((checkbox) => {
+            checkbox.addEventListener("change", function () {
+                const selectedOptions = Array.from(checkboxes)
+                    .filter((box) => box.checked && box.value !== allValue)
+                    .map((box) => box.value.toLowerCase());
+
+                // Handle "All" checkbox separately
+                if (this.value === allValue && this.checked) {
+                    // Uncheck all other options
+                    checkboxes.forEach((box) => {
+                        if (box.value !== allValue) box.checked = false;
+                    });
+                    // Show all rows
+                    tableRows.forEach((row) => (row.style.display = ""));
+                } else {
+                    // Uncheck "All" when any other option is checked
+                    const allCheckbox = document.querySelector(`${checkboxSelector}[value="${allValue}"]`);
+                    if (allCheckbox) allCheckbox.checked = false;
+
+                    // Filter rows based on selected options
+                    tableRows.forEach((row) => {
+                        const typeCell = row.querySelector(`.${typeClass}`).textContent.trim().toLowerCase();
+                        if (selectedOptions.length === 0 || selectedOptions.includes(typeCell)) {
+                            row.style.display = "";
+                        } else {
+                            row.style.display = "none";
+                        }
+                    });
+                }
+            });
+        });
+    }
+
+    // Initialize filters for the upper maap table
+    initializeFilters(".bill-maap-table", ".filter-option", "all", "maap-type");
+
+    // Initialize filters for the lower maap table
+    initializeFilters(".lower-bill-maap-table", ".lower-filter-option", "all", "lower-maap-type");
+});
+
+
+// Print functionality for both Maap Tables
+function printUpperMaap() {
+    const maap = document.querySelector(".print-maap-container");
+    // const lowerMaap = document.querySelector(".print-lower-maap");
+
+    // Add the print-active class to upper maap
+    maap.classList.add("print-active");
+
+    // Temporarily remove the print-active class from lower maap
+    // if (lowerMaap) lowerMaap.classList.remove("print-active");
+
+    // Trigger print dialog
+    window.print();
+
+    // Clean up by removing the print-active class
+    maap.classList.remove("print-active");
+}
+
+// function printLowerMaap() {
+//     const upperMaap = document.querySelector(".print-upper-maap");
+//     const lowerMaap = document.querySelector(".print-lower-maap");
+
+//     // Add the print-active class to lower maap
+//     lowerMaap.classList.add("print-active");
+
+//     // Temporarily remove the print-active class from upper maap
+//     if (upperMaap) upperMaap.classList.remove("print-active");
+
+//     // Trigger print dialog
+//     window.print();
+
+//     // Clean up by removing the print-active class
+//     lowerMaap.classList.remove("print-active");
+// }
+
+
+
+</script>
+
+
+{% endblock body %}

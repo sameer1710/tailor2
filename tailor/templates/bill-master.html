@@ -1,0 +1,394 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %} <title>Tailor Software</title> {% endblock title %}
+
+{% block body %}
+
+
+<div class="container mt-3" style="background-color: #fff; border-radius: 8px;">
+    <h3 class="pt-3" style="color: #4B89FB; font-weight: bold;">Bill Details</h3>
+    <div class="table-responsive mt-2">
+        {% if bills %}
+        <table id="billTable" class="display dt-table compact billTables">
+            <thead>
+                <tr>
+                    <th>Actions</th>
+                    <th>Bill Number</th>
+                    <th>Client Name</th>
+                    <th>Bill Date</th>
+                    <th>Delivery Date</th>
+                    <th>Total Amount</th>
+                    <th>Amount Received</th>
+                    <th>Balance Receivable</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bill in bills %}
+                <tr>
+                    <td class="d-flex pt-2" style="justify-content: space-evenly; align-items: center !important;">
+                        <a href="{% url 'bill_detail_view' bill_id=bill.id %}"><i class="fa-solid fa-eye button1 cooltool" data-tooltip-dir="right" data-content-before="View Bill" data-content-after="View Bill" data-tooltip-border="true" style="color: rgba(var(--bs-link-color-rgb),var(--bs-link-opacity,1));"></i></a>
+                        <a href="{% url 'edit_advance_form' bill_id=bill.id %}" {% if bill.amount_receivable == 0 %} class="disabled" style="pointer-events: none; color: grey;" {% endif %}><i class="fa-solid fa-pen-to-square button1 cooltool" data-tooltip-dir="right" data-content-before="Add Advance" data-content-after="Add Advance" data-tooltip-border="true"></i></a>
+                        <a href="{% url 'maap_detail_view' bill_id=bill.id %}"><i class="fas fa-print button1 cooltool" data-tooltip-dir="right" data-content-before="Print Maap Details" data-content-after="Print Maap Details" data-tooltip-border="true"></i></a>
+                    </td>
+                    <td>{{ bill.bill_number }}</td>
+                    <td>{{ bill.client.client_name }}</td> <!-- Assuming 'client' has a 'name' field -->
+                    <td>{{ bill.bill_date|date:"d-m-Y" }}</td>
+                    <td>{{ bill.delivery_date|date:"d-m-Y" }}</td>
+                    <td class="text-end pe-4">{{ bill.total_bill }}</td>
+                    <td class="text-end pe-4">{{ bill.total_amount_received }}</td>
+                    <td class="text-end pe-4">{{ bill.amount_receivable|floatformat:2 }}</td>
+                </tr>
+                {% endfor %}
+                <!-- <tr>
+                    <td colspan="8" class="text-center">No bills found in the table.</td>
+                </tr> -->
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" class="text-end fw-bold">Total</td>
+                    <td class="text-end pe-4 fw-bold">{{ total_bill_sum|floatformat:2 }}</td>
+                    <td class="text-end pe-4 fw-bold">{{ total_amount_received_sum|floatformat:2 }}</td>
+                    <td class="text-end pe-4 fw-bold">{{ balance_receivable_sum|floatformat:2 }}</td>
+                </tr>
+            </tfoot>
+        </table>
+        {% else %}
+        <div style="height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <center><h2 class="text-danger">OOPS!</h2></center>
+            <center><h5 class="text-danger">It seems there are no bills created at the moment.</h5></center>
+        </div>
+        {% endif %}
+        <!-- <input type="text" id="barcodeInput" maxlength="8" placeholder="Enter 8 alphanumeric value">
+        <button onclick="generateBarcode()">Generate Barcode</button><br>
+        <svg id="barcode"></svg><br><br>
+
+        <input type="text" id="qrcodeInput" placeholder="Enter text for QR Code">
+        <button onclick="generateQRCode()">Generate QR Code</button><br>
+        <canvas id="qrcodeCanvas"></canvas> -->
+
+    </div>
+</div>
+
+
+
+    <script>
+        function setCoolTool() {
+		var cooltool = $('.cooltool');
+	
+		cooltool.each(function() {
+			var el = $(this);
+			if(!el.find('.tooltip').length > 0) {
+				el.append('<span class="tooltip" data-tooltip="'+el.attr('data-tooltip-dir')+'"><span class="before-content">'+el.attr('data-content-before').replace(/\/n/g, "<br>")+'</span><span class="after-content">'+el.attr('data-content-after')+'</span></span>');
+			}
+		});
+
+		$(document).on('click', '.cooltool', function() {
+			var el = $(this);
+			var tool = $(this).find('.tooltip');
+			var b = el.find('.before-content');
+			var a = el.find('.after-content');
+			if (el.attr('data-content-after') != undefined) {
+				if (el.attr('data-keep-after') == 'true' || el.attr('data-keep-after') == '') {
+					a.addClass('showTip');
+					b.addClass('hideTip');
+				} else {
+					function changeContent() {
+						b.addClass('hideTip').delay(1200).queue(function(next){
+							b.removeClass('hideTip');
+							next();
+						});
+						a.addClass('showTip').delay(1200).queue(function(next){
+							a.removeClass('showTip');
+							next();
+						});
+					} changeContent();
+				}
+			}
+		});
+
+		$(document).on('mouseleave', '.cooltool', function() {
+			console.log('touchend');
+			var el = $(this);
+			var b = el.find('.before-content');
+			var a = el.find('.after-content');
+			function revertChange() {
+				a.delay(300).queue(function(next){
+					a.addClass('hideTip').removeClass('showTip');
+					a.removeClass('hideTip');
+					next();
+				});
+				b.delay(300).queue(function(next){
+					b.addClass('showTip').removeClass('hideTip');
+					b.removeClass('showTip');
+					next();
+				});
+			} revertChange();
+		});
+		
+	} setCoolTool();
+    </script>
+<!-- 
+<script>
+
+function generateQRCode() {
+    const qrcodeInput = document.getElementById("qrcodeInput").value;
+    if (qrcodeInput) {
+        // Get the canvas element and its context
+        const canvas = document.getElementById("qrcodeCanvas");
+        const context = canvas.getContext("2d");
+
+        // Clear any previous QR code
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Generate the new QR code
+        QRCode.toCanvas(canvas, qrcodeInput, function (error) {
+            if (error) {
+                console.error(error);
+                alert("Error generating QR code!");
+            }
+        });
+    } else {
+        alert("Please enter some text for the QR code.");
+    }
+}
+
+    function generateBarcode() {
+        const barcodeInput = document.getElementById("barcodeInput").value;
+        if (barcodeInput.length === 8) {
+            JsBarcode("#barcode", barcodeInput, {
+                format: "CODE128",
+                lineColor: "#0aa",
+                width: 4,
+                height: 40
+            });
+        } else {
+            alert("Please enter exactly 8 characters.");
+        }
+    }
+</script> -->
+
+
+<!-- Advance Modal Update -->
+<!-- <div class="modal fade" id="advanceModal{{ bill.id }}" tabindex="-1" aria-labelledby="advanceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="advanceModalLabel">Update Advance Details {{ bill_instance.id }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="advanceForm" method="POST" action="">
+                    {% csrf_token %}
+                    <div class="table-responsive">
+                        {{ advance_formset.management_form }}
+                        <table class="table table-borderless table-sm advance-table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Receipt Reference Number</th>
+                                    <th class="text-center">Receipt Type</th>
+                                    <th class="text-center">Receipt Date</th>
+                                    <th class="text-center">Amount Received</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="advanceBody">
+                                {% for form in formset %}
+                                <tr>
+                                    <td>{{ form.receipt_ref_no }}</td>
+                                    <td>{{ form.receipt_type }}</td>
+                                    <td>{{ form.receipt_date }}</td>
+                                    <td>{{ form.amount_received }}</td>
+                                    <td>
+                                        <button type="button" class="removeAdvanceRow"
+                                            style="border: none; background-color: transparent;">
+                                            <i class="fa fa-trash text-danger"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center">No advances found for this bill.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <button type="button" id="addAdvance" class="btn btn-primary">Add More</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="advanceForm" class="btn btn-success">Save Changes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+
+
+<script>
+
+
+    document.querySelectorAll('.update-advance-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const billId = this.getAttribute('data-bill-id'); // Get the bill ID from the button
+            const form = document.getElementById('advanceForm');
+            form.action = `/api/update-advance/${billId}/`; // Update the form action dynamically
+            console.log('Sameer', billId);
+            
+        });
+    });
+
+
+    // Initialization of Datatable
+    $(document).ready(function () {
+    var table = $('#billTable').DataTable({
+        dom: '<"top d-flex justify-content-between"<"dt-buttons btn-group"B><"filter-container d-flex justify-content-between">><"row"<"col-md-12"<"search-container d-flex align-items-center">>>rt<"bottom"p><"clear">',
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                className: 'btn btn-success btn-sm',
+                text: '<i class="fa fa-file-excel" title="Export to Excel"></i>'
+            },
+            {
+                extend: 'pdfHtml5',
+                className: 'btn btn-danger btn-sm',
+                text: '<i class="fa fa-file-pdf" title="Export to PDF"></i>'
+            },
+        ],
+        language: {
+            emptyTable: "No Data Available",  // Message shown when no data is available
+            search: '',
+            searchPlaceholder: 'Search here...',
+            paginate: {
+                previous: '<i class="fa fa-angle-left"></i>',
+                next: '<i class="fa fa-angle-right"></i>'
+            }
+        },
+        order: [],
+        pagingType: 'simple',
+        scrollX: true,
+        autoWidth: false
+    });
+
+    // Add custom search and filter UI after table initialization
+    $(".search-container").html(`
+        <div class="d-flex gap-2 position-relative">
+            <input type="search" id="globalSearch" class="form-control" style="width:250px" placeholder="Search here..." aria-label="Search">
+            <select id="statusFilter" class="form-select" style="width:120px">
+                <option value="">All Bills</option>
+                <option value="outstanding">Outstanding</option>
+            </select>
+            <div class="position-relative" style="width: 150px;">
+                <input type="text" id="fromDate" class="form-control flatpickr-input" placeholder="From Date">
+                <span id="clearFromDate" class="position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none;">&#10005;</span>
+            </div>
+            <div class="position-relative" style="width: 150px;">
+                <input type="text" id="toDate" class="form-control flatpickr-input" placeholder="To Date">
+                <span id="clearToDate" class="position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none;">&#10005;</span>
+            </div>
+        </div>
+    `);
+    $(".dt-buttons").appendTo(".search-container");
+
+    // Initialize Flatpickr for date inputs
+    flatpickr("#fromDate", {
+        dateFormat: "d-m-Y",
+        allowInput: true,
+        onChange: function () {
+            $('#clearFromDate').show();
+            filterByDate();
+        }
+    });
+
+    flatpickr("#toDate", {
+        dateFormat: "d-m-Y",
+        allowInput: true,
+        onChange: function () {
+            $('#clearToDate').show();
+            filterByDate();
+        }
+    });
+
+    // Clear button functionality for date filters
+    $('#clearFromDate').on('click', function () {
+        $('#fromDate').val('');
+        $(this).hide();
+        filterByDate();
+    });
+
+    $('#clearToDate').on('click', function () {
+        $('#toDate').val('');
+        $(this).hide();
+        filterByDate();
+    });
+
+    // Date filter logic
+    function filterByDate() {
+        var fromDate = $('#fromDate').val();
+        var toDate = $('#toDate').val();
+
+        if (table.data().count() === 0) return; // Exit if no data in the table
+
+        var fromDateObj = fromDate ? new Date(fromDate.split('-').reverse().join('-')) : null;
+        var toDateObj = toDate ? new Date(toDate.split('-').reverse().join('-')) : null;
+
+        table.rows().every(function () {
+            var rowData = this.data();
+            var dateValue = rowData[3]; // Column index for date (adjust accordingly)
+
+            if (dateValue) {
+                var rowDate = new Date(dateValue.split('-').reverse().join('-'));
+                if (
+                    (fromDateObj && rowDate < fromDateObj) ||
+                    (toDateObj && rowDate > toDateObj)
+                ) {
+                    $(this.node()).hide();
+                } else {
+                    $(this.node()).show();
+                }
+            } else {
+                $(this.node()).hide();
+            }
+        });
+
+        table.draw(false);
+    }
+
+    // Status filter logic
+    $('#statusFilter').on('change', function () {
+        var status = $(this).val();
+
+        if (table.data().count() === 0) return; // Exit if no data in the table
+
+        table.rows().every(function () {
+            var rowData = this.data();
+            var targetValue = rowData[7]; // Column index for the outstanding amount (adjust as needed)
+
+            if (status === "outstanding") {
+                if (targetValue && parseFloat(targetValue) > 0) {
+                    $(this.node()).show();
+                } else {
+                    $(this.node()).hide();
+                }
+            } else {
+                $(this.node()).show();
+            }
+        });
+
+        table.draw(false);
+    });
+
+    // Global search functionality
+    $('#globalSearch').on('keyup', function () {
+        table.search(this.value).draw();
+    });
+});
+
+
+
+
+</script>
+{% endblock body %}

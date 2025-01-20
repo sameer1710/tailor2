@@ -1,0 +1,216 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %} <title>Tailor Software</title> {% endblock title %}
+
+{% block body %}
+
+
+<div class="container mt-3 mb-4 p-2" style="background-color: #fff; border-radius: 8px;">
+    <div class="container">
+        <h2 class="text-center mb-3">Edit <span style="font-weight: bold; color: #366FA1; text-decoration: underline;">{{ client.client_name }}</span> Details</h2>
+        <form method="POST">
+            {% csrf_token %}
+            
+            <!-- Client Form -->
+            <!-- <h3 class="text-center">Client Information</h3> -->
+            <div class="form-group">
+                <!-- {{ client_form.as_p }} -->
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <div class="input-field">
+                            <input required="" autocomplete="on" type="text" name="client_name" value="{{ client_form.client_name.value }}" id="clientname">
+                            <label for="clientname">Client Name</label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 mb-3">
+                        <div class="input-field">
+                            <input required="" autocomplete="on" type="number" name="client_number" value="{{ client_form.client_number.value }}" id="clientnumber">
+                            <label for="clientnumber">Client Number</label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 mb-3">
+                        <div class="input-field">
+                            <input required="" autocomplete="on" type="number" name="book_number" value="{{ client_form.book_number.value }}" id="booknumber">
+                            <label for="booknumber">Book Number</label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 mb-3">
+                        <div class="input-field">
+                            <input required="" autocomplete="on" type="number" name="page_number" value="{{ client_form.page_number.value }}" id="pagenumber">
+                            <label for="pagenumber">Page Number</label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 mb-3">
+                        <div class="input-field">
+                            <select name="client_status" id="clientstatus">
+                                <option value="active" {% if client_form.client_status.value == "active" %}selected{% endif %}>Active</option>
+                                <option value="inactive" {% if client_form.client_status.value == "inactive" %}selected{% endif %}>In-Active</option>
+                            </select>
+                            <label for="clientstatus">Client Status</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mb-2">
+                        <div class="input-field">
+                            <textarea class="textareaa" required="" autocomplete="on" name="client_address"
+                                id="clientaddress" rows="1">{{ client_form.client_address.value }}</textarea>
+                            <!-- <t required="" autocomplete="on" type="number" name="number" id="clientnumber" > -->
+                            <label for="clientaddress">Client Address</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+
+            <!-- Upper Maap Formset -->
+            <h3 class="mt-3" style="color: #133E87; font-weight: bold;">Upper Maap Details</h3>
+            {{ upper_formset.management_form }}
+            <!-- {{ upper_formset.non_form_errors }} -->
+            <table class="table table-sm maapTableEdit">
+                <thead>
+                    <tr>
+                        <th>Upper Maap</th>
+                        <th>Length</th>
+                        <th>Shoulder</th>
+                        <th>Sleeve</th>
+                        <th>Chest</th>
+                        <th>Lower Chest</th>
+                        <th>Stomach</th>
+                        <th>Hip</th>
+                        <th>Neck</th>
+                        <th>Remark</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if upper_formset.forms %}
+                        {% for form in upper_formset %}
+                        <tr>
+                            {{ form.id }}
+                            <td>{{ form.upper_maap }}</td>
+                            <td>{{ form.upper_length }}</td>
+                            <td>{{ form.upper_shoulder }}</td>
+                            <td>
+                                {{ form.upper_sleeve_length }}
+                                {{ form.upper_sleeve_bicep }}
+                                {{ form.upper_sleeve_cuff }}
+                            </td>
+                            <td>
+                                {{ form.upper_chest_body }}
+                                {{ form.upper_chest_ready }}
+                            </td>
+                            <td>
+                                {{ form.upper_lowerchest_body }}
+                                {{ form.upper_lowerchest_ready }}
+                            </td>
+                            <td>
+                                {{ form.upper_stomach_body }}
+                                {{ form.upper_stomach_ready }}
+                            </td>
+                            <td>
+                                {{ form.upper_hip_body }}
+                                {{ form.upper_hip_ready }}
+                            </td>
+                            <td>{{ form.upper_neck }}</td>
+                            <td>{{ form.upper_other_remark }}</td>
+                            <td>
+                                <div class="reject-checkbox">
+                                    <div class="mb-2 text-center">
+                                        <div class="checkbox-wrapper">
+                                            <!-- Your form DELETE field -->
+                                            {{ form.DELETE }}
+                                            <label for="{{ form.DELETE.id_for_label }}">
+                                                <div class="tick_mark">
+                                                    <div class="cross"></div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="11" class="text-center">No Data Available</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+
+            <!-- Lower Maap Formset -->
+            <h3 class="mt-4" style="color: #133E87; font-weight: bold;">Lower Maap Details</h3>
+            {{ lower_formset.management_form }}
+            <!-- {{ lower_formset.non_form_errors }} -->
+            <table class="table table-borderless rounded table-sm maapTableEdit">
+                <thead>
+                    <tr>
+                        <th class="ps-2">Type</th>
+                        <th class="ps-2">Length</th>
+                        <th class="ps-2">Waist</th>
+                        <th class="ps-2">Hip</th>
+                        <th class="ps-2">Thai</th>
+                        <th class="ps-2">Knee</th>
+                        <th class="ps-2">Bottom</th>
+                        <th class="ps-2">Jhola</th>
+                        <th class="ps-2">Remarks</th>
+                        <th class="ps-2">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if lower_formset.forms %}
+                        {% for form in lower_formset %}
+                        <tr>
+                            {{ form.id }}
+                            <td>{{ form.lower_maap }}</td>
+                            <td>{{ form.lower_length }}</td>
+                            <td>{{ form.lower_waist }}</td>
+                            <td>{{ form.lower_hip }}</td>
+                            <td>{{ form.lower_thai }}</td>
+                            <td>{{ form.lower_knee }}</td>
+                            <td>{{ form.lower_bottom }}</td>
+                            <td>{{ form.lower_jhola }}</td>
+                            <td>{{ form.lower_other_remark }}</td>
+                            <td>
+                                <div class="reject-checkbox">
+                                    <div class="mb-2 text-center">
+                                        <div class="checkbox-wrapper">
+                                            <!-- Your form DELETE field -->
+                                            {{ form.DELETE }}
+                                            <label for="{{ form.DELETE.id_for_label }}">
+                                                <div class="tick_mark">
+                                                    <div class="cross"></div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="9" class="text-center">No Data Available</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+
+            
+
+            <!-- Submit Button -->
+             <div class="d-flex">
+                <button type="submit" class="ms-auto submit-button"><span>Update</span></button>
+             </div>
+        </form>
+    </div>
+</div>
+
+
+{% endblock body %}

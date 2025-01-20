@@ -1,0 +1,336 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %} <title>Tailor Software</title> {% endblock title %}
+
+{% block body %}
+
+<div class="container">
+    <form action="{% url 'client_and_maap_edit' client.id %}" method="POST">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-12 mb-3">
+                <div class="input-field">
+                    <input required autocomplete="off" type="text" name="client_name" id="clientname"
+                        value="{{ client.client_name }}">
+                    <label for="clientname">Client Name</label>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-3">
+                <div class="input-field">
+                    <input required autocomplete="off" type="number" name="client_number" id="clientnumber"
+                        value="{{ client.client_number }}">
+                    <label for="clientnumber">Client Number</label>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-3">
+                <div class="input-field">
+                    <input required autocomplete="off" type="number" name="book_number" id="booknumber"
+                        value="{{ client.book_number }}">
+                    <label for="booknumber">Book Number</label>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-3">
+                <div class="input-field">
+                    <input required autocomplete="off" type="number" name="page_number" id="pagenumber"
+                        value="{{ client.page_number }}">
+                    <label for="pagenumber">Page Number</label>
+                </div>
+            </div>
+
+            <div class="col-12 mb-2">
+                <div class="input-field">
+                    <textarea class="textareaa" required autocomplete="off" name="client_address" id="clientaddress"
+                        rows="1">{{ client.client_address }}</textarea>
+                    <!-- <t required="" autocomplete="on" type="number" name="number" id="clientnumber" > -->
+                    <label for="clientaddress">Client Address</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-sm maapTable table-bordered">
+                <thead>
+                    <tr>
+                        <th>Upper Maap</th>
+                        <th>Length</th>
+                        <th>Shoulder</th>
+                        <th>Sleeve</th>
+                        <th>Chest</th>
+                        <th>Lower Chest</th>
+                        <th>Stomach</th>
+                        <th>Hip</th>
+                        <th>Neck</th>
+                        <th>Other Remark</th>
+                    </tr>
+                </thead>
+                <tbody id="maapBody">
+                    <!-- {% if maap_rows|length == 0 or not maap_rows|dictsort:"upper_maap" %}
+                        <tr>
+                            <td colspan="10" class="text-center">No Data Available</td>
+                        </tr>
+                    {% else %} -->
+
+                    
+                      
+                        {% for maap in maap_rows %}
+                            <!-- {% if maap.upper_maap %} -->
+                                <tr data-id="{{ maap.id }}">
+                                    <td>
+                                        <select name="upper_maap[]" class="form-control">
+                                            <option value="" {% if not maap.upper_maap %}selected{% endif %}>Select Type</option>
+                                            <option value="zubba" {% if maap.upper_maap == 'zubba' %}selected{% endif %}>Zubba</option>
+                                            <option value="kurta" {% if maap.upper_maap == 'kurta' %}selected{% endif %}>Kurta</option>
+                                            <option value="shirt" {% if maap.upper_maap == 'shirt' %}selected{% endif %}>Shirt</option>
+                                            <option value="blazer" {% if maap.upper_maap == 'blazer' %}selected{% endif %}>Blazer</option>
+                                            <option value="koty" {% if maap.upper_maap == 'koty' %}selected{% endif %}>Koty</option>
+                                            <option value="others" {% if maap.upper_maap == 'others' %}selected{% endif %}>Others</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="number" class="form-control" name="upper_length[]" value="{{ maap.upper_length }}" placeholder="Length"></td>
+                                    <td><input type="number" class="form-control" name="upper_shoulder[]" value="{{ maap.upper_shoulder }}" placeholder="Shoulder"></td>
+                                    <td>
+                                        <input type="number" class="form-control" name="upper_sleeve_length[]" value="{{ maap.upper_sleeve_length }}" placeholder="Length">
+                                        <input type="number" class="form-control" name="upper_sleeve_bicep[]" value="{{ maap.upper_sleeve_bicep }}" placeholder="Bicep">
+                                        <input type="number" class="form-control" name="upper_sleeve_cuff[]" value="{{ maap.upper_sleeve_cuff }}" placeholder="Cuff">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" name="upper_chest_body[]" value="{{ maap.upper_chest_body }}" placeholder="Body">
+                                        <input type="number" class="form-control" name="upper_chest_ready[]" value="{{ maap.upper_chest_ready }}" placeholder="Ready">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" name="upper_lowerchest_body[]" value="{{ maap.upper_lowerchest_body }}" placeholder="Body">
+                                        <input type="number" class="form-control" name="upper_lowerchest_ready[]" value="{{ maap.upper_lowerchest_ready }}" placeholder="Ready">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" name="upper_stomach_body[]" value="{{ maap.upper_stomach_body }}" placeholder="Body">
+                                        <input type="number" class="form-control" name="upper_stomach_ready[]" value="{{ maap.upper_stomach_ready }}" placeholder="Ready">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" name="upper_hip_body[]" value="{{ maap.upper_hip_body }}" placeholder="Body">
+                                        <input type="number" class="form-control" name="upper_hip_ready[]" value="{{ maap.upper_hip_ready }}" placeholder="Ready">
+                                    </td>
+                                    <td><input type="number" class="form-control" name="upper_neck[]" value="{{ maap.upper_neck }}" placeholder="Neck"></td>
+                                    <td><textarea name="upper_other_remark[]" class="form-control" rows="4">{{ maap.upper_other_remark }}</textarea></td>
+                                </tr>
+                            <!-- {% endif %} -->
+                        {% endfor %}
+                    <!-- {% endif %} -->
+                </tbody>
+            </table>
+            <!-- <button type="button" id="addRowBtn">Add More</button> -->
+        </div>
+
+        <hr>
+
+        <div class="table-responsive">
+            <table class="table table-sm maapTable table-bordered">
+                <thead>
+                    <tr>
+                        <th>Lower Maap</th>
+                        <th>Length</th>
+                        <th>Waist</th>
+                        <th>Hip</th>
+                        <th>Thai</th>
+                        <th>Knee</th>
+                        <th>Bottom</th>
+                        <th>Jhola</th>
+                        <th>Other Remark</th>
+                    </tr>
+                </thead>
+                <tbody id="lowermaapBody">
+                    {% for maap in maap_rows %}
+                        {% if maap.lower_maap %}
+                            <tr data-id="{{ maap.id }}">
+                                <td>
+
+                                    <select name="lower_maap[]" id="lowermaap0" class="form-control">
+                                        <option value="" {% if not maap.lower_maap %}selected{% endif %}>Select Type</option>
+                                        <option value="pathani_salwar" {% if maap.lower_maap == 'pathani_salwar' %}selected{% endif %}>Pathani Salwaar</option>
+                                        <option value="aligari" {% if maap.lower_maap == 'aligari' %}selected{% endif %}>Aligari</option>
+                                        <option value="payjama" {% if maap.lower_maap == 'payjama' %}selected{% endif %}>Payjama</option>
+                                        <option value="chudidar" {% if maap.lower_maap == 'chudidar' %}selected{% endif %}>Chudidaar</option>
+                                        <option value="pant" {% if maap.lower_maap == 'pant' %}selected{% endif %}>Pant</option>
+                                        <option value="others" {% if maap.lower_maap == 'others' %}selected{% endif %}>Others
+                                        </option>
+                                    </select>
+
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" name="lower_length[]" id="lowerLength0"
+                                        placeholder="length" value="{{ maap.lower_length }}">
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" name="lower_waist[]" id="lowerWaist0"
+                                        placeholder="Waist" value="{{ maap.lower_waist }}">
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" name="lower_hip[]" id="lowerHip0"
+                                        placeholder="Hip" value="{{ maap.lower_hip }}">
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" name="lower_thai[]" id="lowerThai0"
+                                        placeholder="Thai" value="{{ maap.lower_thai }}">
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" name="lower_knee[]" id="lowerKnee0"
+                                        placeholder="Knee" value="{{ maap.lower_knee }}">
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" name="lower_bottom[]" id="lowerBottom0"
+                                        placeholder="Bottom" value="{{ maap.lower_bottom }}">
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" name="lower_jhola[]" id="lowerJhola0"
+                                        placeholder="Jhola" value="{{ maap.lower_jhola }}">
+                                </td>
+                                <td>
+                                    <textarea name="lower_other_remark[]" class="form-control" id="lowerOtherRemark0"
+                                        rows="1">{{ maap.lower_other_remark }}</textarea>
+                                </td>
+                                
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            <input type="number" id="deletedRows" name="deleted_rows" hidden>
+            <!-- <button type="button" id="addLowerMaapBtn">Add More</button> -->
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<!-- <script>
+
+
+    // === Logic to Add new ROws to the table ===
+    let rowCount = 1;
+
+    function addRow() {
+        let tableBody = document.getElementById('maapBody');
+        let newRow = tableBody.rows[0].cloneNode(true);
+
+        let inputs = newRow.querySelectorAll('input, textarea, select');
+        inputs.forEach(input => {
+            let newId = input.id.replace(/\d*$/, '') + rowCount;
+            input.id = newId;
+            let name = input.name.replace(/\[\]$/, '') + '[]'; // Ensure input names are array-like
+            input.name = name;
+            input.value = '';
+        });
+
+       
+
+
+       
+
+        // tableBody.appendChild(newRow);
+
+        rowCount++;
+    }
+
+    document.getElementById('addRowBtn').addEventListener('click', addRow);
+
+    
+
+
+    let lowerRowCount = 1;
+    // Lower Maap Table Logic
+    function addLowerMaapRow() {
+        let tableBody = document.getElementById('lowermaapBody');
+        let newRow = tableBody.rows[0].cloneNode(true);
+
+        let inputs = newRow.querySelectorAll('input, textarea, select');
+        inputs.forEach(input => {
+            let newId = input.id.replace(/\d*$/, '') + lowerRowCount;
+            input.id = newId;
+            let name = input.name.replace(/\[\]$/, '') + '[]';
+            input.name = name;
+            input.value = '';
+        });
+
+        
+
+        lowerRowCount++;
+    }
+
+    // Delete Row Function
+    // function deleteLowerMaapRow(rowToDelete) {
+    //     let tableBody = document.getElementById('lowermaapBody');
+
+    //     // Remove the row from the table
+    //     tableBody.removeChild(rowToDelete);
+
+    //     // After deletion, shift the IDs of the rows below
+    //     let rows = tableBody.rows;
+    //     for (let i = 0; i < rows.length; i++) {
+    //         let row = rows[i];
+    //         let inputs = row.querySelectorAll('input, textarea, select');
+    //         inputs.forEach(input => {
+
+    //             let newId = input.id.replace(/\d*$/, '') + i; // Set new ID based on row index
+    //             input.id = newId;
+    //         });
+
+    //         let deleteButton = row.querySelector('.lowerMaapDeleteBtn');
+    //         if (i === 0) {
+    //             deleteButton.disabled = true;
+    //         } else {
+    //             deleteButton.disabled = false;
+    //         }
+    //     }
+
+    //     // Decrease row count
+    //     lowerRowCount--;
+    // }
+
+
+    document.getElementById('addLowerMaapBtn').addEventListener('click', addLowerMaapRow);
+
+    // let lowerDeleteButton = document.querySelector('.lowerMaapDeleteBtn');
+
+    // if (lowerDeleteButton) {
+    //     lowerDeleteButton.addEventListener('click', function () {
+    //         deleteLowerMaapRow(lowerDeleteButton.closest('tr'));
+    //     });
+    // }
+
+
+    //Delete Row of lowermaap while editing
+
+    // document.addEventListener('DOMContentLoaded', () => {
+    //     const deletedRowsInput = document.getElementById('deletedRows');
+
+    //     document.querySelectorAll('.lowerMaapDeleteBtn').forEach((btn, index) => {
+    //         btn.addEventListener('click', () => {
+    //             const row = btn.closest('tr');
+    //             const rowId = row.getAttribute('data-id'); // Add 'data-id' attribute in your table rows to track the DB ID
+
+    //             // Add the row ID to the deleted rows input
+    //             if (rowId) {
+    //                 const deletedRows = deletedRowsInput.value ? deletedRowsInput.value.split(',') : [];
+    //                 if (!deletedRows.includes(rowId)) {
+    //                     deletedRows.push(rowId);
+    //                 }
+    //                 deletedRowsInput.value = deletedRows.join(',');
+    //             }
+
+    //             // Mark the row visually as deleted (optional)
+    //             row.style.display = 'none'; // Hide the row
+    //         });
+    //     });
+    // });
+
+
+  
+
+
+
+</script> -->
+
+{% endblock body %}

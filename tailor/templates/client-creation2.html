@@ -1,0 +1,179 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %} <title>Tailor Software</title> {% endblock title %}
+
+{% block body %}
+    <p>hhhhhhhhhhhhhhhhhhhhhh</p>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="table-responsive mt-2">
+                {{ lower_formset.management_form }}
+                <table class="table table-sm maapTable table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Lower Maap</th>
+                            <th>Length</th>
+                            <th>Waist</th>
+                            <th>Hip</th>
+                            <th>Thai</th>
+                            <th>Knee</th>
+                            <th>Bottom</th>
+                            <th>Jhola</th>
+                            <th>Other Remark</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <!-- <tbody id="lowermaapBody">
+
+
+                        {% for form in lower_formset %}
+                        <tr>
+                            <td>{{ form.lower_maap }}</td>
+                            <td>{{ form.lower_length }}</td>
+                            <td>{{ form.lower_waist }}</td>
+                            <td>{{ form.lower_hip }}</td>
+                            <td>{{ form.lower_thai }}</td>
+                            <td>{{ form.lower_knee }}</td>
+                            <td>{{ form.lower_bottom }}</td>
+                            <td>{{ form.lower_jhola }}</td>
+                            <td>{{ form.lower_other_remark }}</td>
+                            <td>
+                                <button type="button" class="lowerMaapDeleteBtn">Delete</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody> -->
+
+                    <tbody id="lowermaapBody">
+                        <tr>
+                            <td>
+                                <select name="lower_maap[]" id="lower_maap0" class="form-control">
+                                    <option value="" selected>Select Type</option>
+                                    <option value="pathani_salwar">Pathani Salwaar</option>
+                                    <option value="aligari">Aligari</option>
+                                    <option value="payjama">Payjama</option>
+                                    <option value="chudidar">Chudidaar</option>
+                                    <option value="pant">Pant</option>
+                                    <option value="others">Others</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="number" class="form-control" name="lower_length[]" id="lower_length0"
+                                    placeholder="length">
+                            </td>
+                            <td>
+                                <input type="number" class="form-control" name="lower_waist[]" id="lower_waist0"
+                                    placeholder="Waist">
+                            </td>
+                            <td>
+                                <input type="number" class="form-control" name="lower_hip[]" id="lower_hip0"
+                                    placeholder="Hip">
+                            </td>
+                            <td>
+                                <input type="number" class="form-control" name="lower_thai[]" id="lower_thai0"
+                                    placeholder="Thai">
+                            </td>
+                            <td>
+                                <input type="number" class="form-control" name="lower_knee[]" id="lower_knee0"
+                                    placeholder="Knee">
+                            </td>
+                            <td>
+                                <input type="number" class="form-control" name="lower_bottom[]" id="lower_bottom0"
+                                    placeholder="Bottom">
+                            </td>
+                            <td>
+                                <input type="number" class="form-control" name="lower_jhola[]" id="lower_jhola0"
+                                    placeholder="Jhola">
+                            </td>
+                            <td>
+                                <textarea name="lower_other_remark[]" class="form-control" id="lower_other_remark0"
+                                    rows="1"></textarea>
+                            </td>
+                            <td class="pt-2"
+                                style="display: flex; justify-content: center !important; align-items: center !important; cursor: pointer;">
+                                <button type="button" class="lowerMaapDeleteBtn"
+                                    style="border: none; background-color: transparent;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="#fc0303"
+                                        class="bi bi-trash3" viewBox="0 0 16 16">
+                                        <path
+                                            d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="button" class="create-button" id="addLowerMaapBtn">Add More</button>
+            </div>
+            
+
+     
+            <div class="table-responsive mt-2">
+                {{ upper_formset.management_form }}
+                <table class="table table-sm maapTable table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Upper Maap</th>
+                            <th>Length</th>
+                            <th>Shoulder</th>
+                            <th>Sleeve Length</th>
+                            <th>Bicep</th>
+                            <th>Cuff</th>
+                            <th>Chest Body</th>
+                            <th>Other Remark</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="uppermaapBody">
+                        {% for form in upper_formset %}
+                        <tr>
+                            <td>{{ form.upper_maap }}</td>
+                            <td>{{ form.upper_length }}</td>
+                            <td>{{ form.upper_shoulder }}</td>
+                            <td>{{ form.upper_sleeve_length }}</td>
+                            <td>{{ form.upper_sleeve_bicep }}</td>
+                            <td>{{ form.upper_sleeve_cuff }}</td>
+                            <td>{{ form.upper_chest_body }}</td>
+                            <td>{{ form.upper_other_remark }}</td>
+                            <td>
+                                <button type="button" class="upperMaapDeleteBtn">Delete</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button type="button" id="addUpperMaapBtn">Add More</button>
+            </div>
+            <button type="submit">save</button>
+        </form>
+                
+
+        
+
+<script>
+document.getElementById('addLowerMaapBtn').addEventListener('click', function () {
+    const tbody = document.getElementById('lowermaapBody');
+    const clone = tbody.children[0].cloneNode(true);
+    tbody.appendChild(clone);
+});
+
+document.getElementById('addUpperMaapBtn').addEventListener('click', function () {
+    const tbody = document.getElementById('uppermaapBody');
+    const clone = tbody.children[0].cloneNode(true);
+    tbody.appendChild(clone);
+});
+
+document.querySelectorAll('.lowerMaapDeleteBtn').forEach(btn => {
+    btn.addEventListener('click', function () {
+        this.closest('tr').remove();
+    });
+});
+
+document.querySelectorAll('.upperMaapDeleteBtn').forEach(btn => {
+    btn.addEventListener('click', function () {
+        this.closest('tr').remove();
+    });
+});
+<script/>
+{% endblock body %}

@@ -1,0 +1,124 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %} <title>Tailor Software</title> {% endblock title %}
+
+{% block body %}
+
+<div class="container mt-3" style="background-color: #fff; border-radius: 10px;">
+    
+
+    <div class="table-responsive pt-3">
+        <table id="employeeTable" class="display client-table compact dt-table">
+            <thead>
+                <tr>
+                    <!-- <th>Sr No.</th> -->
+                    <th>Bill Number</th>
+                    <th>Employee Name</th>
+                    <th>Product Name</th>
+                    <th>Product Description</th>
+                    <th>Quantity</th>
+                    <th>Delivery Date</th>
+                    {% if request.user.is_company_owner == True %}
+                    <th>Amount</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in product_data %}
+                    <tr>
+                        <td>{{ product.bill_number }}</td>
+                        <td>{{ product.assigned_to  }}</td>
+                        <td>{{ product.product_name }}</td>
+                        <td>{{ product.product_remark }}</td>
+                        <td>{{ product.quantity }}</td>
+                        <td>{{ product.delivery_date|date:"d-m-Y" }}</td>
+                        {% if request.user.is_company_owner == True %}
+                        <td>{{ product.amount }}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+
+    </div>
+
+
+
+
+</div>
+
+
+
+<script>
+
+
+    // Initialization of Datatable
+    $(document).ready(function () {
+    var table = $('#employeeTable').DataTable({
+        dom: '<"top d-flex justify-content-between"<"dt-buttons btn-group"B><"filter-container d-flex justify-content-between">><"row"<"col-md-12"<"search-container d-flex align-items-center">>>rt<"bottom"p><"clear">',
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                className: 'btn btn-success btn-sm',
+                text: '<i class="fa fa-file-excel" title="Export to Excel"></i>'
+            },
+            {
+                extend: 'pdfHtml5',
+                className: 'btn btn-danger btn-sm',
+                text: '<i class="fa fa-file-pdf" title="Export to PDF"></i>'
+                
+            },
+        ],
+        language: {
+            emptyTable: "No Data Available", 
+            search: '',
+            searchPlaceholder: 'Search here...',
+            paginate: {
+                previous: '<i class="fa fa-angle-left"></i>',
+                next: '<i class="fa fa-angle-right"></i>'
+            }
+        },
+        order: [],
+        pagingType: 'simple',
+        scrollX: true,
+        autoWidth: false,
+        initComplete: function () {
+
+            $('[data-toggle="tooltip"]').tooltip();
+            var api = this.api();
+
+            api.column(7).search('^active$', true, false).draw(); // Regex match for "active"
+
+            // Add custom search and filter UI
+            $(".search-container").html(`
+                <div class="d-flex gap-2 ">
+                    <input type="search" class="form-control" style="width:250px" placeholder="Search here..." aria-label="Search">
+                </div>
+            `);
+            $(".dt-buttons").appendTo(".search-container");
+
+            
+
+            // Status filter
+            // $('#statusFilter').on('change', function () {
+            //     var status = $(this).val(); // Get selected value
+            //     if (status === "") {
+            //         api.column(4).search('').draw(); // Reset filter (show all)
+            //     } else {
+            //         api.column(4).search('^' + status + '$', true, false).draw(); // Filter by status
+            //     }
+            // });
+
+            // General search
+            $('input[type="search"]').on('keyup', function () {
+                api.search(this.value).draw();
+            });
+        }
+    });
+});
+
+
+</script>
+{% endblock body %}

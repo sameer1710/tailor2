@@ -1,0 +1,390 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %} <title>Tailor Software</title> {% endblock title %}
+
+{% block body %}
+<!-- {% if messages %}
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    {% for message in messages %}
+    <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+        <div class="toast-body"
+            style="color: green !important; font-size: 18px !important; font-weight: bold !important;">
+            {{ message }}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %} -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Select all the toasts
+        var toastElements = document.querySelectorAll('.toast');
+
+        // Iterate over all toasts
+        toastElements.forEach(function (toastElement) {
+            // Initialize Bootstrap Toast
+            var toast = new bootstrap.Toast(toastElement);
+
+            // Show the toast immediately when page loads
+            toast.show();
+
+            // Optionally, force the toast to hide after 3 seconds (additional measure)
+            setTimeout(function () {
+                toast.hide();
+            }, 2000); // 3000 milliseconds = 3 seconds
+        });
+    });
+</script>
+
+<div class="container mt-3" style="background-color: #fff; border-radius: 10px;">
+    <div class="d-flex" style="justify-content: end;">
+        <button type="button" class="create-button" data-bs-toggle="modal" data-bs-target="#createEmployee">Create
+            Employee</button>
+    </div>
+
+    <div class="table-responsive">
+        <table id="employeeTable" class="display client-table compact dt-table">
+            <thead>
+                <tr>
+                    <th>Actions</th>
+                    <th>Sr No.</th>
+                    <th>Employee Name</th>
+                    <th>Employee Contact No</th>
+                    <th>Employee Username</th>
+                    <th>Employee Status</th>
+                    <th>Employee Rights</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if employees %}
+                {% for employee in employees %}
+                <tr>
+                    <td class="d-flex pt-2" style="justify-content: space-evenly; align-items: center !important;">
+                        <a href="#" class="edit-employee" data-bs-toggle="modal" data-bs-target="#editEmployeeModal"
+                            data-id="{{ employee.id }}" data-name="{{ employee.employee_name }}"
+                            data-number="{{ employee.employee_number }}" data-username="{{ employee.username }}"
+                            data-status="{{ employee.employee_status }}" data-rights="{{ employee.is_company_owner }}">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </a>
+                    </td>
+                    <td>{{ employee.id }}</td>
+                    <td>{{ employee.employee_name }}</td>
+                    <td>{{ employee.employee_number }}</td>
+                    <td>{{ employee.username }}</td>
+                    <td>{{ employee.employee_status|capfirst }}</td>
+                    <td>
+                        {% if employee.is_company_owner %}
+                        Admin
+                        {% else %}
+                        Employee
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+
+                {% endif %}
+            </tbody>
+        </table>
+
+
+    </div>
+
+
+    <!-- Employee Edit Modal -->
+    <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="editModalLabel">Edit Employee</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editEmployeeForm" action="{% url 'employee_creation' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="employee_id" id="editEmployeeId">
+                        <div class="row">
+                            <div class="col-4 mb-3">
+                                <div class="input-field">
+                                    <input required="" type="text" name="employee_name" id="editEmployeeName">
+                                    <label for="editEmployeeName">Employee Name</label>
+                                </div>
+                            </div>
+                            <div class="col-4 mb-3">
+                                <div class="input-field">
+                                    <input required="" type="number" name="employee_number" id="editEmployeeNumber">
+                                    <label for="editEmployeeNumber">Employee Contact Number</label>
+                                </div>
+                            </div>
+                            <div class="col-4 mb-3">
+                                <div class="input-field">
+                                    <select name="employee_status" id="editEmployeeStatus">
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
+                                    </select>
+                                    <label for="editEmployeeStatus">Employee Status</label>
+                                </div>
+                            </div>
+                            <div class="col-4 mb-3">
+                                <div class="input-field">
+                                    <input type="text" name="username" id="editUsername">
+                                    <label for="editUsername">Employee Username</label>
+                                </div>
+                            </div>
+                            <div class="col-4 mb-3">
+                                <div class="input-field">
+                                    <input type="password" name="password1" id="editPassword1" placeholder="Leave blank to keep current password">
+                                    <label for="editPassword1">New Password</label>
+                                </div>
+                            </div>
+                            <div class="col-4 mb-3">
+                                <div class="input-field">
+                                    <input type="password" name="password2" id="editPassword2" placeholder="Leave blank to keep current password">
+                                    <label for="editPassword2">Confirm New Password</label>
+                                </div>
+                            </div>
+                            <div class="col-4 mb-3">
+                                <div class="input-field">
+                                    <select name="is_company_owner" id="editEmployeeRight">
+                                        <option value="false">Employee</option>
+                                        <option value="true">Admin</option>
+                                    </select>
+                                    <label for="editEmployeeRight">Employee Rights</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            {% if error %}
+                            <div class="alert alert-danger">
+                                {{ error }}
+                            </div>
+                            {% endif %}
+                            <button type="submit" class="btn ms-auto mt-3 btn-primary">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- Employee Creation Modal -->
+    <div class="modal fade" id="createEmployee" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Create New Employee</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-4 mb-3">
+                                <div class="input-field">
+                                    <input required="" autocomplete="on" type="text" name="employee_name"
+                                        id="employeeName">
+                                    <label for="employeeName">Employee Name</label>
+                                </div>
+                            </div>
+
+                            <div class="col-4 mb-3">
+                                <div class="input-field">
+                                    <input required="" autocomplete="on" type="number" name="employee_number"
+                                        id="employeeNumber">
+                                    <label for="employeeNumber">Employee Contact Number</label>
+                                </div>
+                            </div>
+
+                            <div class="col-4 mb-3">
+                                <div class="input-field">
+                                    <select name="employee_status" id="employeeStatus">
+                                        <option value="active" selected>Active</option>
+                                        <option value="inactive">In-Active</option>
+                                    </select>
+                                    <label for="employeeStatus">Employee Status</label>
+                                </div>
+                            </div>
+
+                            <div class="col-4 mb-3">
+                                <div class="input-field">
+                                    <input type="text" name="username" id="username" placeholder="username">
+                                    <label for="username">Employee Username</label>
+                                </div>
+                            </div>
+
+                            <div class="col-4 mb-3">
+                                <div class="input-field">
+                                    <input type="password" name="password1" id="password1" placeholder="password">
+                                    <label for="password1">Employee Password1</label>
+                                </div>
+
+                            </div>
+
+                            <div class="col-4 mb-3">
+                                <div class="input-field">
+                                    <input type="password" name="password2" id="password2" placeholder="password">
+                                    <label for="password2">Employee Password2</label>
+                                </div>
+                            </div>
+
+                            <div class="col-4 mb-3">
+                                <div class="input-field">
+                                    <select name="is_company_owner" id="employeeRight">
+                                        <option value="false" selected>Employee</option>
+                                        <option value="true">Admin</option>
+                                    </select>
+                                    <label for="employeeRight">Employee Right</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="m-0 p-0" style="background-color: #0034de; height: 2px;">
+
+                        <div class="d-flex">
+                            <button type="submit" class="btn ms-auto mt-3 btn-primary">Submit</button>
+                        </div>
+
+
+
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+
+
+<script>
+
+    // Edit Modal JS Code
+    // $(document).on('click', '.edit-employee', function () {
+    //     let id = $(this).data('id');
+    //     let name = $(this).data('name');
+    //     let number = $(this).data('number');
+    //     let username = $(this).data('username');
+    //     let status = $(this).data('status');
+    //     let rights = $(this).data('rights');
+
+    //     // Populate modal fields
+    //     $('#editEmployeeId').val(id);
+    //     $('#editEmployeeName').val(name);
+    //     $('#editEmployeeNumber').val(number);
+    //     $('#editUsername').val(username);
+    //     $('#editEmployeeStatus').val(status);
+    //     $('#editEmployeeRight').val(rights ? 'true' : 'false');
+    // });
+
+    $(document).on('click', '.fa-pen-to-square', function () {
+        const row = $(this).closest('tr');
+        $('#editEmployeeId').val(row.find('td:eq(1)').text().trim());
+        $('#editEmployeeName').val(row.find('td:eq(2)').text().trim());
+        $('#editEmployeeNumber').val(row.find('td:eq(3)').text().trim());
+        $('#editUsername').val(row.find('td:eq(4)').text().trim());
+        $('#editEmployeeStatus').val(row.find('td:eq(5)').text().toLowerCase() === 'active' ? 'active' : 'inactive');
+    
+        const isAdmin = row.find('td:eq(6)').text().trim().toLowerCase() === 'admin';
+        $('#editEmployeeRight').val(isAdmin ? 'true' : 'false');
+        $('#editEmployeeModal').modal('show');
+    });
+
+
+
+
+    // Initialization of Datatable
+    $(document).ready(function () {
+        var table = $('#employeeTable').DataTable({
+            dom: '<"top d-flex justify-content-between"<"dt-buttons btn-group"B><"filter-container d-flex justify-content-between">><"row"<"col-md-12"<"search-container d-flex align-items-center">>>rt<"bottom"p><"clear">',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    className: 'btn btn-success btn-sm',
+                    text: '<i class="fa fa-file-excel" title="Export to Excel"></i>'
+                },
+                {
+                    extend: 'pdfHtml5',
+                    className: 'btn btn-danger btn-sm',
+                    text: '<i class="fa fa-file-pdf" title="Export to PDF"></i>'
+                },
+            ],
+            language: {
+                emptyTable: "No Data Available", // DataTables handles the "No Data" message
+                search: '',
+                searchPlaceholder: 'Search here...',
+                paginate: {
+                    previous: '<i class="fa fa-angle-left"></i>',
+                    next: '<i class="fa fa-angle-right"></i>'
+                }
+            },
+            order: [],
+            pagingType: 'simple',
+            scrollX: true,
+            autoWidth: false,
+            initComplete: function () {
+                var api = this.api();
+
+                // Apply default filter for "Active" clients on page load
+                api.column(5).search('^active$', true, false).draw();
+
+                // Add custom search and filter UI
+                $(".search-container").html(`
+                <div class="d-flex gap-2">
+                    <input type="search" class="form-control" style="width:250px" placeholder="Search here..." aria-label="Search">
+                    <select id="statusFilter" class="form-select" style="width:120px">
+                        <option value="active" selected>Active</option>
+                        <option value="inactive">In-Active</option>
+                        <option value="">All</option>
+                    </select>
+                </div>
+            `);
+                $(".dt-buttons").appendTo(".search-container");
+
+                // Status filter
+                $('#statusFilter').on('change', function () {
+                    var status = $(this).val(); // Get selected value
+                    if (status === "") {
+                        api.column(5).search('').draw(); // Reset filter (show all)
+                    } else {
+                        api.column(5).search('^' + status + '$', true, false).draw(); // Filter by status
+                    }
+                });
+
+                // General search
+                $('input[type="search"]').on('keyup', function () {
+                    api.search(this.value).draw();
+                });
+
+                // Initialize tooltips
+                $('[data-toggle="tooltip"]').tooltip();
+            }
+        });
+    });
+
+
+
+    // Update Datatable after editing employee
+    // $('#editEmployeeForm').on('submit', function (e) {
+    //     e.preventDefault();
+    //     let formData = $(this).serialize();
+
+    //     $.post($(this).attr('action'), formData, function (response) {
+    //         // Optionally reload the table or update the specific row
+    //         $('#employeeTable').DataTable().ajax.reload(); // If using server-side processing
+    //         $('#editEmployeeModal').modal('hide');
+    //     });
+    // });
+
+
+</script>
+{% endblock body %}

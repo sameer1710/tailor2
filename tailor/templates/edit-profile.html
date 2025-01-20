@@ -1,0 +1,169 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %} <title>Tailor Software</title> {% endblock title %}
+
+{% block body %}
+
+
+{% comment %} <h1>Update Company</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save Changes</button>
+    </form> {% endcomment %}
+
+    <div class="container mt-4 pt-3" style="background-color: #fff; border-radius: 10px;">
+        <!-- <h3 >Update Details</h3> -->
+        <h5 class="text-center" style="font-family: 'Helvetica', sans-serif; text-transform: uppercase; font-weight: bold; color: #344CB7;">Update Details</h5>
+         <div class="d-flex">
+            <div style="display: flex; flex-direction: column;">
+                <label for="companyLogo"  style="cursor: pointer;">
+                    <img 
+                    id="logoPreview" 
+                    src="{% if form.logo.value %}{{ form.logo.value.url }}{% else %}/static/images/placeholder.png{% endif %}" 
+                    alt="Company Logo" 
+                    class="img-fluid rounded-circle" 
+                    style="width: 120px; height: 120px; border: 2px solid gold; object-fit: cover;">
+                </label>
+                <small>Click the image to upload a new logo</small>
+            </div>
+            <!-- <h5 class="ms-auto" style="font-family: 'Helvetica', sans-serif; text-transform: uppercase; font-weight: bold; color: #344CB7;">Update Details</h5> -->
+
+         </div>
+        <form class="mt-4" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-4 mb-3">
+                    <div class="input-field">
+                        <input type="text" name="company_name" id="companyName" value="{{ form.company_name.value }}">
+                        <label for="companyName">Company Name</label>
+                    </div>
+                </div>
+
+                <!-- <div class="col-4 mb-3">
+                    <div class="input-field">
+                        <input type="file" name="logo" id="companyLogo" value="{{ form.logo.value }}">
+                        <label for="companyLogo">Company Logo</label>
+                    </div>
+                </div> -->
+
+                <!-- <div class="col-4 mb-3">
+                    <div class="input-field">
+                        Hidden file input
+                        <input type="file" name="logo" id="companyLogo" accept="image/*" onchange="previewLogo(event)">
+                        
+                        Visible preview area
+                        <label for="companyLogo" class="d-block text-center" style="cursor: pointer;">
+                            <img 
+                                id="logoPreview" 
+                                src="{% if form.logo.value %}{{ form.logo.value.url }}{% else %}/static/images/placeholder.png{% endif %}" 
+                                alt="Company Logo" 
+                                class="img-fluid rounded-circle" 
+                                style="width: 120px; height: 120px; border: 2px solid gold; object-fit: cover;">
+                        </label>
+                    </div>
+                    <small class="form-text text-muted text-center">Click the image to upload a new logo</small>
+                </div> -->
+
+                <div class="col-4 mb-3">
+                    <div class="input-field">
+                        <input type="text" name="name" id="ownerName" value="{{ form.name.value }}">
+                        <label for="ownerName">Owner Name</label>
+                    </div>
+                </div>
+
+                <div class="col-4 mb-3">
+                    <div class="input-field">
+                        <input type="email" name="email" id="companyEmail" value="{{ form.email.value }}">
+                        <label for="companyEmail">Company Email</label>
+                    </div>
+                </div>
+
+                <div class="col-4 mb-3">
+                    <div class="input-field">
+                        <input type="number" name="phone" id="companyNumber" value="{{ form.phone.value }}">
+                        <label for="companyNumber">Company Number</label>
+                    </div>
+                </div>
+
+                <div class="col-4 mb-3">
+                    <div class="input-field">
+                        <input type="text" name="prefix" id="companyPrefix" maxlength="3" 
+                               value="{{ form.prefix.value }}" 
+                               pattern="[A-Za-z]{1,3}" 
+                               title="Please enter up to 3 alphabets only.">
+                        <label for="companyPrefix">Company Prefix</label>
+                    </div>
+                    <small class="m-0 p-0 text-info" style="font-size: 12px;">
+                        Prefix must not exceed 4 characters.
+                    </small>
+                </div>
+
+                <div class="col-4 mb-3 d-none">
+                    <div class="input-field">
+                        <input type="file" name="logo" id="companyLogo" accept="image/*">
+                        <label for="companyLogo">Company Logo</label>
+                    </div>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <div class="input-field">
+                        <!-- <input type="number" name="phone" id="companyNumber" value="{{ form.phone.value }}"> -->
+                         <textarea name="address" name="address" id="companyAddress">{{ form.address.value }}</textarea>
+                        <label for="companyAddress">Company Number</label>
+                    </div>
+                </div>
+                
+
+                
+            </div>
+            <a href="{% url 'company_detail' %}" class="btn btn-secondary">Back</a>
+            <!-- <a href="{% url 'company_detail' %}"><button class="btn btn-secondary">Back</button></a> -->
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+    </div>
+
+    <script>
+        // Select the file input and the image preview element
+        const fileInput = document.getElementById('companyLogo');
+        const logoPreview = document.getElementById('logoPreview');
+
+        // Event listener for when a file is selected
+        fileInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            
+            // Check if the file is a valid image
+            if (file && file.type.startsWith('image/')) {
+                // Create a URL for the selected image file
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Update the logo preview with the new image
+                    logoPreview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);  // Read the file as a data URL
+            }
+        });
+
+        // Optionally, you can trigger the file input when the logo image is clicked
+        // logoPreview.addEventListener('click', function() {
+        //     fileInput.click();
+        // });
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const prefixInput = document.getElementById("companyPrefix");
+            const errorMessage = document.getElementById("prefixError");
+
+            prefixInput.addEventListener("input", function () {
+                if (prefixInput.value.length > 3) {
+                    errorMessage.classList.remove("d-none"); // Show the error
+                } else {
+                    errorMessage.classList.add("d-none"); // Hide the error
+                }
+            });
+        });
+
+    </script>
+
+{% endblock body %}

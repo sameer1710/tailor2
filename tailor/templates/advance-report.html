@@ -1,0 +1,131 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %} <title>Tailor Software</title> {% endblock title %}
+
+{% block body %}
+
+<div class="container mt-3" style="background-color: #fff; border-radius: 10px;">
+    
+
+    <div class="table-responsive pt-3">
+        <table id="advanceTable" class="display client-table compact dt-table">
+            <thead>
+                <tr>
+                    <!-- <th>Sr No.</th> -->
+                    <th>Bill Number</th>
+                    <th>Client Name</th>
+                    <th>Bill Date</th>
+                    <th>Amount Received On</th>
+                    <th>Amount Received</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for advance in advance_data %}
+                    <tr>
+                        <td>{{ advance.bill_number }}</td>
+                        <td>{{ advance.client_name  }}</td>
+                        <td>{{ advance.bill_date|date:"d-m-Y" }}</td>
+                        <td>{{ advance.receipt_date|date:"d-m-Y" }}</td>
+                        <td class="text-end">{{ advance.amount_received }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+
+    </div>
+
+
+
+
+</div>
+
+
+
+<script>
+
+
+    // Initialization of Datatable
+    $(document).ready(function () {
+    var table = $('#advanceTable').DataTable({
+        dom: '<"top d-flex justify-content-between"<"dt-buttons btn-group"B><"filter-container d-flex justify-content-between">><"row"<"col-md-12"<"search-container d-flex align-items-center">>>rt<"bottom"p><"clear">',
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                className: 'btn btn-success btn-sm',
+                text: '<i class="fa fa-file-excel" title="Export to Excel"></i>'
+            },
+            {
+                extend: 'pdfHtml5',
+                className: 'btn btn-danger btn-sm',
+                text: '<i class="fa fa-file-pdf" title="Export to PDF"></i>'
+            },
+        ],
+        language: {
+            emptyTable: "No Data Available",
+            search: '',
+            searchPlaceholder: 'Search here...',
+            paginate: {
+                previous: '<i class="fa fa-angle-left"></i>',
+                next: '<i class="fa fa-angle-right"></i>'
+            }
+        },
+        order: [],
+        pagingType: 'simple',
+        scrollX: true,
+        autoWidth: false,
+        initComplete: function () {
+
+            $('[data-toggle="tooltip"]').tooltip();
+            var api = this.api();
+
+            api.column(6).search('^active$', true, false).draw(); // Regex match for "active"
+
+            // Add custom search and filter UI
+            $(".search-container").html(`
+                <div class="d-flex gap-2">
+                    <input type="search" class="form-control" style="width:250px" placeholder="Search here..." aria-label="Search">
+                    <div class="position-relative" style="width: 150px;">
+                    <input type="text" id="filterDate" class="form-control flatpickr-input" placeholder="Select Date">
+                    <span id="clearDate" class="position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none;">&#10005;</span> 
+                </div>
+                </div>
+                
+            `);
+            $(".dt-buttons").appendTo(".search-container");
+
+            // Initialize Flatpickr
+            flatpickr("#filterDate", {
+                dateFormat: "Y-m-d", // Ensure your table date format matches this
+                onChange: function (selectedDates, dateStr) {
+                    // When a date is selected, filter the table
+                    if (dateStr) {
+                        api.column(3) // Change to the index of your date column (0-based)
+                            .search(dateStr, true, false)
+                            .draw();
+                        $("#clearDate").show(); // Show the clear button
+                    }
+                }
+            });
+
+            // Clear date filter functionality
+            $("#clearDate").on('click', function () {
+                $("#filterDate").val(''); // Clear the flatpickr input
+                api.column(3) // Change to the index of your date column (0-based)
+                    .search('')
+                    .draw(); // Reset the table filter
+                $(this).hide(); // Hide the clear button
+            });
+
+            // General search
+            $('input[type="search"]').on('keyup', function () {
+                api.search(this.value).draw();
+            });
+        }
+    });
+});
+
+
+</script>
+{% endblock body %}

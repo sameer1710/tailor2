@@ -1,0 +1,198 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tailor Software</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'assets\Bootstrap\css\bootstrap.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.0/build/qrcode.min.js"></script>
+
+    
+
+</head>
+
+<body style="background-color: #f0f0f0;">
+
+    <!-- === Start of Header Section === -->
+    <section>
+        <div class="container-fluid" style="background-color: #366FA1; font-family: 'Arial', sans-serif;">
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="{% url 'company_detail' %}">
+                        {% if company_data.logo %}
+                            <img src="{{ company_data.logo.url }}" alt="Company Logo" class="rounded-logo">
+                        {% else %}
+                            <img src="/static/images/placeholder.png" alt="Company Logo" class="rounded-logo">
+                        {% endif %}
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <!-- {% if user.is_authenticated %}
+    <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Logout</button>
+    </form>
+{% endif %} -->
+
+                    <div class="collapse  navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto me-auto fw-bold">
+                            {% if request.user.is_company_owner == True %}
+                            <li class="nav-item">
+                                <!-- <a class="nav-link active" aria-current="page" href="{% url 'client_creation' %}">Client Master</a> -->
+                                <a class="nav-link {% if request.path == '/api/client-master/' or '/api/client/' in request.path or '/api/maap-creation/' in request.path or '/api/create-bill/' in request.path %}active{% endif %}" href="{% url 'client_creation' %}">Client Master</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.path == '/api/bill-master/' or '/api/bill-detail/' in request.path or '/api/update-advance/' in request.path or '/api/maap-detail/' in request.path %}active{% endif %}" href="{% url 'bill_list' %}">Bill Master</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.path == '/api/employee-master/' %}active{% endif %}" href="{% url 'employee_creation' %}">Employee Master</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.path == '/api/advance-report/' %}active{% endif %}" href="{% url 'advance_list_view' %}">Receipt Report</a>
+                            </li>
+                            {% endif %}
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.path == '/api/employee-report/' %}active{% endif %}" href="{% url 'product_list_view' %}">Employee Report</a>
+                            </li>
+                            <!-- <li class="nav-item">
+                                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                            </li> -->
+                        </ul>
+
+
+                        <div class="d-flex ms-auto gap-2" style="align-items: center;">
+                            <p class="mb-0" style="align-self: center; color: #fff; font-weight: bold; font-family: 'Helvetica', sans-serif;">Welcome, {{ user.get_full_name|default:user.username }}</p>
+                            <a href="{% url 'company_detail' %}">
+                                <button class="Btn" style="background-color: rgb(5, 65, 65) !important;">
+                                    <div class="sign"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"/></svg></div>
+    
+                                    <div class="text">Profile</div>
+                                </button>
+                            </a>
+
+                            {% if user.is_authenticated %}
+                                <form method="POST" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <button class="Btn">
+        
+                                        <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
+                                        
+                                        <div class="text">Logout</div>
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </section>
+    <!-- === End of Header Section === -->
+
+
+    <!-- Custom Tooltip js code -->
+    <!-- <script>
+        function setCoolTool() {
+		var cooltool = $('.cooltool');
+	
+		cooltool.each(function() {
+			var el = $(this);
+			if(!el.find('.tooltip').length > 0) {
+				el.append('<span class="tooltip" data-tooltip="'+el.attr('data-tooltip-dir')+'"><span class="before-content">'+el.attr('data-content-before').replace(/\/n/g, "<br>")+'</span><span class="after-content">'+el.attr('data-content-after')+'</span></span>');
+			}
+		});
+
+		$(document).on('click', '.cooltool', function() {
+			var el = $(this);
+			var tool = $(this).find('.tooltip');
+			var b = el.find('.before-content');
+			var a = el.find('.after-content');
+			if (el.attr('data-content-after') != undefined) {
+				if (el.attr('data-keep-after') == 'true' || el.attr('data-keep-after') == '') {
+					a.addClass('showTip');
+					b.addClass('hideTip');
+				} else {
+					function changeContent() {
+						b.addClass('hideTip').delay(1200).queue(function(next){
+							b.removeClass('hideTip');
+							next();
+						});
+						a.addClass('showTip').delay(1200).queue(function(next){
+							a.removeClass('showTip');
+							next();
+						});
+					} changeContent();
+				}
+			}
+		});
+
+		$(document).on('mouseleave', '.cooltool', function() {
+			console.log('touchend');
+			var el = $(this);
+			var b = el.find('.before-content');
+			var a = el.find('.after-content');
+			function revertChange() {
+				a.delay(300).queue(function(next){
+					a.addClass('hideTip').removeClass('showTip');
+					a.removeClass('hideTip');
+					next();
+				});
+				b.delay(300).queue(function(next){
+					b.addClass('showTip').removeClass('hideTip');
+					b.removeClass('showTip');
+					next();
+				});
+			} revertChange();
+		});
+		
+	} setCoolTool();
+    </script> -->
+
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <!-- <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script> -->
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="{% static 'assets\Bootstrap\js\bootstrap.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js"></script>
+
+    
+
+    {% block body %}
+    {% endblock body %}
+
+
+
+
+</body>
+
+</html>
