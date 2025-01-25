@@ -10,13 +10,17 @@ from django.contrib.auth.forms import UserCreationForm
 class CompanyForm(forms.ModelForm):
     class Meta:
         model = Company
-        fields = ['company_name', 'logo', 'name', 'email', 'phone', 'address', 'prefix']
+        fields = ['company_name', 'logo', 'name', 'email', 'phone', 'address', 'prefix', 'note', 'qr_code', 'signature', 'upi_id', 'brand_1', 'brand_2', 'brand_3']
+
+        widgets = {
+            'note': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Note', 'rows': '4'}),
+        }
     
     def clean_prefix(self):
         prefix = self.cleaned_data.get('prefix')
         if not prefix.isalpha():
             raise forms.ValidationError("Prefix must contain only alphabets.")
-        if len(prefix) > 3:
+        if len(prefix) > 4:
             raise forms.ValidationError("Prefix cannot exceed 3 characters.")
         return prefix
 

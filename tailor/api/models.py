@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.utils import timezone
 from django.core.validators import RegexValidator
 from django.conf import settings
-
+from django.utils.safestring import mark_safe
 from django.db import models
 # from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 # from django.contrib.auth.models import AbstractBaseUser
@@ -14,8 +14,33 @@ from django.core.exceptions import ValidationError
 
 
 def validate_prefix(value):
-    if len(value) < 1 or len(value) > 4 or not value.isalpha():
+    if len(value) < 1 or len(value) > 5 or not value.isalpha():
         raise ValidationError('Prefix must be between 1 and 4 alphabetic characters.')
+
+# class Company(models.Model):
+#     company_name = models.CharField(max_length=255)
+#     logo = models.ImageField(upload_to='logos/', blank=True, null=True)
+#     name = models.CharField(max_length=255)
+#     email = models.EmailField(unique=True)
+#     phone = models.CharField(max_length=15, blank=True, null=True)
+#     address = models.TextField(blank=True, null=True)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+#     qr_code = models.ImageField(upload_to='qrcode/', blank=True, null=True)
+#     signature = models.ImageField(upload_to='signature/', blank=True, null=True)
+#     note = models.TextField(null=True, blank=True, help_text="Enter notes as separate lines.")
+#     prefix = models.CharField(max_length=4, validators=[validate_prefix], blank=True, null=True)  # New field for prefix
+
+#     def get_notes(self, obj):
+#     # """Display the note field with line breaks."""
+#         if obj.note:
+#             return mark_safe(obj.note.replace("\n", "<br>"))
+#         return "No notes available"
+
+#     formatted_notes.short_description = "Notes"
+
+#     def __str__(self):
+#         return self.company_name
 
 class Company(models.Model):
     company_name = models.CharField(max_length=255)
@@ -26,10 +51,46 @@ class Company(models.Model):
     address = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    prefix = models.CharField(max_length=4, validators=[validate_prefix], blank=True, null=True)  # New field for prefix
+    qr_code = models.ImageField(upload_to='qrcode/', blank=True, null=True)
+    brand_1 = models.ImageField(upload_to='brand_logo/', blank=True, null=True)
+    brand_2 = models.ImageField(upload_to='brand_logo/', blank=True, null=True)
+    brand_3 = models.ImageField(upload_to='brand_logo/', blank=True, null=True)
+    upi_id = models.CharField(max_length=255, null=True, blank=True)
+    signature = models.ImageField(upload_to='signature/', blank=True, null=True)
+    note = models.TextField(null=True, blank=True, help_text="Enter notes as separate lines.")
+    prefix = models.CharField(max_length=4, validators=[validate_prefix], blank=True, null=True)
+
+    def get_notes_as_list(self):
+        """Convert the note field into a list of lines."""
+        if self.note:
+            return self.note.split("\n")
+        return []
 
     def __str__(self):
         return self.company_name
+
+
+# class Company(models.Model):
+#     company_name = models.CharField(max_length=255)
+#     logo = models.ImageField(upload_to='logos/', blank=True, null=True)
+#     name = models.CharField(max_length=255)
+#     email = models.EmailField(unique=True)
+#     phone = models.CharField(max_length=15, blank=True, null=True)
+#     address = models.TextField(blank=True, null=True)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+#     note = models.TextField(null=True, blank=True, help_text="Enter notes as separate lines.")
+#     prefix = models.CharField(max_length=4, validators=[validate_prefix], blank=True, null=True)
+
+#     def get_notes_as_list(self):
+#         """Convert the note field into a list of lines."""
+#         if self.note:
+#             return self.note.split("\n")
+#         return []
+
+#     def __str__(self):
+#         return self.company_name
+
 
 
 class User(AbstractUser):
@@ -502,8 +563,8 @@ class create_bill(models.Model):
     client = models.ForeignKey(ClientMaster, on_delete=models.CASCADE, related_name='bills')
 
     bill_number = models.CharField(max_length=20, unique=True, blank=True)
-    bill_date = models.DateField()
-    delivery_date = models.DateField()
+    bill_date = models.DateField(null=True,blank=True)
+    delivery_date = models.DateField(null=True,blank=True)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     discount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     gst_rate = models.CharField(max_length=100, null=True, blank=True)

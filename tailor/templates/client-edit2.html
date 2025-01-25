@@ -8,7 +8,7 @@
 
 <div class="container mt-3 mb-4 p-2" style="background-color: #fff; border-radius: 8px;">
     <div class="container">
-        <h2 class="text-center mb-3">Edit <span style="font-weight: bold; color: #366FA1; text-decoration: underline;">{{ client.client_name }}</span> Details</h2>
+        <h2 class="text-center mb-3" style="font-family: 'Lato', serif;">Edit <span style="font-weight: bold; color: #133E87; text-decoration: underline; font-family: 'Lato', serif;">{{ client.client_name }}</span> Details</h2>
         <form method="POST">
             {% csrf_token %}
             
@@ -68,7 +68,7 @@
             <hr>
 
             <!-- Upper Maap Formset -->
-            <h3 class="mt-3" style="color: #133E87; font-weight: bold;">Upper Maap Details</h3>
+            <h3 class="mt-3" style="color: #133E87; font-weight: bold; font-family: 'Lato', serif;">Upper Maap Details</h3>
             {{ upper_formset.management_form }}
             <!-- {{ upper_formset.non_form_errors }} -->
             <table class="table table-sm maapTableEdit">
@@ -145,7 +145,7 @@
             </table>
 
             <!-- Lower Maap Formset -->
-            <h3 class="mt-4" style="color: #133E87; font-weight: bold;">Lower Maap Details</h3>
+            <h3 class="mt-4" style="color: #133E87; font-weight: bold; font-family: 'Lato', serif;">Lower Maap Details</h3>
             {{ lower_formset.management_form }}
             <!-- {{ lower_formset.non_form_errors }} -->
             <table class="table table-borderless rounded table-sm maapTableEdit">

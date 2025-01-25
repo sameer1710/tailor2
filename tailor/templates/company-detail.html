@@ -11,11 +11,12 @@
     <div class="d-flex gap-3" style="display: flex; align-items: center;">
         <img src="{{ company.logo }}" alt="Company Logo" class="rounded-profile">
         <div style="display: flex; flex-direction: column;">
-            <h5 class="m-0 p-0" style="font-family: 'Helvetica', sans-serif; text-transform: uppercase; font-weight: bold; color: #344CB7;">{{ company.company_name }}</h5>
-            <p class="m-0 p-0" style="font-family: 'Helvetica', sans-serif; font-size: 14px; font-style: italic; color: #b1b1b1;">{{ company.email }}</p>
+            <h5 class="m-0 p-0" style="font-family: 'Lato', serif; text-transform: uppercase; font-weight: bold !important; color: #344CB7;">{{ company.company_name }}</h5>
+            <p class="m-0 p-0" style="font-family: 'Lato', serif; font-size: 14px; font-style: italic; color: #b1b1b1;">{{ company.email }}</p>
         </div>
         {% if request.user.is_company_owner == True %}
-        <a class="ms-auto" href="{% url 'update_company' %}"><button class="btn btn-primary">Edit</button></a>
+        <a class="ms-auto" href="{% url 'update_company' %}"><button class="submit-button"><span>Edit</span></button></a>
+        
         {% endif %}
     </div>
 
@@ -61,7 +62,7 @@
             </div> -->
             <div class="input-field">
                 <input type="text" id="companyEmail" value="{{ company_data.email }}" readonly>
-                <label for="companyEmail">Owner Name</label>
+                <label for="companyEmail">Company Email</label>
             </div>
         </div>
 
@@ -90,8 +91,8 @@
                 </div>
             </div> -->
             <div class="input-field">
-                <input type="text" id="companyCreated" value="{{ company_data.created_at }}" readonly>
-                <label for="companyCreated">Company Created At</label>
+                <input type="text" id="companyCreated" value="{{ company_data.prefix }}" readonly>
+                <label for="companyCreated">Company Prefix</label>
             </div>
         </div>
 
@@ -105,28 +106,19 @@
                 </div>
             </div> -->
             <div class="input-field">
-                <input type="text" id="companyUpdated" value="{{ company_data.updated_at }}" readonly>
-                <label for="companyUpdated">Company Updated At</label>
+                <input type="text" id="companyUpdated" value="{{ company_data.upi_id }}" readonly>
+                <label for="companyUpdated">Company UPI ID</label>
             </div>
         </div>
 
-        <div class="col-8 mb-3">
-            <!-- <div class="row">
-                <div class="col-3">
-                    <p class="company-label">Company Address</p>
-                </div>
-                <div class="col-9">
-                    <p class="company-inps">{{ company_data.address }}</p>
-                </div> -->
-                <div class="input-field">
-                    
-                    <textarea name="" id="companyAddress" rows="2" readonly autofocus>{{ company_data.address }}</textarea>
-                    <label for="companyAddress">Company Address</label>
-                </div>
-            <!-- </div> -->
+        <div class="col-6 mb-3">
+            <div class="input-field">
+                <textarea class="textareaa" id="companyaddress" rows="6">{{ company_data.address }}</textarea>
+                <label for="companyaddress">Company Address</label>
+            </div>
         </div>
 
-        <div class="col-4 mb-3">
+        <div class="col-6 mb-3">
             <!-- <div class="row">
                 <div class="col-6">
                     <p class="company-label">Company Prefix</p>
@@ -136,8 +128,9 @@
                 </div>
             </div> -->
             <div class="input-field">
-                <input type="text" id="companyPrefix" value="{{ company_data.prefix }}" readonly>
-                <label for="companyPrefix">Company Prefix</label>
+                <!-- <input type="text" id="companyPrefix" value="{{ company_data.note }}" readonly> -->
+                 <textarea id="companyNotes" rows="6">{{ company_data.note }}</textarea>
+                <label for="companyNotes">Company Note</label>
             </div>
         </div>
     </div>

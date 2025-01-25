@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as DefaultUserAdmin
+from django.utils.safestring import mark_safe
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import (
     ClientMaster,
@@ -59,10 +60,47 @@ class UserAdmin(DefaultUserAdmin):
     )
 
 # Custom CompanyAdmin (optional if additional customization is needed)
+# class CompanyAdmin(admin.ModelAdmin):
+#     list_display = ['company_name', 'email', 'phone', 'address', 'created_at']
+#     search_fields = ['company_name', 'email', 'phone']
+#     list_filter = ['created_at']
+
+# # Register Company model
+# admin.site.register(Company, CompanyAdmin)
+
+
+# class CompanyAdmin(admin.ModelAdmin):
+    
+#     list_display = ['company_name', 'email', 'phone', 'address', 'created_at', "formatted_notes"]
+#     search_fields = ['company_name', 'email', 'phone']
+#     list_filter = ['created_at']
+
+#     def formatted_notes(self, obj):
+#         """Display the note field in a formatted list."""
+#         notes = obj.get_notes_as_list()
+#         if notes:
+#             formatted = "<ul>" + "".join(f"<li>{note}</li>" for note in notes) + "</ul>"
+#             return mark_safe(formatted)
+#         return "No notes available"
+    
+#     formatted_notes.short_description = "Notes"
+
+# admin.site.register(Company, CompanyAdmin)
+
 class CompanyAdmin(admin.ModelAdmin):
-    list_display = ['company_name', 'email', 'phone', 'address', 'created_at']
+    list_display = ['company_name', 'email', 'phone', 'address', 'created_at', 'formatted_notes']
     search_fields = ['company_name', 'email', 'phone']
     list_filter = ['created_at']
 
-# Register Company model
+    def formatted_notes(self, obj):
+        """Display the note field in a formatted list."""
+        notes = obj.get_notes_as_list()
+        if notes:
+            formatted = "<ul>" + "".join(f"<li>{note}</li>" for note in notes) + "</ul>"
+            return mark_safe(formatted)
+        return "No notes available"
+
+    formatted_notes.short_description = "Notes"
+
+
 admin.site.register(Company, CompanyAdmin)

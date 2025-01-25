@@ -6,17 +6,19 @@
 
 
 .navbar-nav .nav-link {
-    color: white !important;
+    color: #000 !important;
+    font-family: "Lato", serif;
 }
 
 
 .navbar-nav .nav-link:hover {
-    color: rgb(173, 172, 172) !important;
+    /* color: rgb(173, 172, 172) !important; */
+    color: #000;
 }
 
 
 .navbar-nav .nav-item .nav-link.active {
-    border-bottom: 2px solid gold !important;
+    border-bottom: 3px solid #133E87 !important;
 }
 
 
@@ -138,7 +140,7 @@ select:valid~label,
 }
 
 .bill-table thead th {
-    background-color: #588434;
+    background-color: #133E87;
     color: #fff;
     font-size: 12px;
 }
@@ -495,7 +497,7 @@ select:valid~label,
     width: fit-content;
 }
 
-.coolinput input[type=text].input {
+.coolinput input[type=text].input, textarea {
     padding: 7px 8px;
     font-size: 0.80rem;
     border: 2px #818CF8 solid;
@@ -576,7 +578,8 @@ select:valid~label,
     background-color: #fff;
     border: 1px solid #ddd;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    padding: 5px;
+    width: 100%;
     margin-top: 20px;
 }
 
@@ -609,6 +612,10 @@ select:valid~label,
         visibility: visible;
         /* Make only the print-container and its children visible */
     }
+    .footerr {
+        position: fixed;
+        bottom: 0 !important;
+    }
 
     .print-container {
         position: absolute;
@@ -617,12 +624,56 @@ select:valid~label,
         width: 100%;
         /* Full width */
         height: 100%;
+        background-color: #fff;
+        border: 1px solid #000 !important;
         /* Full height */
         margin: 0;
-        padding: 15px;
+        /* padding: 15px; */
         /* padding-left: 15px; */
         box-sizing: border-box;
         /* Ensure box model is consistent */
+    }
+
+    /* Size editing */
+    .comLogo{
+        height: 75px;
+        width: 75px;
+    }
+    .compName {
+        font-size: 17px;
+    }
+    .compAddress {
+        font-size: 10px !important;
+    }
+    .compPhone {
+        font-size: 10px !important;
+    }
+    .bill-label {
+        font-size: 12px !important;
+    }
+    .bill-inps {
+        font-size: 10px !important;
+    }
+    .org {
+        font-size: 8px !important;
+    }
+    .bill-table tbody tr td {
+        font-size: 8px !important;
+    }
+    .bill-table tfoot tr td {
+        font-size: 8px !important;
+    }
+    .bill-table thead tr th {
+        font-size: 10px !important;
+    }
+    .printLabel {
+        font-size: 10px !important;
+    }
+    .printInp {
+        font-size: 8px !important;
+    }
+    .printNote {
+        font-size: 8px !important;
     }
 }
 
@@ -938,7 +989,7 @@ select:valid~label,
     width: 45px; /* Adjust the size as needed */
     height: 45px; /* Ensure it stays a perfect circle */
     border-radius: 50%; /* Makes the image circular */
-    border: 2px solid gold; /* Adds a golden border */
+    border: 2px solid #133E87; /* Adds a golden border */
     object-fit: cover; /* Ensures the image scales nicely within the circle */
 }
 
@@ -946,7 +997,7 @@ select:valid~label,
     width: 90px; /* Adjust the size as needed */
     height: 90px; /* Ensure it stays a perfect circle */
     border-radius: 50%; /* Makes the image circular */
-    border: 2px solid gold;
+    border: 2px solid #133E87;
     object-fit: cover; /* Ensures the image scales nicely within the circle */
 }
 

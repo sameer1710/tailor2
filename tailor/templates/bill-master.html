@@ -7,7 +7,7 @@
 
 
 <div class="container mt-3" style="background-color: #fff; border-radius: 8px;">
-    <h3 class="pt-3" style="color: #4B89FB; font-weight: bold;">Bill Details</h3>
+    <h3 class="pt-3" style="color: #4B89FB; font-weight: bold; font-family: 'Lato', serif; font-style: italic;">Bill Details</h3>
     <div class="table-responsive mt-2">
         {% if bills %}
         <table id="billTable" class="display dt-table compact billTables">
@@ -27,17 +27,17 @@
                 {% for bill in bills %}
                 <tr>
                     <td class="d-flex pt-2" style="justify-content: space-evenly; align-items: center !important;">
-                        <a href="javascript:void(0);" class="view-advances" data-bs-toggle="modal" data-bs-target="#advancesModal" data-bill-id="{{ bill.id }}">
-                            <i class="fa-solid fa-eye button1 cooltool" 
+                        <a href="javascript:void(0);" class="view-advances" data-bs-toggle="modal" data-bs-target="#advancesModal" data-bill-id="{{ bill.id }}" data-bill-number="{{ bill.bill_number }}" data-bill-totalbill="{{ bill.total_bill }}" data-bill-balance="{{ bill.amount_receivable }}">
+                            <i class="fa-solid fa-eye button1 cooltool" style="color: #133E87;"
                             data-tooltip-dir="right" 
                             data-content-before="View Advances" 
                             data-content-after="View Advances" 
                             data-tooltip-border="true">
                             </i>
                         </a>
-                        <a href="{% url 'bill_detail_view' bill_id=bill.id %}"><i class="fas fa-receipt button1 cooltool" data-tooltip-dir="right" data-content-before="View Bill" data-content-after="View Bill" data-tooltip-border="true" style="color: rgba(var(--bs-link-color-rgb),var(--bs-link-opacity,1));"></i></a>
-                        <a href="{% url 'edit_advance_form' bill_id=bill.id %}" {% if bill.amount_receivable == 0 %} class="disabled" style="pointer-events: none; color: grey;" {% endif %}><i class="fa-solid fa-pen-to-square button1 cooltool" data-tooltip-dir="right" data-content-before="Add Advance" data-content-after="Add Advance" data-tooltip-border="true"></i></a>
-                        <a href="{% url 'maap_detail_view' bill_id=bill.id %}"><i class="fas fa-print button1 cooltool" data-tooltip-dir="right" data-content-before="Print Maap Details" data-content-after="Print Maap Details" data-tooltip-border="true"></i></a>
+                        <a href="{% url 'bill_detail_view' bill_id=bill.id %}"><i class="fas fa-receipt button1 cooltool" data-tooltip-dir="right" data-content-before="View Bill" data-content-after="View Bill" data-tooltip-border="true" style="color: #133E87;"></i></a>
+                        <a href="{% url 'edit_advance_form' bill_id=bill.id %}" {% if bill.amount_receivable == 0 %} class="disabled" style="pointer-events: none; color: grey;" {% endif %}><i class="fa-solid fa-pen-to-square button1 cooltool" style="color: #133E87;" data-tooltip-dir="right" data-content-before="Add Advance" data-content-after="Add Advance" data-tooltip-border="true"></i></a>
+                        <a href="{% url 'maap_detail_view' bill_id=bill.id %}"><i class="fas fa-print button1 cooltool" style="color: #133E87;" data-tooltip-dir="right" data-content-before="Print Maap Details" data-content-after="Print Maap Details" data-tooltip-border="true"></i></a>
                         <!-- <button 
                             type="button" 
                             class="btn btn-primary btn-sm view-advances" 
@@ -92,7 +92,10 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="advancesModalLabel">Advances Received</h5>
+                <h5 class="modal-title fw-bold" id="advancesModalLabel" style="font-family: 'Lato', serif;">Advances Received</h5>
+                <h5 class="modal-title ms-4">Bill Number:- <span id="billNumber" style="text-decoration: underline;"></span></h5>
+                <h5 class="modal-title ms-4">Total Amount:- <span id="totalAmount" style="text-decoration: underline;"></span></h5>
+                <h5 class="modal-title ms-4">Balance:- <span id="balance" style="text-decoration: underline;"></span></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -284,6 +287,7 @@ function generateQRCode() {
     document.querySelectorAll('.update-advance-btn').forEach(button => {
         button.addEventListener('click', function () {
             const billId = this.getAttribute('data-bill-id'); // Get the bill ID from the button
+            
             const form = document.getElementById('advanceForm');
             form.action = `/api/update-advance/${billId}/`; // Update the form action dynamically
             console.log('Sameer', billId);
@@ -445,6 +449,17 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".view-advances").forEach(button => {
         button.addEventListener("click", function () {
             const billId = this.getAttribute("data-bill-id");
+            const billNumber = this.getAttribute('data-bill-number');
+            const updateNumber = document.getElementById("billNumber");
+            updateNumber.innerText = billNumber;
+
+            const totalAmount = this.getAttribute("data-bill-totalbill");
+            const updateTotalAmount = document.getElementById("totalAmount");
+            updateTotalAmount.innerText = totalAmount;
+
+            const balance = this.getAttribute("data-bill-balance");
+            const updateBalance = document.getElementById("balance");
+            updateBalance.innerText = balance;
             const advancesTableBody = document.getElementById("advancesTableBody");
 
             // Clear existing rows

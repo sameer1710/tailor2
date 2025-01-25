@@ -48,25 +48,17 @@
             </div>
             <div class="col-lg-4 mb-3">
                 <div class="input-field">
-                    <input type="date" name="bill_date" id="billdate">
+                    <input type="date" name="bill_date" id="billdate" required>
                     <label for="billdate">Bill Date</label>
-                    {% if bill_form.bill_date.errors %}
-                    <div class="error-message text-danger">
-                        <small class="text-danger">{{ bill_form.bill_date.errors.0 }}</small>
-                    </div>
-                    {% endif %}
                 </div>
+                <span id="billdateerror" style="color: red; display: none;">Bill Date is required.</span>
             </div>
             <div class="col-lg-4 mb-3">
                 <div class="input-field">
-                    <input type="date" name="delivery_date" id="deliverydate">
+                    <input type="date" name="delivery_date" id="deliverydate" required>
                     <label for="deliverydate">Delivery Date</label>
-                    {% if bill_form.delivery_date.errors %}
-                    <div class="error-message text-danger">
-                        <small class="text-danger">{{ bill_form.delivery_date.errors.0 }}</small>
-                    </div>
-                    {% endif %}
                 </div>
+                <span id="deliverydateerror" style="color: red; display: none;">Delivery Date is required.</span>
             </div>
         </div>
         <hr>
@@ -213,6 +205,43 @@
 
 
 <script>
+    document.getElementById('billdate').addEventListener('input', function () {
+        // Hide error message when user starts typing
+        if (this.value) {
+            document.getElementById('billdateerror').style.display = 'none';
+        }
+    });
+
+    document.getElementById('deliverydate').addEventListener('input', function () {
+        // Hide error message when user starts typing
+        if (this.value) {
+            document.getElementById('deliverydateerror').style.display = 'none';
+        }
+    });
+
+    function validateForm() {
+        var startDate = document.getElementById('billdate').value;
+        var endDate = document.getElementById('deliverydate').value;
+        var isValid = true;
+
+        // Check if start date is empty
+        if (!startDate) {
+            document.getElementById('billdateerror').style.display = 'inline';
+            isValid = false;
+        }
+
+        // Check if end date is empty
+        if (!endDate) {
+            document.getElementById('deliverydateerror').style.display = 'inline';
+            isValid = false;
+        }
+
+        return isValid; // If any field is empty, form won't submit
+    }
+</script>
+
+
+<script>
 
     //Giving 2 decimals to all fields
     document.addEventListener("DOMContentLoaded", function () {
@@ -355,6 +384,27 @@
 
     // ----------------------------------------------------------------------------------------
     document.getElementById('addRow').addEventListener('click', function () {
+        // Check if row count is 10 before adding a new row
+        const rowCount = document.getElementById('billBody').children.length;
+
+        if (rowCount >= 10) {
+            // Disable the Add button
+            document.getElementById('addRow').disabled = true;
+
+            // Show an error message
+            // alert("You can't add more than 10 rows.");
+            let errorMessage = document.getElementById('error-message');
+            if (!errorMessage) {
+                errorMessage = document.createElement('div');
+                errorMessage.id = 'error-message';
+                errorMessage.classList.add('alert', 'alert-warning', 'alert-dismissible', 'fade', 'show');
+                errorMessage.textContent = "You can't add more than 10 products.";
+                document.getElementById('addRow').insertAdjacentElement('afterend', errorMessage);
+            }
+            return; // Stop execution to prevent adding a new row
+        }
+
+        // Otherwise, add the row
         addRow('billBody', 'id_product_form-TOTAL_FORMS');
     });
 

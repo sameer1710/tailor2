@@ -1119,14 +1119,27 @@ def create_bill_view(request, client_id):
 def edit_advance_form(request, bill_id):
     bill = get_object_or_404(create_bill, id=bill_id)
     client = bill.client
-    company = bill.company  # Assuming the bill is associated with a company
+    company = request.user.company
     AdvanceFormSet = modelformset_factory(advance_list, form=advanceForms, extra=1, can_delete=True)
     formset = AdvanceFormSet(queryset=advance_list.objects.filter(invoice=bill))
 
     if request.method == 'POST':
-        bill_form = billForms(request.POST, instance=bill)
+        # Debugging output
+        print('POST Data:', request.POST)
+        print('FILES Data:', request.FILES)
+        # print('Bill data before saving:', bill.__dict__)
+
+        bill_form = billForms(request.POST, request.FILES, instance=bill)
         formset = AdvanceFormSet(request.POST, queryset=advance_list.objects.filter(invoice=bill))
+
+        # Check if formset or bill_form is invalid and print errors
+        if not formset.is_valid():
+            print('Formset errors:', formset.errors)
+        if not bill_form.is_valid():
+            print('Bill form errors:', bill_form.errors)
+
         if formset.is_valid() and bill_form.is_valid():
+            print('Forms are valid, saving...')
 
             # Update bill fields
             bill.amount_receivable = bill_form.cleaned_data.get('amount_receivable', bill.amount_receivable)
@@ -1144,6 +1157,7 @@ def edit_advance_form(request, bill_id):
             for deleted_form in formset.deleted_objects:
                 deleted_form.delete()
 
+            print('Redirecting to Bill Master...')
             return redirect('bill_list')  # Redirect to another page after saving
 
     return render(request, 'bill-edit.html', {'formset': formset, 'bill': bill, 'client': client, 'bill_number': bill.bill_number})
