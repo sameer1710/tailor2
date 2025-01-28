@@ -70,10 +70,13 @@
                                 <td>{{ form.upper_neck }}</td>
                                 <td>{{ form.upper_other_remark }}</td>
                                 <td style="vertical-align: middle !important;">
-                                    <button type="button" class="upperMaapDeleteBtn" style="border: none; background-color: transparent;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="red" class="bi bi-trash3" viewBox="0 0 16 16">
-                                        <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
-                                      </svg>
+                                    <button type="button" class="upperMaapDeleteBtn"
+                                        style="border: none; background-color: transparent;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="red"
+                                            class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path
+                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                                        </svg>
                                     </button>
                                 </td>
                             </tr>
@@ -81,6 +84,7 @@
                         </tbody>
                     </table>
                     <button type="button" class="create-button" id="addRowBtn">Add More</button>
+                    <!-- <button type="button" class="create-button" id="bulkUploadBtn">Bulk Upload</button> -->
                 </div>
                 <hr>
             </div>
@@ -116,9 +120,12 @@
                                 <td>{{ form.lower_jhola }}</td>
                                 <td>{{ form.lower_other_remark }}</td>
                                 <td style="vertical-align: middle !important;">
-                                    <button type="button" class="lowerMaapDeleteBtn" style="border: none; background-color: transparent;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="red" class="bi bi-trash3" viewBox="0 0 16 16">
-                                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                                    <button type="button" class="lowerMaapDeleteBtn"
+                                        style="border: none; background-color: transparent;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="red"
+                                            class="bi bi-trash3" viewBox="0 0 16 16">
+                                            <path
+                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
                                         </svg>
                                     </button>
                                 </td>
@@ -135,107 +142,197 @@
         <div class="w-100 d-flex">
             <button type="submit" class="create-button ms-auto me-3">Submit</button>
         </div>
+
+        <!-- Bulk Upload Modal -->
+        <div id="bulkUploadModal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Bulk Upload</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="bulkUploadForm" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="bulkUploadFile">Upload CSV or Excel file:</label>
+                                <input type="file" class="form-control" id="bulkUploadFile" name="bulkUploadFile"
+                                    accept=".csv, .xlsx">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="uploadFileBtn">Upload</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </form>
 
 
 </div>
 <script>
-//     document.getElementById('addLowerMaapBtn').addEventListener('click', function () {
-//     const tbody = document.getElementById('lowermaapBody');
-//     const totalForms = document.querySelector('#id_form-TOTAL_FORMS'); // Hidden input for TOTAL_FORMS
-//     const formCount = parseInt(totalForms.value, 10);
-
-//     // Clone the last row (if exists), otherwise create a new one based on your initial HTML
-//     const lastRow = tbody.lastElementChild;
-//     const clone = lastRow ? lastRow.cloneNode(true) : createEmptyRow();
-
-//     // Update the names and IDs in the cloned row
-//     clone.querySelectorAll('input, select, textarea').forEach(input => {
-//         const name = input.getAttribute('name').replace(/-\d+-/, `-${formCount}-`);
-//         const id = input.getAttribute('id').replace(/-\d+-/, `-${formCount}-`);
-//         input.setAttribute('name', name);
-//         input.setAttribute('id', id);
-//         input.value = ''; // Clear the value
-//     });
-
-//     tbody.appendChild(clone);
-
-//     // Increment TOTAL_FORMS
-//     totalForms.value = formCount + 1;
-// });
-
-document.getElementById('addRowBtn').addEventListener('click', function () {
-    addRow('uppermaapBody', 'id_upper-TOTAL_FORMS');
-});
-
-document.getElementById('addLowerMaapBtn').addEventListener('click', function () {
-    addRow('lowermaapBody', 'id_lower-TOTAL_FORMS');
-});
-
-function addRow(tbodyId, totalFormsId) {
-    const tbody = document.getElementById(tbodyId);
-    const totalForms = document.getElementById(totalFormsId);
-    const formCount = parseInt(totalForms.value, 10);
-
-    const newRow = tbody.firstElementChild.cloneNode(true);
-
-    newRow.querySelectorAll('input, select, textarea').forEach(input => {
-        input.name = input.name.replace(/-\d+-/, `-${formCount}-`);
-        input.id = input.id.replace(/-\d+-/, `-${formCount}-`);
-        input.value = '';
+    document.getElementById('bulkUploadBtn').addEventListener('click', () => {
+        $('#bulkUploadModal').modal('show');
     });
 
-    tbody.appendChild(newRow);
-    totalForms.value = formCount + 1;
-}
-
-
-// Function to create an empty row if no initial row exists
-// function createEmptyRow() {
-//     const row = document.createElement('tr');
-//     row.innerHTML = `
-//         <td><input type="text" name="form-__prefix__-lower_maap" id="id_form-__prefix__-lower_maap" class="form-control"></td>
-//         <td><input type="number" name="form-__prefix__-lower_length" id="id_form-__prefix__-lower_length" class="form-control"></td>
-//         <td><input type="number" name="form-__prefix__-lower_waist" id="id_form-__prefix__-lower_waist" class="form-control"></td>
-//         <td><input type="number" name="form-__prefix__-lower_hip" id="id_form-__prefix__-lower_hip" class="form-control"></td>
-//         <td><input type="number" name="form-__prefix__-lower_thai" id="id_form-__prefix__-lower_thai" class="form-control"></td>
-//         <td><input type="number" name="form-__prefix__-lower_knee" id="id_form-__prefix__-lower_knee" class="form-control"></td>
-//         <td><input type="number" name="form-__prefix__-lower_bottom" id="id_form-__prefix__-lower_bottom" class="form-control"></td>
-//         <td><input type="number" name="form-__prefix__-lower_jhola" id="id_form-__prefix__-lower_jhola" class="form-control"></td>
-//         <td><textarea name="form-__prefix__-lower_other_remark" id="id_form-__prefix__-lower_other_remark" class="form-control"></textarea></td>
-//         <td><button type="button" class="lowerMaapDeleteBtn">Delete</button></td>
-//     `;
-//     return row;
-// }
-
-
-document.addEventListener('click', function (event) {
-    if (event.target.closest('.lowerMaapDeleteBtn')) {
-        const row = event.target.closest('tr');
-        const tbody = document.getElementById('lowermaapBody');
-        const totalForms = document.querySelector('#id_form-TOTAL_FORMS');
-
-        if (tbody.children.length > 1) {
-            row.remove();
-            totalForms.value = tbody.children.length;
-        } else {
-            alert("At least one row must remain.");
+    document.getElementById('uploadFileBtn').addEventListener('click', () => {
+        const fileInput = document.getElementById('bulkUploadFile');
+        if (fileInput.files.length === 0) {
+            alert("Please select a file!");
+            return;
         }
+
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append('file', file);
+
+        // Send file to the server
+        fetch('/upload-bulk-data/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}', // Django CSRF token
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Process returned data and update the table
+                    const tbody = document.getElementById('uppermaapBody');
+                    data.rows.forEach(row => {
+                        const newRow = document.createElement('tr');
+                        newRow.innerHTML = `
+            <td>${row.upper_maap}</td>
+            <td>${row.upper_length}</td>
+            <td>${row.upper_shoulder}</td>
+            <td>${row.upper_sleeve_length} ${row.upper_sleeve_bicep} ${row.upper_sleeve_cuff}</td>
+            <td>${row.upper_chest_body} ${row.upper_chest_ready}</td>
+            <td>${row.upper_lowerchest_body} ${row.upper_lowerchest_ready}</td>
+            <td>${row.upper_stomach_body} ${row.upper_stomach_ready}</td>
+            <td>${row.upper_hip_body} ${row.upper_hip_ready}</td>
+            <td>${row.upper_neck}</td>
+            <td>${row.upper_other_remark}</td>
+            <td>
+              <button type="button" class="upperMaapDeleteBtn" style="border: none; background-color: transparent;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="red" class="bi bi-trash3" viewBox="0 0 16 16">
+                  <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                </svg>
+              </button>
+            </td>
+          `;
+                        tbody.appendChild(newRow);
+                    });
+                    alert("Bulk data uploaded successfully!");
+                    $('#bulkUploadModal').modal('hide');
+                } else {
+                    alert("Failed to upload data. Please check the file format.");
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+</script>
+<script>
+    //     document.getElementById('addLowerMaapBtn').addEventListener('click', function () {
+    //     const tbody = document.getElementById('lowermaapBody');
+    //     const totalForms = document.querySelector('#id_form-TOTAL_FORMS'); // Hidden input for TOTAL_FORMS
+    //     const formCount = parseInt(totalForms.value, 10);
+
+    //     // Clone the last row (if exists), otherwise create a new one based on your initial HTML
+    //     const lastRow = tbody.lastElementChild;
+    //     const clone = lastRow ? lastRow.cloneNode(true) : createEmptyRow();
+
+    //     // Update the names and IDs in the cloned row
+    //     clone.querySelectorAll('input, select, textarea').forEach(input => {
+    //         const name = input.getAttribute('name').replace(/-\d+-/, `-${formCount}-`);
+    //         const id = input.getAttribute('id').replace(/-\d+-/, `-${formCount}-`);
+    //         input.setAttribute('name', name);
+    //         input.setAttribute('id', id);
+    //         input.value = ''; // Clear the value
+    //     });
+
+    //     tbody.appendChild(clone);
+
+    //     // Increment TOTAL_FORMS
+    //     totalForms.value = formCount + 1;
+    // });
+
+    document.getElementById('addRowBtn').addEventListener('click', function () {
+        addRow('uppermaapBody', 'id_upper-TOTAL_FORMS');
+    });
+
+    document.getElementById('addLowerMaapBtn').addEventListener('click', function () {
+        addRow('lowermaapBody', 'id_lower-TOTAL_FORMS');
+    });
+
+    function addRow(tbodyId, totalFormsId) {
+        const tbody = document.getElementById(tbodyId);
+        const totalForms = document.getElementById(totalFormsId);
+        const formCount = parseInt(totalForms.value, 10);
+
+        const newRow = tbody.firstElementChild.cloneNode(true);
+
+        newRow.querySelectorAll('input, select, textarea').forEach(input => {
+            input.name = input.name.replace(/-\d+-/, `-${formCount}-`);
+            input.id = input.id.replace(/-\d+-/, `-${formCount}-`);
+            input.value = '';
+        });
+
+        tbody.appendChild(newRow);
+        totalForms.value = formCount + 1;
     }
 
-    if (event.target.closest('.upperMaapDeleteBtn')) {
-        const row = event.target.closest('tr');
-        const tbody = document.getElementById('uppermaapBody');
-        const totalForms = document.querySelector('#id_form-TOTAL_FORMS');
 
-        if (tbody.children.length > 1) {
-            row.remove();
-            totalForms.value = tbody.children.length;
-        } else {
-            alert("At least one row must remain.");
+    // Function to create an empty row if no initial row exists
+    // function createEmptyRow() {
+    //     const row = document.createElement('tr');
+    //     row.innerHTML = `
+    //         <td><input type="text" name="form-__prefix__-lower_maap" id="id_form-__prefix__-lower_maap" class="form-control"></td>
+    //         <td><input type="number" name="form-__prefix__-lower_length" id="id_form-__prefix__-lower_length" class="form-control"></td>
+    //         <td><input type="number" name="form-__prefix__-lower_waist" id="id_form-__prefix__-lower_waist" class="form-control"></td>
+    //         <td><input type="number" name="form-__prefix__-lower_hip" id="id_form-__prefix__-lower_hip" class="form-control"></td>
+    //         <td><input type="number" name="form-__prefix__-lower_thai" id="id_form-__prefix__-lower_thai" class="form-control"></td>
+    //         <td><input type="number" name="form-__prefix__-lower_knee" id="id_form-__prefix__-lower_knee" class="form-control"></td>
+    //         <td><input type="number" name="form-__prefix__-lower_bottom" id="id_form-__prefix__-lower_bottom" class="form-control"></td>
+    //         <td><input type="number" name="form-__prefix__-lower_jhola" id="id_form-__prefix__-lower_jhola" class="form-control"></td>
+    //         <td><textarea name="form-__prefix__-lower_other_remark" id="id_form-__prefix__-lower_other_remark" class="form-control"></textarea></td>
+    //         <td><button type="button" class="lowerMaapDeleteBtn">Delete</button></td>
+    //     `;
+    //     return row;
+    // }
+
+
+    document.addEventListener('click', function (event) {
+        if (event.target.closest('.lowerMaapDeleteBtn')) {
+            const row = event.target.closest('tr');
+            const tbody = document.getElementById('lowermaapBody');
+            const totalForms = document.querySelector('#id_form-TOTAL_FORMS');
+
+            if (tbody.children.length > 1) {
+                row.remove();
+                totalForms.value = tbody.children.length;
+            } else {
+                alert("At least one row must remain.");
+            }
         }
-    }
-});
+
+        if (event.target.closest('.upperMaapDeleteBtn')) {
+            const row = event.target.closest('tr');
+            const tbody = document.getElementById('uppermaapBody');
+            const totalForms = document.querySelector('#id_form-TOTAL_FORMS');
+
+            if (tbody.children.length > 1) {
+                row.remove();
+                totalForms.value = tbody.children.length;
+            } else {
+                alert("At least one row must remain.");
+            }
+        }
+    });
 
 
 </script>

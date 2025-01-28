@@ -10,6 +10,7 @@ from django.db.models import Sum
 # from django.forms import modelformset_factory
 # from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+import pandas as pd
 # from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password
 from django.http import Http404, HttpResponse
@@ -1529,3 +1530,52 @@ def advance_list_view(request):
 
     # Render the template with the data
     return render(request, 'advance-report.html', {'advance_data': advance_data})
+
+
+
+
+
+
+# Bulk Upload Views
+def upload_bulk_data(request):
+    if request.method == 'POST':
+        file = request.FILES.get('file')
+        if not file:
+            return JsonResponse({'success': False, 'message': 'No file provided'})
+
+        try:
+            # Read the file (CSV or Excel)
+            if file.name.endswith('.csv'):
+                data = pd.read_csv(file)
+            elif file.name.endswith('.xlsx'):
+                data = pd.read_excel(file)
+            else:
+                return JsonResponse({'success': False, 'message': 'Invalid file format'})
+
+            # Process data and prepare rows
+            rows = []
+            for _, row in data.iterrows():
+                rows.append({
+                    'upper_maap': row.get('Upper Maap', ''),
+                    'upper_length': row.get('Length', ''),
+                    'upper_shoulder': row.get('Shoulder', ''),
+                    'upper_sleeve_length': row.get('Sleeve Length', ''),
+                    'upper_sleeve_bicep': row.get('Sleeve Bicep', ''),
+                    'upper_sleeve_cuff': row.get('Sleeve Cuff', ''),
+                    'upper_chest_body': row.get('Chest Body', ''),
+                    'upper_chest_ready': row.get('Chest Ready', ''),
+                    'upper_lowerchest_body': row.get('Lower Chest Body', ''),
+                    'upper_lowerchest_ready': row.get('Lower Chest Ready', ''),
+                    'upper_stomach_body': row.get('Stomach Body', ''),
+                    'upper_stomach_ready': row.get('Stomach Ready', ''),
+                    'upper_hip_body': row.get('Hip Body', ''),
+                    'upper_hip_ready': row.get('Hip Ready', ''),
+                    'upper_neck': row.get('Neck', ''),
+                    'upper_other_remark': row.get('Other Remark', ''),
+                })
+
+            return JsonResponse({'success': True, 'rows': rows})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request'})

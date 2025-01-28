@@ -26,6 +26,7 @@ urlpatterns = [
     path('', views.custom_login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('get_advances/<int:bill_id>/', views.get_advances, name='get_advances'),
+    path('upload-bulk-data/', views.upload_bulk_data, name='upload_bulk_data'),
     
     # path('logout/company/', views.company_logout, name='company_logout'),
 
