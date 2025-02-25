@@ -86,19 +86,33 @@ WSGI_APPLICATION = 'tailor.wsgi.application'
 # }
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'sql_server.pyodbc',
+#         'NAME': 'tailor_db',            # Your database name
+#         'USER': 'tailor_user',          # SQL Server login username
+#         'PASSWORD': 'qSI6HG)w0jK1',     # Password for the user
+#         'HOST': '103.190.212.34',
+#         'PORT': '',                     # Port (default is 1433, or your custom port)
+#         'OPTIONS': {
+#             'driver': 'ODBC Driver 17 for SQL Server',  # Ensure the correct ODBC driver is installed
+#         },
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'sql_server.pyodbc',
-        'NAME': 'tailor_db',            # Your database name
-        'USER': 'tailor_user',          # SQL Server login username
-        'PASSWORD': 'qSI6HG)w0jK1',     # Password for the user
-        'HOST': '169.254.116.91',
-        'PORT': '5000',                     # Port (default is 1433, or your custom port)
-        'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',  # Ensure the correct ODBC driver is installed
-        },
+        'ENGINE': 'django.db.backends.mysql',  # For MySQL
+        # 'ENGINE': 'django.db.backends.postgresql',  # For PostgreSQL
+        'NAME': 'tailor_db',
+        'USER': 'tailor_user',
+        'PASSWORD': 'qSI6HG)w0jK1',
+        'HOST': '192.168.2.10',  # Set to 'localhost' or an IP address
+        'PORT': '3306',  # For MySQL, default port is 3306
+        # 'PORT': '5432',  # For PostgreSQL, default port is 5432
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
