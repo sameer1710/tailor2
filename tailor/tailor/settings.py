@@ -78,13 +78,27 @@ WSGI_APPLICATION = 'tailor.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'sql_server.pyodbc',
+        'NAME': 'tailor_db',            # Your database name
+        'USER': 'tailor_user',          # SQL Server login username
+        'PASSWORD': 'qSI6HG)w0jK1',     # Password for the user
+        'HOST': '192.168.2.10',
+        'PORT': '1433',                     # Port (default is 1433, or your custom port)
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',  # Ensure the correct ODBC driver is installed
+        },
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
