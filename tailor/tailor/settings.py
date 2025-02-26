@@ -100,19 +100,30 @@ WSGI_APPLICATION = 'tailor.wsgi.application'
 #     }
 # }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',  # For MySQL
+#         # 'ENGINE': 'django.db.backends.postgresql',  # For PostgreSQL
+#         'NAME': 'tailor_db',
+#         'USER': 'tailor_user',
+#         'PASSWORD': 'qSI6HG)w0jK1',
+#         'HOST': '192.168.2.10',  # Set to 'localhost' or an IP address
+#         'PORT': '3306',  # For MySQL, default port is 3306
+#         # 'PORT': '5432',  # For PostgreSQL, default port is 5432
+#     }
+# }
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',  # For MySQL
-        # 'ENGINE': 'django.db.backends.postgresql',  # For PostgreSQL
-        'NAME': 'tailor_db',
-        'USER': 'tailor_user',
-        'PASSWORD': 'qSI6HG)w0jK1',
-        'HOST': '192.168.2.10',  # Set to 'localhost' or an IP address
-        'PORT': '3306',  # For MySQL, default port is 3306
-        # 'PORT': '5432',  # For PostgreSQL, default port is 5432
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'tailor_db',  # The database name
+        'USER': 'tailor_user',  # The username you created for the database
+        'PASSWORD': 'zaco@0123',  # The password you set
+        'HOST': '192.168.2.10',  # Use internal IP of the PostgreSQL server
+        'PORT': '5432',  # Default PostgreSQL port
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
