@@ -114,16 +114,24 @@ WSGI_APPLICATION = 'tailor.wsgi.application'
 # }
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'tailor_db',  # The database name
-        'USER': 'tailor_user',  # The username you created for the database
-        'PASSWORD': 'zaco@0123',  # The password you set
-        'HOST': '192.168.2.10',  # Use internal IP of the PostgreSQL server
-        'PORT': '5432',  # Default PostgreSQL port
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'tailor_db',  # The database name
+#         'USER': 'tailor_user',  # The username you created for the database
+#         'PASSWORD': 'zaco@0123',  # The password you set
+#         'HOST': '192.168.2.10',  # Use internal IP of the PostgreSQL server
+#         'PORT': '5432',  # Default PostgreSQL port
+#     }
+# }
+
+db_file_path = os.path.join(BASE_DIR, 'db.txt')  # Path to the db.txt file
+
+if os.path.exists(db_file_path):
+    with open(db_file_path, 'r') as f:
+        exec(f.read())
+else:
+    raise Exception("Database configuration file 'db.txt' not found!")
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
