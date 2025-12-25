@@ -7,13 +7,57 @@
 
 
 <div class="container mt-4 pb-4" style="background-color: #fff;">
-
-
-
+    
+    
+    
     <div class="print-maap-container pt-3">
+    <div class="print-header mb-3">
+    <div class="row align-items-center">
+        <div class="col-6">
+            <strong>Bill No:</strong>
+            <a href="{% url 'bill_detail_view' bill.id %}"
+               class="text-decoration-none fw-bold text-primary"
+               target="_blank">
+                {{ bill.bill_number }}
+            </a>
+            <br>
+
+            <strong>Bill Date:</strong>
+            {{ bill.bill_date|date:"d-m-Y" }}
+        </div>
+
+        <div class="col-6 text-end">
+            <strong>Client:</strong>
+            <a href="{% url 'client_detail_view' client.id %}"
+               class="text-decoration-none fw-bold text-primary"
+               target="_blank">
+                {{ client.client_name }}
+            </a>
+            <br>
+
+            <strong>Mobile:</strong>
+            {{ client.client_number }}
+        </div>
+    </div>
+
+    <hr>
+</div>
+
+        
+        <hr>
+        </div>
+        {% if bill.company.logo %}
+        <img src="{{ bill.company.logo.url }}" height="60">
+        {% endif %}
         <div class="print-upper-maap">
             <div class="d-flex" style="justify-content: space-between;">
                 <h3 style="color: #4B89FB; font-weight: bold;">Upper Maap Details</h3>
+                
+
+
+
+
+
                 <button type="button" onclick="printUpperMaap()" class="btn btn-primary exclude-print">Print</button>
             </div>
             <div class="d-flex gap-2 mb-2 exclude-print filter-checkboxes">

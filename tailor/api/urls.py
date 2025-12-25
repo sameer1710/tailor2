@@ -27,7 +27,9 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('get_advances/<int:bill_id>/', views.get_advances, name='get_advances'),
     path('upload-bulk-data/', views.upload_bulk_data, name='upload_bulk_data'),
-    
+    # urls.py
+    path('client/<int:client_id>/', views.client_detail_view, name='client_detail_view'),
+
     # path('logout/company/', views.company_logout, name='company_logout'),
 
 ]

@@ -1,0 +1,146 @@
+{% extends 'index.html' %}
+{% block title %}<title>Client Detail</title>{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+
+    <!-- HEADER -->
+    <div class="card mb-3">
+        <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+                <h4 class="mb-1">{{ client.client_name }}</h4>
+                <small>
+                    Mobile: {{ client.client_number }} |
+                    Book: {{ client.book_number }} |
+                    Page: {{ client.page_number }}
+                </small>
+            </div>
+
+            <div class="d-flex gap-2">
+                <a href="{% url 'maap_edit_view' client.id %}" class="btn btn-sm btn-warning">
+                    Edit Client
+                </a>
+                <a href="{% url 'maap_creation' client.id %}" class="btn btn-sm btn-primary">
+                    Add MAAP
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- UPPER MAAP -->
+    <div class="card mb-3">
+        <div class="card-header fw-bold">Upper MAAP</div>
+        <div class="card-body table-responsive">
+            <table class="table table-sm table-bordered">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Length</th>
+                        <th>Shoulder</th>
+                        <th>Sleeve</th>
+                        <th>Chest</th>
+                        <th>Neck</th>
+                        <th>Remark</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for m in upper_maaps %}
+                    <tr>
+                        <td>{{ m.get_upper_maap_display }}</td>
+                        <td>{{ m.upper_length }}</td>
+                        <td>{{ m.upper_shoulder }}</td>
+                        <td>{{ m.upper_sleeve_length }}</td>
+                        <td>{{ m.upper_chest_body }}</td>
+                        <td>{{ m.upper_neck }}</td>
+                        <td>{{ m.upper_other_remark }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center">No Upper MAAP</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- LOWER MAAP -->
+    <div class="card mb-3">
+        <div class="card-header fw-bold">Lower MAAP</div>
+        <div class="card-body table-responsive">
+            <table class="table table-sm table-bordered">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Length</th>
+                        <th>Waist</th>
+                        <th>Hip</th>
+                        <th>Bottom</th>
+                        <th>Remark</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for m in lower_maaps %}
+                    <tr>
+                        <td>{{ m.get_lower_maap_display }}</td>
+                        <td>{{ m.lower_length }}</td>
+                        <td>{{ m.lower_waist }}</td>
+                        <td>{{ m.lower_hip }}</td>
+                        <td>{{ m.lower_bottom }}</td>
+                        <td>{{ m.lower_other_remark }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center">No Lower MAAP</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- BILLS -->
+    <div class="card">
+        <div class="card-header fw-bold">Bills</div>
+        <div class="card-body table-responsive">
+            <table class="table table-sm table-bordered">
+                <thead>
+                    <tr>
+                        <th>Bill No</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Received</th>
+                        <th>Balance</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for bill in bills %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'bill_detail_view' bill.id %}">
+                                {{ bill.bill_number }}
+                            </a>
+                        </td>
+                        <td>{{ bill.bill_date|date:"d-m-Y" }}</td>
+                        <td>{{ bill.total_bill }}</td>
+                        <td>{{ bill.total_amount_received }}</td>
+                        <td>{{ bill.amount_receivable }}</td>
+                        <td>
+                            <a href="{% url 'maap_detail_view' bill.id %}" class="btn btn-sm btn-outline-primary">
+                                Print MAAP
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center">No Bills</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -835,12 +835,15 @@ def maap_view(request, client_id):
         # Empty formsets for initial render
         upper_formset = UpperMaapFormSet(queryset=UpperMaap.objects.none(), prefix='upper')
         lower_formset = LowerMaapFormSet(queryset=LowerMaap.objects.none(), prefix='lower')
-
+    active_tab = request.GET.get("type", "upper")
     # Render formsets in the template
     return render(request, 'client-creation.html', {
         'client': client,
         'upper_formset': upper_formset,
         'lower_formset': lower_formset,
+        'upper_formset': upper_formset,
+        'lower_formset': lower_formset,
+        'active_tab': active_tab,
     })
 
 
@@ -1259,7 +1262,26 @@ def maap_detail_view(request, bill_id):
 
     return render(request, "maap-detail.html", context)
 
+@login_required
+def client_detail_view(request, client_id):
+    client = get_object_or_404(
+        ClientMaster,
+        id=client_id,
+        company=request.user.company
+    )
 
+    upper_maaps = client.upper_maaps.all()
+    lower_maaps = client.lower_maaps.all()
+    bills = client.bills.select_related('company').order_by('-id')
+
+    context = {
+        'client': client,
+        'upper_maaps': upper_maaps,
+        'lower_maaps': lower_maaps,
+        'bills': bills,
+    }
+
+    return render(request, 'client-detail.html', context)
 
 # def employee_creation(request,pk=None):
 #     company_id = request.session.get('company_id')

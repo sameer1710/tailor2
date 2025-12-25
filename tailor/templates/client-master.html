@@ -148,6 +148,18 @@
 
                                 <div>
                                     <h4 style="font-family: 'Calibri', sans-serif; font-weight: bold; color: rgba(var(--bs-link-color-rgb),var(--bs-link-opacity,1)); text-decoration: underline;">UPPER MAAP</h4>
+                                    
+    <a href="{% url 'maap_creation' client.id %}?type=upper"
+       class="btn btn-sm btn-primary" style="padding-bottom: 10p;margin-bottom: 10px;">
+        + Add Upper Maap
+    </a>
+
+    <br>
+
+
+
+                                    
+                                    
                                     <div class="accordion" id="accordionFlushExample" >
                                         {% if client.upper_maaps.exists %}
                                             {% for maap in client.upper_maaps.all %}
@@ -327,6 +339,14 @@
 
                                 <div>
                                     <h4 style="font-family: 'Calibri', sans-serif; font-weight: bold; color: rgba(var(--bs-link-color-rgb),var(--bs-link-opacity,1)); text-decoration: underline;">LOWER MAAP</h4>
+                                    
+                                        <a href="{% url 'maap_creation' client.id %}?type=lower"
+       class="btn btn-sm btn-secondary" style="padding-bottom: 10p;margin-bottom: 10px;">
+        + Add Lower Maap
+    </a>
+                  
+                      
+                                    
                                     <div class="accordion" id="accordionFlushExampleLower" >
                                         {% if client.lower_maaps.exists %}
                                             {% for maap in client.lower_maaps.all %}

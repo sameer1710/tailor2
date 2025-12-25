@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 {% load static %}
 
-{% block title %} <title>Society Management | Member-Master-Creation</title> {% endblock title %}
+{% block title %} <title> | Member-Master-Creation</title> {% endblock title %}
 
 {% block body %}
 
@@ -9,19 +9,33 @@
     <form action="" method="POST">
         {% csrf_token %}
         <nav>
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
-                    type="button" role="tab" aria-controls="nav-home" aria-selected="true">Upper Maap
-                </button>
-                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
-                    type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Lower Maap
-                </button>
-            </div>
+<div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <button class="nav-link {% if active_tab == 'upper' %}active{% endif %}"
+            id="nav-home-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#nav-home"
+            type="button"
+            role="tab"
+            aria-selected="{% if active_tab == 'upper' %}true{% else %}false{% endif %}">
+        Upper Maap
+    </button>
+
+    <button class="nav-link {% if active_tab == 'lower' %}active{% endif %}"
+            id="nav-profile-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#nav-profile"
+            type="button"
+            role="tab"
+            aria-selected="{% if active_tab == 'lower' %}true{% else %}false{% endif %}">
+        Lower Maap
+    </button>
+</div>
+
         </nav>
         <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab"
-                tabindex="0">
-
+<div class="tab-pane fade {% if active_tab == 'upper' %}show active{% endif %}"
+         id="nav-home"
+         role="tabpanel">
                 <div class="table-responsive mt-2">
                     {{ upper_formset.management_form }}
                     <table class="table table-sm maapTable table-bordered">
@@ -88,8 +102,9 @@
                 </div>
                 <hr>
             </div>
-            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
-
+<div class="tab-pane fade {% if active_tab == 'lower' %}show active{% endif %}"
+         id="nav-profile"
+         role="tabpanel">
                 <div class="table-responsive mt-2">
                     {{ lower_formset.management_form }}
                     <table class="table table-sm maapTable table-bordered">

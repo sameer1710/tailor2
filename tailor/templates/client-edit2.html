@@ -69,6 +69,13 @@
 
             <!-- Upper Maap Formset -->
             <h3 class="mt-3" style="color: #133E87; font-weight: bold; font-family: 'Lato', serif;">Upper Maap Details</h3>
+                <a href="{% url 'maap_creation' client.id %}?type=upper"
+       class="btn btn-sm btn-primary" style="padding-bottom: 10p;margin-bottom: 10px;">
+        + Add Upper Maap
+    </a>
+
+    <br>
+
             {{ upper_formset.management_form }}
             <!-- {{ upper_formset.non_form_errors }} -->
             <table class="table table-sm maapTableEdit">
@@ -146,6 +153,13 @@
 
             <!-- Lower Maap Formset -->
             <h3 class="mt-4" style="color: #133E87; font-weight: bold; font-family: 'Lato', serif;">Lower Maap Details</h3>
+                                                    <a href="{% url 'maap_creation' client.id %}?type=lower"
+       class="btn btn-sm btn-secondary" style="padding-bottom: 10p;margin-bottom: 10px;">
+        + Add Lower Maap
+    </a>
+              
+            
+
             {{ lower_formset.management_form }}
             <!-- {{ lower_formset.non_form_errors }} -->
             <table class="table table-borderless rounded table-sm maapTableEdit">
