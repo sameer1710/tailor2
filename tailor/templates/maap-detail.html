@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 {% load static %}
 
-{% block title %} <title>Tailor Software</title> {% endblock title %}
+{% block title %} <title> MAAP_{{ bill.bill_number }}_{{ client.client_name|slugify }}</title> {% endblock title %}
 
 {% block body %}
 
@@ -28,11 +28,9 @@
 
         <div class="col-6 text-end">
             <strong>Client:</strong>
-            <a href="{% url 'client_detail_view' client.id %}"
-               class="text-decoration-none fw-bold text-primary"
-               target="_blank">
+      
                 {{ client.client_name }}
-            </a>
+           
             <br>
 
             <strong>Mobile:</strong>
