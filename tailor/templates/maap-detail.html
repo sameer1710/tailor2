@@ -15,11 +15,11 @@
     <div class="row align-items-center">
         <div class="col-6">
             <strong>Bill No:</strong>
-            <a href="{% url 'bill_detail_view' bill.id %}"
+            {% comment %} <a href="{% url 'bill_detail_view' bill.id %}"
                class="text-decoration-none fw-bold text-primary"
-               target="_blank">
+               target="_blank"> {% endcomment %}
                 {{ bill.bill_number }}
-            </a>
+            {% comment %} </a> {% endcomment %}
             <br>
 
             <strong>Bill Date:</strong>
