@@ -211,7 +211,6 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 
-# LOGIN_URL = '/company_login/'
 CSRF_TRUSTED_ORIGINS = [
-    "https://tailor.taxporium.com",
+    "https://tailor.datacubenx.com",
 ]
