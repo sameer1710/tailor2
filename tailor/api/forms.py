@@ -45,10 +45,13 @@ class ClientCreation(forms.ModelForm):
 class UpperMaapForm(forms.ModelForm):
     class Meta:
         model = UpperMaap
-        fields = ['upper_maap', 'upper_length', 'upper_shoulder', 'upper_sleeve_length', 'upper_sleeve_bicep', 
-                  'upper_sleeve_cuff', 'upper_chest_body', 'upper_chest_ready', 'upper_lowerchest_body', 
-                  'upper_lowerchest_ready', 'upper_stomach_body', 'upper_stomach_ready', 'upper_hip_body', 
-                  'upper_hip_ready', 'upper_neck', 'upper_other_remark']
+        fields = [
+            'upper_maap', 'upper_length', 'upper_shoulder', 'upper_sleeve_length', 'upper_sleeve_bicep',
+            'upper_sleeve_cuff', 'upper_chest_body', 'upper_chest_ready', 'upper_lowerchest_body',
+            'upper_lowerchest_ready', 'upper_stomach_body', 'upper_stomach_ready', 'upper_hip_body',
+            'upper_hip_ready', 'upper_neck', 'upper_other_remark',
+            'upper_design_image'  # ✅ ADD THIS
+        ]
         widgets = {
             'upper_maap': forms.Select(attrs={'class': 'form-select'}),
             'upper_length': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Length'}),
@@ -66,14 +69,22 @@ class UpperMaapForm(forms.ModelForm):
             'upper_hip_ready': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Ready'}),
             'upper_neck': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Neck'}),
             'upper_other_remark': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Other Remark', 'rows': '4'}),
+
+            # ✅ IMAGE WIDGET
+            'upper_design_image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
+
 UpperMaapFormSet = modelformset_factory(UpperMaap, form=UpperMaapForm, extra=1)
+
 
 class LowerMaapForm(forms.ModelForm):
     class Meta:
         model = LowerMaap
-        fields = ['lower_maap','lower_length','lower_waist','lower_hip','lower_thai','lower_knee','lower_bottom',
-                  'lower_jhola','lower_other_remark']
+        fields = [
+            'lower_maap', 'lower_length', 'lower_waist', 'lower_hip', 'lower_thai', 'lower_knee', 'lower_bottom',
+            'lower_jhola', 'lower_other_remark',
+            'lower_design_image'  # ✅ ADD THIS
+        ]
         widgets = {
             'lower_maap': forms.Select(attrs={'class': 'form-select'}),
             'lower_length': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Length'}),
@@ -84,10 +95,12 @@ class LowerMaapForm(forms.ModelForm):
             'lower_bottom': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Bottom'}),
             'lower_jhola': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Jhola'}),
             'lower_other_remark': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Other Remark', 'rows': '1'}),
+
+            # ✅ IMAGE WIDGET
+            'lower_design_image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
+
 LowerMaapFormSet = modelformset_factory(LowerMaap, form=LowerMaapForm, extra=1)
-
-
 class billForms(forms.ModelForm):
     class Meta:
         model = create_bill

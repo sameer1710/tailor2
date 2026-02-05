@@ -323,6 +323,22 @@
                                                                         <div class="col-8">
                                                                             <p class="view-inps">{{ maap.upper_other_remark }}</p>
                                                                         </div>
+
+                                                                        {% if maap.upper_design_image %}
+                                                                            <div class="row mb-3">
+                                                                                <div class="col-12">
+                                                                                    <p class="view-label mb-1">Upper Design Image</p>
+
+                                                                                    <a href="{{ maap.upper_design_image.url }}" target="_blank">
+                                                                                        <img src="{{ maap.upper_design_image.url }}"
+                                                                                            alt="Upper Design"
+                                                                                            class="img-fluid rounded shadow-sm"
+                                                                                            style="max-height: 250px; object-fit: contain; border: 1px solid #ddd; padding: 6px;">
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            {% endif %}
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -430,6 +446,24 @@
                                                                         <div class="col-10 ms-0 ps-0">
                                                                             <p class="view-inps">{{ maap.lower_other_remark }}</p>
                                                                         </div>
+                                                                        {% if maap.lower_design_image %}
+                                                                            <div class="row mb-3">
+                                                                                <div class="col-12">
+                                                                                    <p class="view-label mb-1">Lower Design Image</p>
+
+                                                                                    <a href="{{ maap.lower_design_image.url }}" target="_blank">
+                                                                                        <img src="{{ maap.lower_design_image.url }}"
+                                                                                            alt="Lower Design"
+                                                                                            class="img-fluid rounded shadow-sm"
+                                                                                            style="max-height: 250px; object-fit: contain; border: 1px solid #ddd; padding: 6px;">
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                            {% endif %}
+
+
+
                                                                     </div>
                                                                 </div>
                                                             </div>

@@ -1,131 +1,133 @@
 {% extends 'index.html' %}
 {% load static %}
 
-{% block title %} <title> MAAP_{{ bill.bill_number }}_{{ client.client_name|slugify }}</title> {% endblock title %}
+{% block title %}
+<title>MAAP_{{ bill.bill_number }}_{{ client.client_name|slugify }}</title>
+{% endblock title %}
 
 {% block body %}
 
+<style>
+    /* ===== PRINT SETTINGS ===== */
+    @media print {
+        body * {
+            visibility: hidden !important;
+        }
 
-<div class="container mt-4 pb-4" style="background-color: #fff;">
-    
-    
-    
-    <div class="print-maap-container pt-3">
-    <div class="print-header mb-3">
-    <div class="row align-items-center">
-        <div class="col-6">
-            <strong>Bill No:</strong>
-            {% comment %} <a href="{% url 'bill_detail_view' bill.id %}"
-               class="text-decoration-none fw-bold text-primary"
-               target="_blank"> {% endcomment %}
-                {{ bill.bill_number }}
-            {% comment %} </a> {% endcomment %}
-            <br>
+        /* Print only the container */
+        #printArea, #printArea * {
+            visibility: visible !important;
+        }
 
-            <strong>Bill Date:</strong>
-            {{ bill.bill_date|date:"d-m-Y" }}
+        #printArea {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            padding: 15px;
+        }
+
+        .exclude-print {
+            display: none !important;
+        }
+
+        .table {
+            font-size: 12px !important;
+        }
+
+        img {
+            max-width: 100% !important;
+            height: auto !important;
+        }
+
+        .print-section {
+            page-break-inside: avoid;
+        }
+
+        .print-image {
+            width: 100%;
+            max-height: 350px;
+            object-fit: contain;
+            border: 1px solid #ddd;
+            margin-top: 8px;
+            padding: 5px;
+        }
+
+        .print-header-box {
+            border-bottom: 2px solid #000;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+        }
+    }
+
+    /* On Screen styles */
+    .print-header-box {
+        border-bottom: 2px solid #ddd;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+    }
+
+    .print-image {
+        width: 100%;
+        max-height: 250px;
+        object-fit: contain;
+        border: 1px solid #ddd;
+        padding: 5px;
+        border-radius: 6px;
+        background: #fff;
+    }
+</style>
+
+<div class="container mt-4 pb-4" style="background-color:#fff; border-radius:8px;">
+    
+    <!-- PRINT OPTIONS -->
+    <div class="exclude-print mb-3 p-3 border rounded">
+        <h5 class="mb-2">Print Options</h5>
+
+        <div class="d-flex gap-3 flex-wrap align-items-center">
+            <label><input type="checkbox" class="printOpt" value="header" checked> Header</label>
+            <label><input type="checkbox" class="printOpt" value="upper" checked> Upper Maap</label>
+            <label><input type="checkbox" class="printOpt" value="lower" checked> Lower Maap</label>
+            <label><input type="checkbox" class="printOpt" value="upper_img" checked> Upper Images</label>
+            <label><input type="checkbox" class="printOpt" value="lower_img" checked> Lower Images</label>
+
+            <button type="button" onclick="handlePrint()" class="btn btn-primary ms-auto">
+                Print Selected
+            </button>
         </div>
+    </div>
 
-        <div class="col-6 text-end">
-            <strong>Client:</strong>
-      
-                {{ client.client_name }}
-{% comment %}            
-            <br>
+    <!-- PRINT AREA -->
+    <div id="printArea">
 
-            <strong>Mobile:</strong>
-            {{ client.client_number }} {% endcomment %}
-        </div>
-    {% comment %} </div> {% endcomment %}
-
-    <hr>
-</div>
-
-        
-        <hr>
-        </div>
-        {% if bill.company.logo %}
-        <img src="{{ bill.company.logo.url }}" height="60">
-        {% endif %}
-        <div class="print-upper-maap">
-            <div class="d-flex" style="justify-content: space-between;">
-                <h3 style="color: #4B89FB; font-weight: bold;">Upper Maap Details</h3>
-                
-
-
-
-
-
-                <button type="button" onclick="printUpperMaap()" class="btn btn-primary exclude-print">Print</button>
-            </div>
-            <div class="d-flex gap-2 mb-2 exclude-print filter-checkboxes">
-                
-                <div class="customCheckBoxHolder">
-                    <input type="checkbox" id="c1" class="customCheckBoxInput filter-option" value="all" checked>
-                    <label for="c1" class="customCheckBoxWrapper">
-                        <div class="customCheckBox">
-                            <div class="inner">All</div>
-                        </div>
-                    </label>
+        <!-- HEADER -->
+        <div id="section_header" class="print-header-box print-section">
+            <div class="row align-items-center">
+                <div class="col-6">
+                    <div><strong>Bill No:</strong> {{ bill.bill_number }}</div>
+                    <div><strong>Bill Date:</strong> {{ bill.bill_date|date:"d-m-Y" }}</div>
                 </div>
-    
-                <div class="customCheckBoxHolder">
-                    <input type="checkbox" id="c2" class="customCheckBoxInput filter-option" value="zubba">
-                    <label for="c2" class="customCheckBoxWrapper">
-                        <div class="customCheckBox">
-                            <div class="inner">Zubba</div>
-                        </div>
-                    </label>
-                </div>
-    
-                <div class="customCheckBoxHolder">
-                    <input type="checkbox" id="c3" class="customCheckBoxInput filter-option" value="kurta">
-                    <label for="c3" class="customCheckBoxWrapper">
-                        <div class="customCheckBox">
-                            <div class="inner">Kurta</div>
-                        </div>
-                    </label>
-                </div>
-    
-                <div class="customCheckBoxHolder">
-                    <input type="checkbox" id="c4" class="customCheckBoxInput filter-option" value="shirt">
-                    <label for="c4" class="customCheckBoxWrapper">
-                        <div class="customCheckBox">
-                            <div class="inner">Shirt</div>
-                        </div>
-                    </label>
-                </div>
-    
-                <div class="customCheckBoxHolder">
-                    <input type="checkbox" id="c5" class="customCheckBoxInput filter-option" value="blazer">
-                    <label for="c5" class="customCheckBoxWrapper">
-                        <div class="customCheckBox">
-                            <div class="inner">Blazer</div>
-                        </div>
-                    </label>
-                </div>
-    
-                <div class="customCheckBoxHolder">
-                    <input type="checkbox" id="c6" class="customCheckBoxInput filter-option" value="koty">
-                    <label for="c6" class="customCheckBoxWrapper">
-                        <div class="customCheckBox">
-                            <div class="inner">Koty</div>
-                        </div>
-                    </label>
-                </div>
-    
-                <div class="customCheckBoxHolder">
-                    <input type="checkbox" id="c7" class="customCheckBoxInput filter-option" value="others">
-                    <label for="c7" class="customCheckBoxWrapper">
-                        <div class="customCheckBox">
-                            <div class="inner">Others</div>
-                        </div>
-                    </label>
+
+                <div class="col-6 text-end">
+                    <div><strong>Client:</strong> {{ client.client_name }}</div>
+                    {% comment %} <div><strong>Mobile:</strong> {{ client.client_number }}</div> {% endcomment %}
                 </div>
             </div>
-    
+
+            {% if bill.company.logo %}
+            <div class="mt-2">
+                <img src="{{ bill.company.logo.url }}" height="60">
+            </div>
+            {% endif %}
+        </div>
+
+
+        <!-- UPPER MAAP -->
+        <div id="section_upper" class="print-section">
+            <h3 style="color:#4B89FB; font-weight:bold;">Upper Maap Details</h3>
+
             <div class="table-responsive m-0 p-0">
-                <table class="table table-sm bill-maap-table table-bordered">
+                <table class="table table-sm table-bordered">
                     <thead>
                         <tr>
                             <th>Type</th>
@@ -144,7 +146,7 @@
                         {% if upper_maap_details %}
                             {% for maap in upper_maap_details %}
                             <tr>
-                                <td class="maap-type">{{ maap.upper_maap }}</td>
+                                <td class="text-start">{{ maap.upper_maap }}</td>
                                 <td>{{ maap.upper_length }}</td>
                                 <td>{{ maap.upper_shoulder }}</td>
                                 <td>
@@ -169,12 +171,12 @@
                                     {{ maap.upper_hip_ready }}
                                 </td>
                                 <td>{{ maap.upper_neck }}</td>
-                                <td>{{ maap.upper_other_remark }}</td>
+                                <td class="text-start">{{ maap.upper_other_remark }}</td>
                             </tr>
                             {% endfor %}
                         {% else %}
                             <tr>
-                                <td colspan="10" class="text-center">No Data Available</td>
+                                <td colspan="10" class="text-center">No Upper Maap Data Available</td>
                             </tr>
                         {% endif %}
                     </tbody>
@@ -182,81 +184,35 @@
             </div>
         </div>
 
+
+        <!-- UPPER IMAGES -->
+        <div id="section_upper_img" class="print-section mt-3">
+            <h5 style="font-weight:bold;">Upper Design Images</h5>
+
+            <div class="row g-3">
+                {% for maap in upper_maap_details %}
+                    {% if maap.upper_design_image %}
+                    <div class="col-md-4">
+                        <div class="border rounded p-2">
+                            <div class="fw-bold text-uppercase">{{ maap.upper_maap }}</div>
+                            <img src="{{ maap.upper_design_image.url }}" class="print-image">
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+
         <hr>
 
-        <div class="print-lower-maap">
-            <!-- <div class="d-flex" style="justify-content: space-between;">
-                <h3 style="color: #4B89FB; font-weight: bold;">Lower Maap Details</h3>
-                <button type="button" onclick="printLowerMaap()" class="btn btn-primary exclude-print">Print</button>
-            </div> -->
-            <h3 style="color: #4B89FB; font-weight: bold;">Lower Maap Details</h3>
-            <div class="d-flex gap-2 mb-2 exclude-print lower-filter-checkboxes">
-                <div class="customCheckBoxHolder">
-                    <input type="checkbox" id="cl1" class="customCheckBoxInput lower-filter-option" value="all" checked>
-                    <label for="cl1" class="customCheckBoxWrapper">
-                        <div class="customCheckBox">
-                            <div class="inner">All</div>
-                        </div>
-                    </label>
-                </div>
-    
-                <div class="customCheckBoxHolder">
-                    <input type="checkbox" id="cl2" class="customCheckBoxInput lower-filter-option" value="pathani_salwar">
-                    <label for="cl2" class="customCheckBoxWrapper">
-                        <div class="customCheckBox">
-                            <div class="inner">Pathani Salwaar</div>
-                        </div>
-                    </label>
-                </div>
-    
-                <div class="customCheckBoxHolder">
-                    <input type="checkbox" id="cl3" class="customCheckBoxInput lower-filter-option" value="aligari">
-                    <label for="cl3" class="customCheckBoxWrapper">
-                        <div class="customCheckBox">
-                            <div class="inner">Aligari</div>
-                        </div>
-                    </label>
-                </div>
-    
-                <div class="customCheckBoxHolder">
-                    <input type="checkbox" id="cl4" class="customCheckBoxInput lower-filter-option" value="payjama">
-                    <label for="cl4" class="customCheckBoxWrapper">
-                        <div class="customCheckBox">
-                            <div class="inner">Payjama</div>
-                        </div>
-                    </label>
-                </div>
-    
-                <div class="customCheckBoxHolder">
-                    <input type="checkbox" id="cl5" class="customCheckBoxInput lower-filter-option" value="chudidar">
-                    <label for="cl5" class="customCheckBoxWrapper">
-                        <div class="customCheckBox">
-                            <div class="inner">Chudidaar</div>
-                        </div>
-                    </label>
-                </div>
-    
-                <div class="customCheckBoxHolder">
-                    <input type="checkbox" id="cl6" class="customCheckBoxInput lower-filter-option" value="pant">
-                    <label for="cl6" class="customCheckBoxWrapper">
-                        <div class="customCheckBox">
-                            <div class="inner">Pant</div>
-                        </div>
-                    </label>
-                </div>
-    
-                <div class="customCheckBoxHolder">
-                    <input type="checkbox" id="cl7" class="customCheckBoxInput lower-filter-option" value="others">
-                    <label for="cl7" class="customCheckBoxWrapper">
-                        <div class="customCheckBox">
-                            <div class="inner">Others</div>
-                        </div>
-                    </label>
-                </div>
-            </div>
-    
+
+        <!-- LOWER MAAP -->
+        <div id="section_lower" class="print-section">
+            <h3 style="color:#4B89FB; font-weight:bold;">Lower Maap Details</h3>
+
             <div class="table-responsive">
-                <table class="table table-sm lower-bill-maap-table table-bordered">
+                <table class="table table-sm table-bordered">
                     <thead>
                         <tr>
                             <th>Type</th>
@@ -274,7 +230,7 @@
                         {% if lower_maap_details %}
                             {% for maap in lower_maap_details %}
                             <tr>
-                                <td class="lower-maap-type">{{ maap.lower_maap }}</td>
+                                <td class="text-start">{{ maap.lower_maap }}</td>
                                 <td>{{ maap.lower_length }}</td>
                                 <td>{{ maap.lower_waist }}</td>
                                 <td>{{ maap.lower_hip }}</td>
@@ -282,108 +238,77 @@
                                 <td>{{ maap.lower_knee }}</td>
                                 <td>{{ maap.lower_bottom }}</td>
                                 <td>{{ maap.lower_jhola }}</td>
-                                <td>{{ maap.lower_other_remark }}</td>
+                                <td class="text-start">{{ maap.lower_other_remark }}</td>
                             </tr>
                             {% endfor %}
                         {% else %}
                             <tr>
-                                <td colspan="10" class="text-center">No Data Available</td>
+                                <td colspan="9" class="text-center">No Lower Maap Data Available</td>
                             </tr>
                         {% endif %}
                     </tbody>
                 </table>
             </div>
         </div>
+
+
+        <!-- LOWER IMAGES -->
+        <div id="section_lower_img" class="print-section mt-3">
+            <h5 style="font-weight:bold;">Lower Design Images</h5>
+
+            <div class="row g-3">
+                {% for maap in lower_maap_details %}
+                    {% if maap.lower_design_image %}
+                    <div class="col-md-4">
+                        <div class="border rounded p-2">
+                            <div class="fw-bold text-uppercase">{{ maap.lower_maap }}</div>
+                            <img src="{{ maap.lower_design_image.url }}" class="print-image">
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
     </div>
 </div>
 
-
-
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    function initializeFilters(tableSelector, checkboxSelector, allValue, typeClass) {
-        const checkboxes = document.querySelectorAll(checkboxSelector);
-        const tableRows = document.querySelectorAll(`${tableSelector} tbody tr`);
+    function handlePrint() {
+        const selected = Array.from(document.querySelectorAll('.printOpt'))
+            .filter(cb => cb.checked)
+            .map(cb => cb.value);
 
-        checkboxes.forEach((checkbox) => {
-            checkbox.addEventListener("change", function () {
-                const selectedOptions = Array.from(checkboxes)
-                    .filter((box) => box.checked && box.value !== allValue)
-                    .map((box) => box.value.toLowerCase());
+        const sections = {
+            header: "section_header",
+            upper: "section_upper",
+            lower: "section_lower",
+            upper_img: "section_upper_img",
+            lower_img: "section_lower_img",
+        };
 
-                // Handle "All" checkbox separately
-                if (this.value === allValue && this.checked) {
-                    // Uncheck all other options
-                    checkboxes.forEach((box) => {
-                        if (box.value !== allValue) box.checked = false;
-                    });
-                    // Show all rows
-                    tableRows.forEach((row) => (row.style.display = ""));
-                } else {
-                    // Uncheck "All" when any other option is checked
-                    const allCheckbox = document.querySelector(`${checkboxSelector}[value="${allValue}"]`);
-                    if (allCheckbox) allCheckbox.checked = false;
+        // Hide everything first
+        Object.values(sections).forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.display = "none";
+        });
 
-                    // Filter rows based on selected options
-                    tableRows.forEach((row) => {
-                        const typeCell = row.querySelector(`.${typeClass}`).textContent.trim().toLowerCase();
-                        if (selectedOptions.length === 0 || selectedOptions.includes(typeCell)) {
-                            row.style.display = "";
-                        } else {
-                            row.style.display = "none";
-                        }
-                    });
-                }
-            });
+        // Show selected
+        selected.forEach(key => {
+            const id = sections[key];
+            const el = document.getElementById(id);
+            if (el) el.style.display = "block";
+        });
+
+        // Print now
+        window.print();
+
+        // Restore (show all after print)
+        Object.values(sections).forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.display = "block";
         });
     }
-
-    // Initialize filters for the upper maap table
-    initializeFilters(".bill-maap-table", ".filter-option", "all", "maap-type");
-
-    // Initialize filters for the lower maap table
-    initializeFilters(".lower-bill-maap-table", ".lower-filter-option", "all", "lower-maap-type");
-});
-
-
-// Print functionality for both Maap Tables
-function printUpperMaap() {
-    const maap = document.querySelector(".print-maap-container");
-    // const lowerMaap = document.querySelector(".print-lower-maap");
-
-    // Add the print-active class to upper maap
-    maap.classList.add("print-active");
-
-    // Temporarily remove the print-active class from lower maap
-    // if (lowerMaap) lowerMaap.classList.remove("print-active");
-
-    // Trigger print dialog
-    window.print();
-
-    // Clean up by removing the print-active class
-    maap.classList.remove("print-active");
-}
-
-// function printLowerMaap() {
-//     const upperMaap = document.querySelector(".print-upper-maap");
-//     const lowerMaap = document.querySelector(".print-lower-maap");
-
-//     // Add the print-active class to lower maap
-//     lowerMaap.classList.add("print-active");
-
-//     // Temporarily remove the print-active class from upper maap
-//     if (upperMaap) upperMaap.classList.remove("print-active");
-
-//     // Trigger print dialog
-//     window.print();
-
-//     // Clean up by removing the print-active class
-//     lowerMaap.classList.remove("print-active");
-// }
-
-
-
 </script>
-
 
 {% endblock body %}

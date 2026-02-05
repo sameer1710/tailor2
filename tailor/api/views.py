@@ -792,17 +792,25 @@ def client_creation(request):
 
 
 def maap_view(request, client_id):
-
-    # company_id = request.session.get('company_id')
-    # company = Company.objects.get(id=company_id)
     client = get_object_or_404(ClientMaster, id=client_id)
 
-    if request.method == 'POST':
-        # Initialize formsets with POST data
-        upper_formset = UpperMaapFormSet(request.POST, prefix='upper')
-        lower_formset = LowerMaapFormSet(request.POST, prefix='lower')
+    # Default tab
+    active_tab = request.GET.get("type", "upper")
 
-        # Validate formsets
+    if request.method == "POST":
+
+        # ✅ IMPORTANT: request.FILES added
+        upper_formset = UpperMaapFormSet(
+            request.POST,
+            request.FILES,
+            prefix="upper"
+        )
+        lower_formset = LowerMaapFormSet(
+            request.POST,
+            request.FILES,
+            prefix="lower"
+        )
+
         upper_valid = upper_formset.is_valid()
         lower_valid = lower_formset.is_valid()
 
@@ -820,31 +828,37 @@ def maap_view(request, client_id):
                 instance.company = request.user.company
                 instance.save()
 
-        # Redirect if both formsets are valid
+        # ✅ Redirect if both are valid
         if upper_valid and lower_valid:
+            return redirect("client_creation")
 
-            return redirect('client_creation')  # Pass the company ID to the redirect
-
-        # Log errors for invalid formsets
+        # ✅ If invalid, print errors and stay on correct tab
         if not upper_valid:
-            print('Upper Formset Errors:', upper_formset.errors)
+            print("Upper Formset Errors:", upper_formset.errors)
+            active_tab = "upper"
+
         if not lower_valid:
-            print('Lower Formset Errors:', lower_formset.errors)
+            print("Lower Formset Errors:", lower_formset.errors)
+            active_tab = "lower"
 
     else:
-        # Empty formsets for initial render
-        upper_formset = UpperMaapFormSet(queryset=UpperMaap.objects.none(), prefix='upper')
-        lower_formset = LowerMaapFormSet(queryset=LowerMaap.objects.none(), prefix='lower')
-    active_tab = request.GET.get("type", "upper")
-    # Render formsets in the template
-    return render(request, 'client-creation.html', {
-        'client': client,
-        'upper_formset': upper_formset,
-        'lower_formset': lower_formset,
-        'upper_formset': upper_formset,
-        'lower_formset': lower_formset,
-        'active_tab': active_tab,
+        # ✅ Empty formsets for initial render
+        upper_formset = UpperMaapFormSet(
+            queryset=UpperMaap.objects.none(),
+            prefix="upper"
+        )
+        lower_formset = LowerMaapFormSet(
+            queryset=LowerMaap.objects.none(),
+            prefix="lower"
+        )
+
+    return render(request, "client-creation.html", {
+        "client": client,
+        "upper_formset": upper_formset,
+        "lower_formset": lower_formset,
+        "active_tab": active_tab,
     })
+
 
 
 

@@ -1,0 +1,52 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}
+<title>Data Import Wizard</title>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+
+    <h3 class="mb-4">📥 Data Import Wizard</h3>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <ul class="list-group shadow-sm">
+
+        <!-- STEP 1 -->
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <strong>Step 1: Import Clients</strong>
+                <div class="text-muted small">
+                    Import all clients before importing MAAP data
+                </div>
+            </div>
+
+            <a href="{% url 'import_clients' %}" class="btn btn-primary btn-sm">
+                Import Clients
+            </a>
+        </li>
+
+        <!-- STEP 2 -->
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <strong>Step 2: Import MAAP</strong>
+                <div class="text-muted small">
+                    Can be imported multiple times (Upper / Lower)
+                </div>
+            </div>
+
+            <a href="{% url 'import_maap' %}" class="btn btn-success btn-sm">
+                Import MAAP
+            </a>
+        </li>
+
+    </ul>
+
+</div>
+{% endblock %}

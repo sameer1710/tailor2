@@ -460,6 +460,7 @@ class UpperMaap(models.Model):
     upper_hip_ready = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     upper_neck = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     upper_other_remark = models.TextField(null=True, blank=True)
+    upper_design_image = models.ImageField(upload_to="maap/upper/design/", null=True, blank=True)
 
 
 class LowerMaap(models.Model):
@@ -481,6 +482,8 @@ class LowerMaap(models.Model):
     lower_bottom = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     lower_jhola = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     lower_other_remark = models.TextField(null=True, blank=True)
+    lower_design_image = models.ImageField(upload_to="maap/lower/design/", null=True, blank=True)
+
 # ===============================================================================
 
 # class EmployeeManager(BaseUserManager):

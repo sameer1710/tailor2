@@ -1,0 +1,64 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}
+<title>Import Clients</title>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+
+    <h3 class="mb-3">👤 Step 1: Import Clients</h3>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <p class="text-muted">
+                Upload client data using the CSV template provided below.
+                Ensure client names are unique per company.
+            </p>
+
+            <!-- TEMPLATE DOWNLOAD -->
+            <div class="mb-3">
+                <a href="{% url 'client_template' %}" class="btn btn-outline-secondary btn-sm">
+                    ⬇ Download Client CSV Template
+                </a>
+            </div>
+
+            <!-- UPLOAD FORM -->
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Upload CSV File</label>
+                    <input
+                        type="file"
+                        name="file"
+                        class="form-control"
+                        accept=".csv"
+                        required
+                    >
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        ⬆ Import Clients
+                    </button>
+
+                    <a href="{% url 'import_wizard' %}" class="btn btn-link">
+                        ← Back to Wizard
+                    </a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,43 +1,50 @@
 {% extends 'index.html' %}
 {% load static %}
 
-{% block title %} <title> | Member-Master-Creation</title> {% endblock title %}
+{% block title %} <title>Maap Creation</title> {% endblock title %}
 
 {% block body %}
 
 <div class="container mt-3 p-2" style="background-color: #fff; border-radius: 8px;">
-    <form action="" method="POST">
+
+    <!-- ✅ enctype ADDED for image upload -->
+    <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
+
         <nav>
-<div class="nav nav-tabs" id="nav-tab" role="tablist">
-    <button class="nav-link {% if active_tab == 'upper' %}active{% endif %}"
-            id="nav-home-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#nav-home"
-            type="button"
-            role="tab"
-            aria-selected="{% if active_tab == 'upper' %}true{% else %}false{% endif %}">
-        Upper Maap
-    </button>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link {% if active_tab == 'upper' %}active{% endif %}"
+                        id="nav-home-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nav-home"
+                        type="button"
+                        role="tab"
+                        aria-selected="{% if active_tab == 'upper' %}true{% else %}false{% endif %}">
+                    Upper Maap
+                </button>
 
-    <button class="nav-link {% if active_tab == 'lower' %}active{% endif %}"
-            id="nav-profile-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#nav-profile"
-            type="button"
-            role="tab"
-            aria-selected="{% if active_tab == 'lower' %}true{% else %}false{% endif %}">
-        Lower Maap
-    </button>
-</div>
-
+                <button class="nav-link {% if active_tab == 'lower' %}active{% endif %}"
+                        id="nav-profile-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nav-profile"
+                        type="button"
+                        role="tab"
+                        aria-selected="{% if active_tab == 'lower' %}true{% else %}false{% endif %}">
+                    Lower Maap
+                </button>
+            </div>
         </nav>
+
         <div class="tab-content" id="nav-tabContent">
-<div class="tab-pane fade {% if active_tab == 'upper' %}show active{% endif %}"
-         id="nav-home"
-         role="tabpanel">
+
+            <!-- ======================= UPPER MAAP TAB ======================= -->
+            <div class="tab-pane fade {% if active_tab == 'upper' %}show active{% endif %}"
+                 id="nav-home"
+                 role="tabpanel">
+
                 <div class="table-responsive mt-2">
                     {{ upper_formset.management_form }}
+
                     <table class="table table-sm maapTable table-bordered">
                         <thead>
                             <tr>
@@ -51,43 +58,70 @@
                                 <th>Hip</th>
                                 <th>Neck</th>
                                 <th>Other Remark</th>
+                                <th>Design Image</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
+
                         <tbody id="uppermaapBody">
                             {% for form in upper_formset %}
                             <tr>
                                 <td>{{ form.upper_maap }}</td>
                                 <td>{{ form.upper_length }}</td>
                                 <td>{{ form.upper_shoulder }}</td>
+
                                 <td>
                                     {{ form.upper_sleeve_length }}
                                     {{ form.upper_sleeve_bicep }}
                                     {{ form.upper_sleeve_cuff }}
                                 </td>
+
                                 <td>
                                     {{ form.upper_chest_body }}
                                     {{ form.upper_chest_ready }}
                                 </td>
+
                                 <td>
                                     {{ form.upper_lowerchest_body }}
                                     {{ form.upper_lowerchest_ready }}
                                 </td>
+
                                 <td>
                                     {{ form.upper_stomach_body }}
                                     {{ form.upper_stomach_ready }}
                                 </td>
+
                                 <td>
                                     {{ form.upper_hip_body }}
                                     {{ form.upper_hip_ready }}
                                 </td>
+
                                 <td>{{ form.upper_neck }}</td>
                                 <td>{{ form.upper_other_remark }}</td>
+
+                                <!-- ✅ IMAGE FIELD -->
+                                <td>
+                                    {{ form.upper_design_image }}
+
+                                    {% if form.instance.upper_design_image %}
+                                        <div class="mt-1">
+                                            <a href="{{ form.instance.upper_design_image.url }}" target="_blank">
+                                                View
+                                            </a>
+                                        </div>
+
+                                        <img src="{{ form.instance.upper_design_image.url }}"
+                                             alt="Upper Design"
+                                             style="width:60px;height:60px;object-fit:cover;border-radius:6px;border:1px solid #ccc;"
+                                             class="mt-1">
+                                    {% endif %}
+                                </td>
+
                                 <td style="vertical-align: middle !important;">
                                     <button type="button" class="upperMaapDeleteBtn"
-                                        style="border: none; background-color: transparent;">
+                                            style="border: none; background-color: transparent;">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="red"
-                                            class="bi bi-trash3" viewBox="0 0 16 16">
+                                             class="bi bi-trash3" viewBox="0 0 16 16">
                                             <path
                                                 d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
                                         </svg>
@@ -97,16 +131,21 @@
                             {% endfor %}
                         </tbody>
                     </table>
+
                     <button type="button" class="create-button" id="addRowBtn">Add More</button>
-                    <!-- <button type="button" class="create-button" id="bulkUploadBtn">Bulk Upload</button> -->
                 </div>
+
                 <hr>
             </div>
-<div class="tab-pane fade {% if active_tab == 'lower' %}show active{% endif %}"
-         id="nav-profile"
-         role="tabpanel">
+
+            <!-- ======================= LOWER MAAP TAB ======================= -->
+            <div class="tab-pane fade {% if active_tab == 'lower' %}show active{% endif %}"
+                 id="nav-profile"
+                 role="tabpanel">
+
                 <div class="table-responsive mt-2">
                     {{ lower_formset.management_form }}
+
                     <table class="table table-sm maapTable table-bordered">
                         <thead>
                             <tr>
@@ -119,9 +158,11 @@
                                 <th>Bottom</th>
                                 <th>Jhola</th>
                                 <th>Other Remark</th>
+                                <th>Design Image</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
+
                         <tbody id="lowermaapBody">
                             {% for form in lower_formset %}
                             <tr>
@@ -134,11 +175,30 @@
                                 <td>{{ form.lower_bottom }}</td>
                                 <td>{{ form.lower_jhola }}</td>
                                 <td>{{ form.lower_other_remark }}</td>
+
+                                <!-- ✅ IMAGE FIELD -->
+                                <td>
+                                    {{ form.lower_design_image }}
+
+                                    {% if form.instance.lower_design_image %}
+                                        <div class="mt-1">
+                                            <a href="{{ form.instance.lower_design_image.url }}" target="_blank">
+                                                View
+                                            </a>
+                                        </div>
+
+                                        <img src="{{ form.instance.lower_design_image.url }}"
+                                             alt="Lower Design"
+                                             style="width:60px;height:60px;object-fit:cover;border-radius:6px;border:1px solid #ccc;"
+                                             class="mt-1">
+                                    {% endif %}
+                                </td>
+
                                 <td style="vertical-align: middle !important;">
                                     <button type="button" class="lowerMaapDeleteBtn"
-                                        style="border: none; background-color: transparent;">
+                                            style="border: none; background-color: transparent;">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="red"
-                                            class="bi bi-trash3" viewBox="0 0 16 16">
+                                             class="bi bi-trash3" viewBox="0 0 16 16">
                                             <path
                                                 d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
                                         </svg>
@@ -148,134 +208,24 @@
                             {% endfor %}
                         </tbody>
                     </table>
+
                     <button type="button" class="create-button" id="addLowerMaapBtn">Add More</button>
                 </div>
+
                 <hr>
             </div>
 
         </div>
+
         <div class="w-100 d-flex">
             <button type="submit" class="create-button ms-auto me-3">Submit</button>
         </div>
 
-        <!-- Bulk Upload Modal -->
-        <div id="bulkUploadModal" class="modal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Bulk Upload</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="bulkUploadForm" enctype="multipart/form-data">
-                            <div class="form-group">
-                                <label for="bulkUploadFile">Upload CSV or Excel file:</label>
-                                <input type="file" class="form-control" id="bulkUploadFile" name="bulkUploadFile"
-                                    accept=".csv, .xlsx">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="uploadFileBtn">Upload</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </form>
 
-
 </div>
+
 <script>
-    document.getElementById('bulkUploadBtn').addEventListener('click', () => {
-        $('#bulkUploadModal').modal('show');
-    });
-
-    document.getElementById('uploadFileBtn').addEventListener('click', () => {
-        const fileInput = document.getElementById('bulkUploadFile');
-        if (fileInput.files.length === 0) {
-            alert("Please select a file!");
-            return;
-        }
-
-        const file = fileInput.files[0];
-        const formData = new FormData();
-        formData.append('file', file);
-
-        // Send file to the server
-        fetch('/upload-bulk-data/', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}', // Django CSRF token
-            },
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Process returned data and update the table
-                    const tbody = document.getElementById('uppermaapBody');
-                    data.rows.forEach(row => {
-                        const newRow = document.createElement('tr');
-                        newRow.innerHTML = `
-            <td>${row.upper_maap}</td>
-            <td>${row.upper_length}</td>
-            <td>${row.upper_shoulder}</td>
-            <td>${row.upper_sleeve_length} ${row.upper_sleeve_bicep} ${row.upper_sleeve_cuff}</td>
-            <td>${row.upper_chest_body} ${row.upper_chest_ready}</td>
-            <td>${row.upper_lowerchest_body} ${row.upper_lowerchest_ready}</td>
-            <td>${row.upper_stomach_body} ${row.upper_stomach_ready}</td>
-            <td>${row.upper_hip_body} ${row.upper_hip_ready}</td>
-            <td>${row.upper_neck}</td>
-            <td>${row.upper_other_remark}</td>
-            <td>
-              <button type="button" class="upperMaapDeleteBtn" style="border: none; background-color: transparent;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="red" class="bi bi-trash3" viewBox="0 0 16 16">
-                  <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
-                </svg>
-              </button>
-            </td>
-          `;
-                        tbody.appendChild(newRow);
-                    });
-                    alert("Bulk data uploaded successfully!");
-                    $('#bulkUploadModal').modal('hide');
-                } else {
-                    alert("Failed to upload data. Please check the file format.");
-                }
-            })
-            .catch(error => console.error('Error:', error));
-    });
-
-</script>
-<script>
-    //     document.getElementById('addLowerMaapBtn').addEventListener('click', function () {
-    //     const tbody = document.getElementById('lowermaapBody');
-    //     const totalForms = document.querySelector('#id_form-TOTAL_FORMS'); // Hidden input for TOTAL_FORMS
-    //     const formCount = parseInt(totalForms.value, 10);
-
-    //     // Clone the last row (if exists), otherwise create a new one based on your initial HTML
-    //     const lastRow = tbody.lastElementChild;
-    //     const clone = lastRow ? lastRow.cloneNode(true) : createEmptyRow();
-
-    //     // Update the names and IDs in the cloned row
-    //     clone.querySelectorAll('input, select, textarea').forEach(input => {
-    //         const name = input.getAttribute('name').replace(/-\d+-/, `-${formCount}-`);
-    //         const id = input.getAttribute('id').replace(/-\d+-/, `-${formCount}-`);
-    //         input.setAttribute('name', name);
-    //         input.setAttribute('id', id);
-    //         input.value = ''; // Clear the value
-    //     });
-
-    //     tbody.appendChild(clone);
-
-    //     // Increment TOTAL_FORMS
-    //     totalForms.value = formCount + 1;
-    // });
-
     document.getElementById('addRowBtn').addEventListener('click', function () {
         addRow('uppermaapBody', 'id_upper-TOTAL_FORMS');
     });
@@ -294,38 +244,33 @@
         newRow.querySelectorAll('input, select, textarea').forEach(input => {
             input.name = input.name.replace(/-\d+-/, `-${formCount}-`);
             input.id = input.id.replace(/-\d+-/, `-${formCount}-`);
-            input.value = '';
+
+            // ✅ file input safe reset
+            if (input.type === "file") {
+                input.value = null;
+            } else {
+                input.value = '';
+            }
         });
+
+        // ✅ Remove preview image in cloned row (if exists)
+        const imgs = newRow.querySelectorAll('img');
+        imgs.forEach(img => img.remove());
+
+        const links = newRow.querySelectorAll('a');
+        links.forEach(a => a.remove());
 
         tbody.appendChild(newRow);
         totalForms.value = formCount + 1;
     }
 
-
-    // Function to create an empty row if no initial row exists
-    // function createEmptyRow() {
-    //     const row = document.createElement('tr');
-    //     row.innerHTML = `
-    //         <td><input type="text" name="form-__prefix__-lower_maap" id="id_form-__prefix__-lower_maap" class="form-control"></td>
-    //         <td><input type="number" name="form-__prefix__-lower_length" id="id_form-__prefix__-lower_length" class="form-control"></td>
-    //         <td><input type="number" name="form-__prefix__-lower_waist" id="id_form-__prefix__-lower_waist" class="form-control"></td>
-    //         <td><input type="number" name="form-__prefix__-lower_hip" id="id_form-__prefix__-lower_hip" class="form-control"></td>
-    //         <td><input type="number" name="form-__prefix__-lower_thai" id="id_form-__prefix__-lower_thai" class="form-control"></td>
-    //         <td><input type="number" name="form-__prefix__-lower_knee" id="id_form-__prefix__-lower_knee" class="form-control"></td>
-    //         <td><input type="number" name="form-__prefix__-lower_bottom" id="id_form-__prefix__-lower_bottom" class="form-control"></td>
-    //         <td><input type="number" name="form-__prefix__-lower_jhola" id="id_form-__prefix__-lower_jhola" class="form-control"></td>
-    //         <td><textarea name="form-__prefix__-lower_other_remark" id="id_form-__prefix__-lower_other_remark" class="form-control"></textarea></td>
-    //         <td><button type="button" class="lowerMaapDeleteBtn">Delete</button></td>
-    //     `;
-    //     return row;
-    // }
-
-
     document.addEventListener('click', function (event) {
+
+        // Lower delete
         if (event.target.closest('.lowerMaapDeleteBtn')) {
             const row = event.target.closest('tr');
             const tbody = document.getElementById('lowermaapBody');
-            const totalForms = document.querySelector('#id_form-TOTAL_FORMS');
+            const totalForms = document.getElementById('id_lower-TOTAL_FORMS');
 
             if (tbody.children.length > 1) {
                 row.remove();
@@ -335,10 +280,11 @@
             }
         }
 
+        // Upper delete
         if (event.target.closest('.upperMaapDeleteBtn')) {
             const row = event.target.closest('tr');
             const tbody = document.getElementById('uppermaapBody');
-            const totalForms = document.querySelector('#id_form-TOTAL_FORMS');
+            const totalForms = document.getElementById('id_upper-TOTAL_FORMS');
 
             if (tbody.children.length > 1) {
                 row.remove();
@@ -348,179 +294,6 @@
             }
         }
     });
-
-
-</script>
-
-<script>
-    // let rowCount = 1;
-
-    // // === Function to Add New Rows ===
-    // function addRow() {
-    //     let tableBody = document.getElementById('maapBody');
-    //     let firstRow = tableBody.rows[0]; // Use the first row as the template
-
-    //     // Clone the first row
-    //     let newRow = firstRow.cloneNode(true);
-
-    //     // Reset input, textarea, and select values in the new row
-    //     let inputs = newRow.querySelectorAll('input, textarea, select');
-    //     inputs.forEach(input => {
-    //         input.value = ''; // Clear values
-
-    //         // Update ID and name dynamically for each input
-    //         let newId = input.id.replace(/\d+$/, '') + tableBody.rows.length; // Set a unique ID
-    //         input.id = newId;
-
-    //         // Update the name attribute for inputs (for formsets, it should be unique too)
-    //         if (input.name) {
-    //             input.name = input.name.replace(/\[\d*\]/, `[${tableBody.rows.length - 1}]`); // Dynamically update name
-    //         }
-    //     });
-
-    //     // Enable the delete button for the new row
-    //     let deleteButton = newRow.querySelector('.deleteBtn');
-    //     deleteButton.disabled = false; // Enable delete for new rows
-
-    //     // Add the new row to the table
-    //     tableBody.appendChild(newRow);
-
-    //     // Reassign event listeners to all delete buttons
-    //     assignDeleteEventListeners();
-    // }
-
-    // // === Function to Delete a Row ===
-    // function deleteRow(rowToDelete) {
-    //     let tableBody = document.getElementById('maapBody');
-
-    //     // Remove the selected row
-    //     tableBody.removeChild(rowToDelete);
-
-    //     // Update all rows and reassign IDs
-    //     let rows = tableBody.rows;
-    //     for (let i = 0; i < rows.length; i++) {
-    //         let row = rows[i];
-    //         let inputs = row.querySelectorAll('input, textarea, select');
-    //         inputs.forEach(input => {
-    //             // Update the IDs dynamically based on row index
-    //             let newId = input.id.replace(/\d+$/, '') + i; // Append the new index
-    //             input.id = newId;
-    //         });
-
-    //         // Update the delete button state
-    //         let deleteButton = row.querySelector('.deleteBtn');
-    //         deleteButton.disabled = i === 0; // Disable delete for the first row, enable for others
-    //     }
-    // }
-
-    // // === Assign Delete Button Event Listeners ===
-    // function assignDeleteEventListeners() {
-    //     let deleteButtons = document.querySelectorAll('.deleteBtn');
-    //     deleteButtons.forEach((button, index) => {
-    //         button.disabled = index === 0; // Disable delete for the first row
-    //         button.removeEventListener('click', handleDelete); // Prevent duplicate listeners
-    //         button.addEventListener('click', handleDelete);
-    //     });
-    // }
-
-    // // === Handle Delete Button Click ===
-    // function handleDelete() {
-    //     let rowToDelete = this.closest('tr'); // Find the row to delete
-    //     deleteRow(rowToDelete);
-    // }
-
-    // // === Attach Add Row Button Listener ===
-    // document.getElementById('addRowBtn').addEventListener('click', addRow);
-
-    // // Initialize Delete Button Listeners
-    // assignDeleteEventListeners();
-
-
-    // // Lower Maap Code
-
-    // let lowerRowCount = 1;
-
-    // // === Function to Add New Rows to Lower Maap Table ===
-    // function addLowerMaapRow() {
-    //     let tableBody = document.getElementById('lowermaapBody');
-    //     let firstRow = tableBody.rows[0]; // Use the first row as the template
-
-    //     // Clone the first row
-    //     let newRow = firstRow.cloneNode(true);
-
-    //     // Reset input, textarea, and select values in the new row
-    //     let inputs = newRow.querySelectorAll('input, textarea, select');
-    //     inputs.forEach(input => {
-    //         input.value = ''; // Clear values
-
-    //         // Update ID and name dynamically for each input
-    //         let newId = input.id.replace(/\d+$/, '') + tableBody.rows.length; // Set a unique ID
-    //         input.id = newId;
-
-    //         // Update the name attribute for inputs (for formsets, it should be unique too)
-    //         if (input.name) {
-    //             input.name = input.name.replace(/\[\d*\]/, `[${tableBody.rows.length - 1}]`); // Dynamically update name
-    //         }
-    //     });
-
-    //     // Enable the delete button for the new row
-    //     let deleteButton = newRow.querySelector('.lowerMaapDeleteBtn');
-    //     deleteButton.disabled = false; // Enable delete for new rows
-
-    //     // Add the new row to the table
-    //     tableBody.appendChild(newRow);
-
-    //     // Reassign event listeners to all delete buttons
-    //     assignLowerDeleteEventListeners();
-    // }
-
-    // // === Function to Delete a Row in Lower Maap Table ===
-    // function deleteLowerMaapRow(rowToDelete) {
-    //     let tableBody = document.getElementById('lowermaapBody');
-
-    //     // Remove the selected row
-    //     tableBody.removeChild(rowToDelete);
-
-    //     // Update all rows and reassign IDs
-    //     let rows = tableBody.rows;
-    //     for (let i = 0; i < rows.length; i++) {
-    //         let row = rows[i];
-    //         let inputs = row.querySelectorAll('input, textarea, select');
-    //         inputs.forEach(input => {
-    //             // Update the IDs dynamically based on row index
-    //             let newId = input.id.replace(/\d+$/, '') + i; // Append the new index
-    //             input.id = newId;
-    //         });
-
-    //         // Update the delete button state
-    //         let deleteButton = row.querySelector('.lowerMaapDeleteBtn');
-    //         deleteButton.disabled = i === 0; // Disable delete for the first row, enable for others
-    //     }
-    // }
-
-    // // === Assign Delete Button Event Listeners for Lower Maap Table ===
-    // function assignLowerDeleteEventListeners() {
-    //     let deleteButtons = document.querySelectorAll('.lowerMaapDeleteBtn');
-    //     deleteButtons.forEach((button, index) => {
-    //         button.disabled = index === 0; // Disable delete for the first row
-    //         button.removeEventListener('click', handleLowerDelete); // Prevent duplicate listeners
-    //         button.addEventListener('click', handleLowerDelete);
-    //     });
-    // }
-
-    // // === Handle Delete Button Click in Lower Maap Table ===
-    // function handleLowerDelete() {
-    //     let rowToDelete = this.closest('tr'); // Find the row to delete
-    //     deleteLowerMaapRow(rowToDelete);
-    // }
-
-    // // === Attach Add Row Button Listener ===
-    // document.getElementById('addLowerMaapBtn').addEventListener('click', addLowerMaapRow);
-
-    // // Initialize Delete Button Listeners
-    // assignLowerDeleteEventListeners();
-
-
 </script>
 
 {% endblock body %}
