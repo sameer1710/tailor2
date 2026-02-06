@@ -28,17 +28,29 @@ def normalize_choice(value, choices):
 
 @login_required
 def import_maap(request):
+    """
+    Import Upper / Lower MAAP via CSV.
 
-    # 🔐 Ensure clients exist
+    Rules:
+    - Client matching ONLY by client_name + company
+    - If multiple clients match → MAAP created for ALL
+    - Duplicate MAAP types are ALLOWED
+    - Partial data allowed (empty fields → NULL)
+    - Can be run multiple times
+    """
+
     if not ClientMaster.objects.filter(company=request.user.company).exists():
-        messages.error(request, "Please import clients before importing MAAP.")
+        messages.error(
+            request,
+            "No clients found. Please import clients before importing MAAP."
+        )
         return redirect("import_wizard")
 
     if request.method == "POST":
         maap_type = request.POST.get("maap_type")
         file = request.FILES.get("file")
 
-        if maap_type not in ("upper", "lower") or not file:
+        if not maap_type or not file:
             messages.error(request, "MAAP type and CSV file are required.")
             return redirect("import_maap")
 
@@ -46,65 +58,82 @@ def import_maap(request):
             reader = csv.DictReader(TextIOWrapper(file, encoding="utf-8"))
 
             if "client_name" not in reader.fieldnames:
-                messages.error(request, "CSV must contain 'client_name' column.")
+                messages.error(
+                    request,
+                    "CSV must contain a 'client_name' column."
+                )
                 return redirect("import_maap")
+
+            created_count = 0
 
             with transaction.atomic():
                 for row_no, row in enumerate(reader, start=2):
-                    client_name = row.get("client_name", "").strip()
 
+                    client_name = (row.get("client_name") or "").strip()
                     if not client_name:
-                        raise ValueError(f"Missing client_name at row {row_no}")
-
-                    try:
-                        client = ClientMaster.objects.get(
-                            client_name=client_name,
-                            company=request.user.company
-                        )
-                    except ClientMaster.DoesNotExist:
                         raise ValueError(
-                            f"Client '{client_name}' not found (row {row_no})"
+                            f"Missing client_name at row {row_no}"
                         )
 
-                    # 🔼 UPPER MAAP
-                    if maap_type == "upper":
-                        data = {}
+                    clients = ClientMaster.objects.filter(
+                        client_name=client_name,
+                        company=request.user.company
+                    )
 
-                        for field in UpperMaap._meta.fields:
-                            fname = field.name
-                            if fname in ("id", "client", "upper_design_image"):
-                                continue
-
-                            value = row.get(fname)
-                            data[fname] = value if value not in ("", None) else None
-
-                        data["upper_maap"] = normalize_choice(
-                            row.get("upper_maap"),
-                            UpperMaap.TYPE_CHOICES
+                    if not clients.exists():
+                        raise ValueError(
+                            f"No client found with name '{client_name}' (row {row_no})"
                         )
 
-                        UpperMaap.objects.create(client=client, **data)
+                    # 👉 Create MAAP for EACH matching client
+                    for client in clients:
 
-                    # 🔽 LOWER MAAP
-                    else:
-                        data = {}
+                        # 🔼 UPPER MAAP
+                        if maap_type == "upper":
+                            UpperMaap.objects.create(
+                                client=client,
+                                upper_maap=row.get("upper_maap") or None,
+                                upper_length=row.get("upper_length") or None,
+                                upper_shoulder=row.get("upper_shoulder") or None,
+                                upper_sleeve_length=row.get("upper_sleeve_length") or None,
+                                upper_sleeve_bicep=row.get("upper_sleeve_bicep") or None,
+                                upper_sleeve_cuff=row.get("upper_sleeve_cuff") or None,
+                                upper_chest_body=row.get("upper_chest_body") or None,
+                                upper_chest_ready=row.get("upper_chest_ready") or None,
+                                upper_lowerchest_body=row.get("upper_lowerchest_body") or None,
+                                upper_lowerchest_ready=row.get("upper_lowerchest_ready") or None,
+                                upper_stomach_body=row.get("upper_stomach_body") or None,
+                                upper_stomach_ready=row.get("upper_stomach_ready") or None,
+                                upper_hip_body=row.get("upper_hip_body") or None,
+                                upper_hip_ready=row.get("upper_hip_ready") or None,
+                                upper_neck=row.get("upper_neck") or None,
+                                upper_other_remark=row.get("upper_other_remark") or None,
+                            )
 
-                        for field in LowerMaap._meta.fields:
-                            fname = field.name
-                            if fname in ("id", "client", "lower_design_image"):
-                                continue
+                        # 🔽 LOWER MAAP
+                        elif maap_type == "lower":
+                            LowerMaap.objects.create(
+                                client=client,
+                                lower_maap=row.get("lower_maap") or None,
+                                lower_length=row.get("lower_length") or None,
+                                lower_waist=row.get("lower_waist") or None,
+                                lower_hip=row.get("lower_hip") or None,
+                                lower_thai=row.get("lower_thai") or None,
+                                lower_knee=row.get("lower_knee") or None,
+                                lower_bottom=row.get("lower_bottom") or None,
+                                lower_jhola=row.get("lower_jhola") or None,
+                                lower_other_remark=row.get("lower_other_remark") or None,
+                            )
 
-                            value = row.get(fname)
-                            data[fname] = value if value not in ("", None) else None
+                        else:
+                            raise ValueError("Invalid MAAP type selected.")
 
-                        data["lower_maap"] = normalize_choice(
-                            row.get("lower_maap"),
-                            LowerMaap.TYPE_CHOICES
-                        )
+                        created_count += 1
 
-                        LowerMaap.objects.create(client=client, **data)
-
-            messages.success(request, "MAAP data imported successfully.")
+            messages.success(
+                request,
+                f"MAAP imported successfully. {created_count} MAAP records created."
+            )
             return redirect("import_maap")
 
         except Exception as e:
