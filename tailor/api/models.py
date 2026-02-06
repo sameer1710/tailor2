@@ -349,7 +349,7 @@ class ClientMaster(models.Model):
         ('inactive', 'In-Active'),
     ]
     client_name = models.CharField(max_length=100)
-    client_number = models.IntegerField()
+    client_number = models.CharField(max_length=15, blank=True, null=True)
     book_number = models.IntegerField()
     page_number = models.IntegerField()
     client_address = models.TextField()    
